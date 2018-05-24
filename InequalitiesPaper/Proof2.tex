@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,textcomp,amssymb,geometry,graphicx,enumerate}
+
+\def\Name{Edward Kim}  % Your name
+
+%for code%
+\usepackage{listings}
+\lstset{language=python}
+
+
+\title{Proof of Inequality 2}
+\author{\Name}
+
+\textheight=9in
+\textwidth=6.5in
+\topmargin=-.75in
+\oddsidemargin=0.25in
+\evensidemargin=0.25in
+\DeclareMathSizes{11}{19}{13}{9}
+\setlength\parindent{0pt}
+
+
+\begin{document}
+\maketitle
+
+First, let us state the problem and develop some motivation for it: \newline
+
+Let $n \in \mathbb{N}$. Then the following holds provided that $a_i \geq 1$ for $1 \leq i \leq n$.
+
+\begin{equation}
+ \sum_{i=1}^{n} \frac{1}{1 + a_i} \geq \frac{n}{1 + (a_1...a_n)^{\frac{1}{n}}}
+\end{equation}
+
+First, let us prove a small lemma before we proceed. \newline
+
+Let $\mathbb{P}$ denote the set of prime numbers. \newline
+
+\textbf{Lemma:} If the inequality holds for the cases where $n \in \mathbb{P}$, then the inequality holds for all natural numbers $n \in \mathbb{N}$. \newline
+
+\textbf{Proof:} Since $n \in \mathbb{N}$, by the Fundamental Theorm of Arithmetic, $n$ can decomposed into a product of primes unique up to order. Let $n = p_1^{l_i}...p_r^{l_r}$ where $l_i \geq 1$. We can expand the product so that each prime in the product will have powers of 1.
+So $n = p_1...p_g$. We prove the inequality by the following steps. Let $p_i$ be any prime in the expanded product. We can easily partition the terms into $C$ partitions of $p_i$ terms where 
+\begin{equation}
+  C = \prod_{\substack{1 \leq j \leq g \\ j \neq i}} p_j
+\end{equation}
+
+However, since the inequality holds for any prime number, we get the following inequality:
+\begin{equation}
+ \sum_{i=1}^{n} \frac{1}{1 + a_i} \geq \sum_{\mathcal{C}} \frac{p_i}{1 + ( a_{\sigma(1)}...a_{\sigma(p_i)} )^{\frac{1}{p_i}}}
+\end{equation}
+
+where $\mathcal{C}$ is the set of all $C$ paritions of the sum. $a_{\sigma(1)},...,a_{\sigma(p_i)}$ are the $p_i$ terms in each parition iterated over the sum. Now take another prime from $C$ which does not contain $p_i$. Let us call this new prime $p_r$.
+Let $S$ be the new sum on the right side of the inequality of (3). We can think of $S$ as $C'$ paritions of $p_r$ terms where $C'$ is 
+
+\begin{equation}
+ C' = \prod_{\substack{1 \leq j \leq g \\ j \neq i \\ j \neq r}} p_j
+\end{equation}
+
+Once again, since the inequality holds for all prime numbers, we get the following inequality:
+
+\begin{gather}
+\sum_{\mathcal{C}} \frac{p_i}{1 + ( a_{\sigma(1)}...a_{\sigma(p_i)} )^{\frac{1}{p_i}}} \geq p_i(\sum_{\mathcal{C'}} \frac{p_r}{1 + ( \prod_{\mathcal{C}}(a_{\sigma(1)},...,a_{\sigma(p_i)})^{\frac{1}{p_i}})^{\frac{1}{p_r}}}) 
+\end{gather}
+
+where $\mathcal{C}$ is the set of all $p_r$ partitions of $S$. We see that this valid since $(a_{\sigma(1)},...,a_{\sigma(p_i)})^{\frac{1}{p_i}} \geq 1$ for all such $p_i$ partitions. But the left side of the inequality is:
+
+\begin{equation}
+\sum_{\mathcal{C'}} \frac{p_ip_r}{1 + ( \prod_{\mathcal{C}}a_{\sigma(1)},...,a_{\sigma(p_i)})^{\frac{1}{p_rp_i}}}
+\end{equation}
+
+Also the product in the denominator contains a product of $p_ip_r$ terms which parition the set $\{a_1,...,a_n\}$. Thus, we proceed until the process terminates. This process must terminate since $n$ is the product of only a finite number of primes.
+Our final result will be of the form:
+
+\begin{equation}
+\sum_{i=1}^{n} \frac{1}{1 + a_i} \geq \frac{p_1...p_g}{1 + (a_1...a_{p_1...p_g})^{\frac{1}{p_1...p_g}}} = \frac{n}{1 + (a_1...a_{n})^{\frac{1}{n}}}
+\end{equation}
+
+Thus, this proves the lemma.
+
+Now we shall show the inequality holds for all prime numbers. \newline
+
+\textbf{Proposition: } The inequality holds for all $n \in  \mathbb{P}$. \newline
+
+\textbf{Proof: } We shall use the property that the inequality holds for all $n = 2^k$ for some $k \in \mathbb{N}$.
+
+Let $m$ be a power of 2 such that $m > n$. Observe the following modification to the original sum as follows.
+
+\begin{gather}
+  \sum_{i=1}^{n} \frac{1}{1 + a_i} + \sum^{m-n} \frac{1}{1 + (a_1...a_n)^{\frac{1}{n}}} 
+\end{gather}
+
+Since $(a_1...a_n)^{\frac{1}{m-n}} \geq 1$ and there are $m$ terms in the sum, we can apply the inequality:
+
+\begin{gather}
+\sum_{i=1}^{n} \frac{1}{1 + a_i} + \frac{m-n}{1 + (a_1...a_n)^{\frac{1}{n}}} \geq \frac{m}{1 + ((a_1...a_n)^{\frac{m}{n}})^{\frac{1}{m}}} \\ 
+\sum_{i=1}^{n} \frac{1}{1 + a_i} + \frac{m-n}{1 + (a_1...a_n)^{\frac{1}{n}}} \geq \frac{n}{1 + ((a_1...a_n)^{\frac{m}{n}})^{\frac{1}{m}}} + \frac{m-n}{1 + ((a_1...a_n)^{\frac{m}{n}})^{\frac{1}{m}}} \\
+\sum_{i=1}^{n} \frac{1}{1 + a_i} \geq \frac{n}{1 + (a_1...a_n)^{\frac{1}{n}}}
+\end{gather}
+
+
+
+\end{document}

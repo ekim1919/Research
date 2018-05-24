@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,textcomp,amssymb,geometry,graphicx,enumerate}
+
+\def\Name{Edward Kim}  % Your name
+
+%for code%
+\usepackage{listings}
+\lstset{language=python}
+
+
+\title{Proof of Inequality 1}
+\author{\Name}
+
+\textheight=9in
+\textwidth=6.5in
+\topmargin=-.75in
+\oddsidemargin=0.25in
+\evensidemargin=0.25in
+\DeclareMathSizes{11}{19}{13}{9}
+
+
+\begin{document}
+\maketitle
+
+\textbf{Proof:}
+Let $a \geq 1$ and $b \geq 1$. We shall directly prove the following inequality.
+
+\begin{equation}
+\frac{1}{1+a} + \frac{1}{1+b} \geq \frac{2}{1 + \sqrt{ab}} 
+\end{equation}
+
+We first get the expanded version after multiplying both sides by all the terms. We notice that this preserves the inequality since all terms are positive.
+
+\begin{equation}
+(1+b)(1 + \sqrt{ab}) + (1+a)(1 + \sqrt{ab}) \geq 2(1+a)(1+b)
+\end{equation}
+
+After we expand each term and simplify, we get the following terms:
+
+\begin{gather}
+ 2\sqrt{ab} + a + b + b\sqrt{ab} + a\sqrt{ab} \geq 2a + 2b + 2ab \\
+ 2\sqrt{ab} - a - b + b\sqrt{ab} + a\sqrt{ab} - 2(\sqrt{ab})^2 \geq 0
+\end{gather}
+
+Factor out $\sqrt{ab} - 1$:
+
+\begin{gather}
+ (\sqrt{ab} - 1)(a+b) + 2(\sqrt{ab} - (\sqrt{ab})^2) \geq 0 \\ 
+ (\sqrt{ab} - 1)(a+b) + 2(\sqrt{ab})(1 - \sqrt{ab}) \geq 0 \\
+ (\sqrt{ab} - 1)(a+b) - 2(\sqrt{ab})(\sqrt{ab} - 1) \geq 0 
+\end{gather}
+
+Now divide both sides by the common factor:
+
+\begin{gather}
+ (a + b) - 2\sqrt{ab} \geq 0 \\
+ (a + b) \geq 2\sqrt{ab} \\
+ \frac{a + b}{2} \geq \sqrt{ab}
+\end{gather}
+
+However, this is exactly the Arithmetic-Geometric Mean Inequality which holds when $a \geq 1$ and $b \geq 1$.
+
+Thus, the inequality is proven.
+
+
+
+\end{document}

@@ -1,0 +1,77 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,textcomp,amssymb,geometry,graphicx,enumerate}
+
+\def\Name{Edward Kim}  % Your name
+
+%for code%
+\usepackage{listings}
+\lstset{language=python}
+
+
+\title{Proof of Inequality 2}
+\author{\Name}
+
+\textheight=9in
+\textwidth=6.5in
+\topmargin=-.75in
+\oddsidemargin=0.25in
+\evensidemargin=0.25in
+\DeclareMathSizes{11}{19}{13}{9}
+\setlength\parindent{0pt}
+
+\begin{document}
+ \maketitle
+ 
+ (Holy crap. This induction took me hours. I was trying all these weird methods when the simplest answer was right in front of me.)
+ \newline \newline
+ \noindent
+ 
+ Let us first prove the base case for when $n = 2$. This is proven in Inequality 1 so the base case is proven. Assume
+ that the inequality holds for some $k$ so that $n = 2^k$. Now let us prove the inequality for 
+ $2^{k+1}$. \newline
+ 
+ \noindent
+ 
+ We have the sum:
+ 
+ \begin{equation}
+  \sum_{i=1}^{2^{k+1}} \frac{1}{1+a_i}.
+ \end{equation}
+ 
+ Now choose any two partitions and relabel the $a_i$ such that the sum becomes:
+ 
+  \begin{equation}
+  \sum_{i=1}^{2^{k+1}} \frac{1}{1+a_i} = \sum_{i=1}^{2^{k}} \frac{1}{1+a_i} + \sum_{i=1}^{2^{k}} \frac{1}{1+\widetilde{a_i}}.
+ \end{equation}
+ 
+ Let us denote the sum as $\phi$. \newline
+ 
+ 
+ By our induction hypothesis,
+ 
+ \begin{equation}
+  \phi \geq \frac{2^k}{1 + (a_1...a_{2^k})^{\frac{1}{2^k}}} + \frac{2^k}{1 + (\widetilde{a_1}...\widetilde{a_{2^k}})^{\frac{1}{2^k}}}
+ \end{equation}
+
+Let the above sum be denoted as $R$. Factor out the $2^k$
+
+\begin{equation}
+ \phi \geq 2^k(\frac{1}{1 + (a_1...a_{2^k})^{\frac{1}{2^k}}} + \frac{1}{1 + (\widetilde{a_1}...\widetilde{a_{2^k}})^{\frac{1}{2^k}}})
+\end{equation}
+
+However, $(a_1...a_{2^k})^{\frac{1}{2^k}} \geq 1$ and $(\widetilde{a_1}...\widetilde{a_{2^k}})^{\frac{1}{2^k}} \geq 1$. So we can
+use our induction hypothesis again!
+
+\begin{equation}
+ \phi \geq R \geq 2^k(\frac{2}{1 + \sqrt{((a_1...a_{2^{k}})^{\frac{1}{2^k}})((\widetilde{a_1}...\widetilde{a_{2^k}})^{\frac{1}{2^k}})}})
+\end{equation}
+
+However, this can be simplified to
+
+\begin{gather}
+ \phi \geq 2^k(\frac{2}{1 + \sqrt{(a_1...a_{2^{k+1}})^{\frac{1}{2^{k}}}}}) \\
+ \phi \geq \frac{2^{k+1}}{1 + (a_1...a_{2^{k+1}})^{\frac{1}{2^{k+1}}}}
+\end{gather}
+
+This proves the induction and, thus, we have proved the inequality.
+\end{document}

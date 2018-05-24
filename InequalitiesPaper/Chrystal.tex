@@ -1,0 +1,62 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,textcomp,amssymb,geometry,graphicx,enumerate}
+
+\def\Name{Edward Kim}  % Your name
+
+%for code%
+\usepackage{listings}
+\lstset{language=python}
+
+
+\title{Proof of Chrystal's Inequality}
+\author{\Name}
+
+\textheight=9in
+\textwidth=6.5in
+\topmargin=-.75in
+\oddsidemargin=0.25in
+\evensidemargin=0.25in
+\DeclareMathSizes{11}{19}{13}{9}
+
+\begin{document}
+\maketitle
+
+\textbf{Proof:}
+
+We first note a couple things about the hypothesis. Firstly, \newline
+\begin{equation}
+  \prod_{i} a_i = \l^n \implies (\prod_{i} a_i)^{-n} = \l 
+\end{equation}
+
+
+We also know that the above expression is not undefined since $a > 0$. \newline
+
+Now we shall invoke Theorm 40 (pg 39) to prove the claim.
+
+Let our sets be the following: $(1, a_1), (1, a_2), ... , (1, a_n)$.
+When we invoke the theorm, we get the following inequality:
+\begin{equation}
+ (1+a_1)^{-n}(1+a_2)^{-n}...(1+a_n)^{-n} > (\prod^{n}1^{-n} + \prod_{i}a_i^{-n}) \implies
+ ((1+a_1)(1+a_2)...(1+a_n))^{-n} > (\prod^{n}1^{-n} + \prod_{i}a_i^{-n})
+\end{equation}
+
+However, by our observation above,
+
+\begin{equation}
+ ((1+a_1)(1+a_2)...(1+a_n))^{-n} > (1 + \l)
+\end{equation}
+
+After we exponentiate both sides by $n$, we get
+
+\begin{equation}
+  (1+a_1)(1+a_2)...(1+a_n)> (1 + \l)^{n}
+\end{equation}
+
+We know that the inequality is preserved since $a > 0$. 
+Also if all $a_1 = a_2 = ... = a_n$, then $\frac{1}{a_1} = \frac{1}{a_2} = ... = \frac{1}{a_n}$. This would contradict our requirements for the 
+validity of Theorm 40. So not all $a_i$'s can take one the same value.
+
+
+
+
+\end{document}

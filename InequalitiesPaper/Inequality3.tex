@@ -1,0 +1,54 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,textcomp,amssymb,geometry,graphicx,enumerate}
+
+\def\Name{Edward Kim}  % Your name
+
+%for code%
+\usepackage{listings}
+\lstset{language=python}
+
+
+\title{Proof of Inequality 2}
+\author{\Name}
+
+\textheight=9in
+\textwidth=6.5in
+\topmargin=-.75in
+\oddsidemargin=0.25in
+\evensidemargin=0.25in
+\DeclareMathSizes{11}{19}{13}{9}
+\setlength\parindent{0pt}
+
+
+\begin{document}
+\maketitle
+
+First, let us state the problem and develop some motivation for it: \newline
+
+Let $n \in \mathbb{N}$. Then the following holds provided that $a_i \geq 1$ for $1 \leq i \leq n$.
+
+\begin{equation}
+ \sum_{i=1}^{n} \frac{1}{1 + a_i} \geq \frac{n}{1 + (a_1...a_n)^{\frac{1}{n}}}
+\end{equation}
+
+\textbf{Proposition: } The inequality holds for all $n \in  \mathbb{N}$. \newline
+
+\textbf{Proof: } We shall use the property that the inequality holds for all $n = 2^k$ for some $k \in \mathbb{N}$.
+
+Let $m$ be a power of 2 such that $m > n$. Observe the following modification to the original sum as follows.
+
+\begin{gather}
+  \sum_{i=1}^{n} \frac{1}{1 + a_i} + \sum^{m-n} \frac{1}{1 + (a_1...a_n)^{\frac{1}{n}}} 
+\end{gather}
+
+Since $(a_1...a_n)^{\frac{1}{n}} \geq 1$ and there are $m$ terms in the sum, we can apply the inequality:
+
+\begin{gather}
+\sum_{i=1}^{n} \frac{1}{1 + a_i} + \frac{m-n}{1 + (a_1...a_n)^{\frac{1}{n}}} \geq \frac{m}{1 + ((a_1...a_n)^{\frac{m}{n}})^{\frac{1}{m}}} \\ 
+\sum_{i=1}^{n} \frac{1}{1 + a_i} + \frac{m-n}{1 + (a_1...a_n)^{\frac{1}{n}}} \geq \frac{n}{1 + ((a_1...a_n)^{\frac{m}{n}})^{\frac{1}{m}}} + \frac{m-n}{1 + ((a_1...a_n)^{\frac{m}{n}})^{\frac{1}{m}}} \\
+\sum_{i=1}^{n} \frac{1}{1 + a_i} \geq \frac{n}{1 + (a_1...a_n)^{\frac{1}{n}}}
+\end{gather}
+
+Thus, the inequality holds for any $n \in \mathbb{N}$.
+
+\end{document}
