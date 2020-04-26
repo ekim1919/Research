@@ -1,0 +1,180 @@
+\documentclass[12pt]{article}%
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{physics}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.2cm, right=2.2cm]%
+{geometry}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{ytableau}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{lemma}{Lemma}
+%\newenvironment{proof}[1][Proof]{\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\begin{document}
+
+\title{On the Schur-Weyl Duality and its Role in Quantum Information}
+\author{Edward Kim}
+\date{\today}
+\maketitle
+\begin{abstract}
+  The Schur-Weyl Duality describes the decomposition of representations of $GL(d,\mathbb{C})$ and the symmetric group $S_n$ into subspaces of irreducible tensor representations indiced through partitions determined by Young diagrams. In particular, we are interested in the decomposition of a $n$-tensored $d$-dimensional Hilbert space $\mathcal{H}^{\otimes n}$ and the subsequent operators acting on it as described by the two groups above. These tools allow us to derive slick proofs for Schumacher's compression rate and the sub-additivity properties of von-Neumann entropy.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\section{The Schur-Weyl Duality}
+
+Formal definitions of the Schur-Weyl Duality revolve the commutation property of the actions of $GL(d,\mathbb{C})$ and $S_n$ for some $n,d \geq 1$. First, we define the following basic notions to state the theorem: \newline
+
+Let $\mathcal{H}$ denote a $d$-dimensional complex Hilbert space with orthonormal basis $\{i\}_{1 \leq i \leq d}$ and let $H^{\otimes n}$ denote its corresponding $n$-tensored form.
+This allows us to define the following representations:
+\begin{gather*}
+  R: GL(d,\mathbb{C}) \rightarrow GL(\mathcal{H}^{\otimes n}): \\
+  R(g) \cdot \ket{\psi_1} \otimes \ket{\psi_2} \otimes ... \otimes \ket{\psi_n} = g \cdot \ket{\psi_1} \otimes g \cdot \ket{\psi_2} \otimes ... \otimes g \cdot \ket{\psi_n}, \quad \ket{\psi_i} \in \mathcal{H}
+\end{gather*}
+and
+\begin{gather*}
+  U: S_n \rightarrow GL(\mathcal{H}^{\otimes n}): \\
+  R(\sigma) \cdot \ket{s_1} \otimes \ket{s_2} \otimes ... \otimes \ket{s_n} = \ket{s_{\sigma(1)}} \otimes \ket{s_{\sigma(2)}} \otimes ... \otimes  \ket{s_{\sigma(n)}}, \quad s_i \in \{i\}_{1 \leq i \leq d}
+\end{gather*}
+The Schur-Weyl Duality is based upon the following commutation property: For a subset $A \subseteq GL(\mathcal{H}^{\otimes n})$, define
+$$ Comm(A) = \{s \in End(\mathcal{H}^{\otimes n})\mid s \cdot x = x \cdot s, \; \forall x \in A \} $$
+One can check that this is an associative unital $\mathbb{C}$-algebra. The commutant theorem shown by Schur states that:
+\begin{thm}
+  Let $\mathcal{A} = \text{span }{R(GL(d,\mathbb{C}))}$ and $\mathcal{B} = \text{span }U(S_n)$, then $Comm(\mathcal{A}) = \mathcal{B}$ and $Comm(\mathcal{B}) = \mathcal{A}$
+\end{thm}
+
+We omit the proof here for the sake of brevity, but the reader can find a proof in \cite{GW} using the Double Commutant Theorem. A direct corollary of this is the decompostion of $\mathcal{H}^{\otimes n}$ into tensor products of irreducible representations of $GL(d,\mathbb{C}), S_n$. Here, we borrow our notation from \cite{botero}.
+\begin{gather}
+  \mathcal{H}^{\otimes n} = \bigoplus_{\lambda \vdash_d } U_\lambda \otimes V_\lambda
+\end{gather}
+where the $U_\lambda, V_\lambda$ refer to irreducible representations of $GL(d, \mathbb{C}), S_n$ respectively and $\lambda \vdash_d n$ refers to the partitions of $n$ having at most $d$ rows. The following block decompositions also hold:
+
+\begin{gather}\label{matdecomp}
+    R(g) = \bigoplus_{\lambda \vdash_d n} \pi_{U_{\lambda}}(g) \otimes 1_{V_{\lambda}} \\
+    U(\sigma) = \bigoplus_{\lambda \vdash_d n} 1_{U_{\lambda}} \otimes \pi_{V_{\lambda}}(\sigma)
+\end{gather}
+
+\noindent where the maps
+
+\begin{gather*}
+  \pi_{U_{\lambda}}: GL(d, \mathbb{C}) \rightarrow GL(U_\lambda) \\ \pi_{V_{\lambda}}: S_n \rightarrow GL(V_\lambda)
+\end{gather*} refer to the matrices corresponding to the linear maps describing the action on the corresponding irreducible representations.
+
+The core idea behind the utilization strategy of the Schur-Weyl duality involves inferring on the dimensions of the irreducible representations to deduce bounds on the spectra of density operators $\rho \in \mathcal{D}(\mathcal{H})$.
+
+\subsection{Young Tableaux}
+We now describe the formal definition of $\lambda \vdash_d n$, namely the partitions of $n$ having at most $d$ rows. A \textit{partition} $\lambda = (\lambda_1,...,\lambda_d)$ is described as a sequence of non-increasing non-negative integers such that:
+$$ \lambda_1 \geq \lambda_2 \geq ... \geq \lambda_d, \quad \sum_{i=1}^d \lambda = n $$
+These partitions will define the methods in which calculate the dimensions of the irreducible representations present in $U_\lambda \otimes V_\lambda$.
+The \textit{Young Tableaux} provides a relatively simple combinatorial framework to facilitate these calculations. Suppose we are given a partition as defined above, then one can construct a corresponding \textit{Young frame} as follows: each $\lambda_i$ represents the number of cells present in the $i^{th}$ row of the Young frame. Furthermore, our rows index from top to bottom. For example, Young diagram shown in Figure \ref{fig:yd} represents a $(3,3,2,1)$ partition.
+
+\begin{figure}[ht]
+    \centering
+    \ydiagram{3, 3, 2, 1}
+    \caption{Young diagram of a (3,3,2,1) partition}
+    \label{fig:yd}
+\end{figure}
+
+This gives a bijective correspondence between Young frames and partitions in $\lambda \vdash_d n$. Once we have determined the proper Young diagram for $\lambda$, the dimensions of the irreducible representations are calculated through filling these diagrams under specific rules respecting the symmetry imposed by the two groups.
+
+
+
+A more detailed exposition on the calculation of these Young Tableaux is given in \cite{FH}.
+
+\subsection{Bounds on Dimension of $U_\lambda$ and $Y_\lambda$}
+Based on the Young Tableaux filling rules explained in the previous section, we can explicitly calculate $\dim U_\lambda$ and $\dim V_\lambda$ for a given a partition $\lambda$. For the irreducible $Gl(d, \mathbb{C})$-represenation $U_\lambda$:
+
+$$ \dim U_\lambda = \frac{\prod_{1 \leq i<j \leq d} (\lambda_i - \lambda_j - i + j)}{\prod_{i=1}^{d-1} i!} $$
+
+A simple analysis shows that $(\lambda_j - \lambda_i +i - j) \leq (n+1)$ and there are $d(d-1)/2$ distinct pairs. This immediately gives us the bound:
+\begin{equation}\label{ubound}
+  \dim U_\lambda \leq (n + 1)^{d(d-1)/2}
+\end{equation}
+
+The calculation for the dimension of the irreducible $S_n$-representation $V_\lambda$ requires an auxiliary computation called the \textit{Hook-length} of a box. Formally speaking:
+\begin{gather*}
+  \dim V_\lambda = \frac{n!}{\prod_{i} h(i)}
+\end{gather*}
+where the product walks over all boxes in the Young diagram of $\lambda$. The function value $h(i)$ refers to the hook length of box $i$ which is defined to be the number of cells vertically below and horizontally to the right of box $i$. We can bound this value by observing that we can simply disregard the vertical cells below each box in a row. Thus, given all boxes in row $i$, the hook length can be bounded from below:
+$$ \lambda_i! \leq \prod_{r \in row_\lambda(i)} h(r) $$ where $row_\lambda(i)$ is the set of all cells comprising row $i$ of the Young diagram representing partition $\lambda$. By applying this definition for each row, we get the following upper bound:
+
+\begin{equation}\label{vbound}
+  \dim V_\lambda \leq \frac{n!}{\prod_i \lambda_i!}
+\end{equation}
+
+Similarly, we can add the total number of rows to the analysis to get the upper bound:
+$$\prod_{r \in row_\lambda(i)} h(r) \leq (\lambda_i + d)!$$ which subsequently gives the lower bound:
+$$ \frac{n!}{\prod_i (\lambda +d)!} \leq \dim V_{\lambda} $$
+The bounds given for $\dim V_\lambda$ are particularly important for our connection to quantum information. To see this, note that we can reexpress our bounds as follows:
+$${n \choose \lambda_1+d,\lambda_2+d,...,\lambda_d+d} \leq \dim V_{\lambda} \leq {n \choose \lambda_1,\lambda_2,...,\lambda_d} $$ where the two bounds are expressed as multinomial coefficients. From classical Shannon entropy, we know that these multinomial coeffients are asymptotic to $2^{nH(\bar{\lambda})}$ where $H$ is the usual Shannon entropy function. Explicitly applying this to our coeffients above shows that:
+$$ {n \choose \lambda_1,\lambda_2,...,\lambda_d} \sim 2^{nH(\bar{\lambda})}$$
+where $\bar{\lambda} = (\frac{\lambda_1}{n}, \frac{\lambda_2}{n},...,\frac{\lambda_d}{n})$ is the \textit{reduced form} of the partition $\lambda$. Hence, the bounds above directly show that indeed:
+
+\begin{equation}
+  \dim V_{\lambda} \sim 2^{nH(\bar{\lambda})}
+\end{equation}
+
+\subsection{Schur Polynomials}
+One final tool we need involves taking the trace of the $\pi_{U_{\lambda}}(g)$ for some $g \in GL(d, \mathbb{C})$. These are calculated through the \textit{Schur polynomials}:
+\begin{equation}\label{schurdef}
+    Tr(\pi_{U_\lambda}(g)) = s_{\lambda}(r_1,...,r_d)
+\end{equation}
+where $spec(g) = (r_1,...,r_d)$. $s_\lambda$ is defined by the following sum over all semi-standard Young Tableau $\Gamma(\lambda)$ over Young frame $\lambda$:
+\begin{equation}
+  s_{\lambda}(x_1,...,x_d) = \sum_{t \in \Gamma(\lambda)} x_1^{w_1(t)}x_2^{w_2(t)}...x_d^{w_d(t)}
+\end{equation}
+where $w_i: \Gamma(\lambda) \rightarrow \{1,...,n\}$ denotes the function outputting the weight of integer $i$ assigned in tableau $t$. \newline
+
+Using this definition we can bound the Schur polynomials as follows:
+\begin{equation} \label{schur}
+  \prod_{i=1}^d r_i^{\lambda_i} \leq s_{\lambda}(r_1,....,r_d) \leq \dim{U_\lambda} \prod_{i=1}^d r_i^{\lambda_i}
+\end{equation}
+
+\section{Quantum Compression}
+
+\subsection{Keyl-Werner Theorem}
+Perhaps the foundations of our bridge between quantum information and representation theory roots itself in the celebrated Keyl-Werner Theorem. As mentioned in their original paper \cite{KW}, Keyl and Werner were originally motivation by the problem of seeking a set of observables which could be used to output good approximations of the spectra of an arbitrary density operator $\rho \in \mathcal{D}(\mathcal{H})$.  Roughly speaking, the theorem shows that measuring on the subspaces of the form $U_\lambda \otimes V_\lambda$ where the Young frames of $\lambda$ are ``close" to $spec(\rho)$ gives good estimates of $spec(\rho)$. The formal proof of the theorem was refined by Hayashi and Matsumoto and corrected slightly by Christandl and Mitchison \cite{CM}. We follow the latters' formulation.
+\begin{thm}
+  Given a density operator $\rho$ with spectrum $r  = spec(\rho)$ and $\epsilon_1 > 0$, define projection operator $P_X = \sum_{\lambda \vdash_d n, \bar{\lambda} \in B_{\epsilon_1}(r)} P_{U_{\lambda} \otimes V_{\lambda}}$. Then for $\epsilon_2 > 0$, there exists sufficiently large $k$ such that:
+  $$  Tr(P_X \rho^{\otimes k}) > 1 - \epsilon_2$$
+\end{thm}
+
+\noindent where we recall that $\bar{\lambda}$ is reduced partition as first defined in the previous section. To show this, we need a lemma.  Assume that $spec(\rho)$ is ordered in non-increasing order henceforth.
+
+\begin{lemma}
+  Let $\rho \in \mathcal{D}(\mathcal{H})$ and $P_{\lambda}$ be the projection on $U_{\lambda} \otimes Y_{\lambda}$ described by Young frame $\lambda$. Then:
+  $$Tr(P_{\lambda}\rho^{\otimes n}) \leq (n+1)^{d(d-1)/2} \cdot 2^{-n D(\bar{\lambda}||spec(\rho))} $$
+  where $D(\bar{\lambda}||spec(\rho))$ refers to the Kullback-Liebler distance between distributions $\bar{\lambda},spec(\rho)$
+\end{lemma}
+
+\begin{proof}
+ By Property \ref{matdecomp},
+ $$ \rho^{\otimes n} = \bigoplus_{\lambda \vdash_d n} \pi_{U_\lambda}(\rho) \otimes 1_{V_\lambda}$$
+ We can calculate the probability of projecting on $P_{\lambda}$:
+ \begin{gather*}
+   Tr(P_\lambda\rho^{\otimes n}) = Tr(\pi_{U_\lambda})Tr(1_{V_\lambda}) = s_{\lambda}(r_1,...,r_d)\dim_{V_\lambda}
+ \end{gather*}
+  Now the bounds derived for the Schur polynomials at (\ref{schur}) and the dimension bounds mentioned at (\ref{ubound}) and (\ref{vbound}) give us that:
+  \begin{gather*}
+    Tr(P_\lambda\rho^{\otimes n}) \leq \dim{V_\lambda}\dim{U_\lambda} \prod_{i} r_i^{\lambda_i} \\
+    \leq (n+1)^{d(d-1)/2}\frac{n!}{\prod_i \lambda_i!} \prod_{i} r_i^{\lambda_i} \\
+    \leq (n+1)^{d(d-1)/2}\cdot 2^{-n D(\bar{\lambda}||spec(\rho))}
+  \end{gather*}
+\end{proof}
+
+\subsection{Towards Compression}
+We now further develop the connection between quantum information and representation theory through an illustrative example concerning the Quantum Compression rate.
+
+
+\section{Subadditivity Properties of von-Neumann entropy}
+
+\bibliography{biblio}
+\bibliographystyle{ieeetr}
+
+\end{document}
