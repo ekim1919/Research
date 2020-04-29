@@ -11,6 +11,7 @@
 \usepackage{ytableau}
 
 \setlength{\parskip}{1ex}
+\setlength{\intextsep}{5ex}
 
 \newtheorem{thm}{Theorem}
 \newtheorem{lemma}{Lemma}
@@ -24,14 +25,14 @@
 \date{\today}
 \maketitle
 \begin{abstract}
-  The Schur-Weyl Duality describes the decomposition of representations of $GL(d,\mathbb{C})$ and the symmetric group $S_n$ into subspaces of irreducible tensor representations indiced through partitions determined by Young diagrams. In particular, we are interested in the decomposition of a $n$-tensored $d$-dimensional Hilbert space $\mathcal{H}^{\otimes n}$ and the subsequent operators acting on it as described by the two groups above. These tools allow us to derive slick proofs for Schumacher's compression rate and the sub-additivity properties of von-Neumann entropy.
+  The Schur-Weyl Duality describes the decomposition of representations of $GL(d,\mathbb{C})$ and the symmetric group $S_n$ into a direct sum of irreducible tensor representations indiced by partitions described by Young frames. In particular, we are interested in the decomposition of the $n$-tensored $d$-dimensional Hilbert space $\mathcal{H}^{\otimes n}$ and the subsequent operators acting on it as described by the two groups above. Calculation of the dimensions of these irreducible representations reduces to a combinatorial problem, allowing us to derive useful asympotic bounds. These bounds provide elegant proofs for Schumacher's compression rate and the subadditivity properties of von-Neumann entropy.
 \end{abstract}
 
 \tableofcontents
 \newpage
 
 \section{The Schur-Weyl Duality}
-Formal definitions of the Schur-Weyl Duality revolve the commutation property of the actions of $GL(d,\mathbb{C})$ and $S_n$ for some $n,d \geq 1$. First, we define the following basic notions to state the theorem:
+Formal definitions of the Schur-Weyl Duality revolve around the commutation property of the actions of $GL(d,\mathbb{C})$ and $S_n$ for $n,d \geq 1$. First, we define the following basic notions to state the theorem:
 
 Let $\mathcal{H}$ denote a $d$-dimensional complex Hilbert space with orthonormal basis $\{i\}_{1 \leq i \leq d}$ and let $H^{\otimes n}$ denote its corresponding $n$-tensored form.
 This allows us to define the following representations:
@@ -51,7 +52,7 @@ One can check that this is an associative unital $\mathbb{C}$-algebra. The commu
   Let $\mathcal{A} = \text{span }{R(GL(d,\mathbb{C}))}$ and $\mathcal{B} = \text{span }U(S_n)$, then $Comm(\mathcal{A}) = \mathcal{B}$ and $Comm(\mathcal{B}) = \mathcal{A}$
 \end{thm}
 
-We omit the proof here for the sake of brevity, but the reader can find a proof in \cite{GW} using the Double Commutant Theorem. A direct corollary of this is the decompostion of $\mathcal{H}^{\otimes n}$ into tensor products of irreducible representations of $GL(d,\mathbb{C}), S_n$. Here, we borrow our notation and formulation from \cite{botero}.
+\noindent We omit the proof here for the sake of brevity, but the reader can find a proof using the Double Commutant Theorem \cite{GW}. A direct corollary is the decompostion of $\mathcal{H}^{\otimes n}$ into tensor products of irreducible representations of $GL(d,\mathbb{C}), S_n$. Here, we borrow our notation and formulation from \cite{botero}.
 \begin{gather}
   \mathcal{H}^{\otimes n} = \bigoplus_{\lambda \vdash_d } U_\lambda \otimes V_\lambda
 \end{gather}
@@ -63,18 +64,17 @@ where the $U_\lambda, V_\lambda$ refer to irreducible representations of $GL(d, 
 \end{gather}
 
 \noindent where the maps
-
 \begin{gather*}
   \pi_{U_{\lambda}}: GL(d, \mathbb{C}) \rightarrow GL(U_\lambda) \\ \pi_{V_{\lambda}}: S_n \rightarrow GL(V_\lambda)
-\end{gather*} refer to the matrices corresponding to the linear maps describing the action on the corresponding irreducible representations.
+\end{gather*}
 
-The core idea behind the utilization strategy of the Schur-Weyl duality involves inferring on the dimensions of the irreducible representations to deduce bounds on the spectra of density operators $\rho \in \mathcal{D}(\mathcal{H})$.
+\noindent refer to the matrices corresponding to the linear maps describing the action on the corresponding irreducible representations.
 
 \subsection{Young Tableaux}
-We now describe the formal definition of $\lambda \vdash_d n$, namely the partitions of $n$ having at most $d$ rows. A \textit{partition} $\lambda = (\lambda_1,...,\lambda_d)$ is described as a sequence of non-increasing non-negative integers such that:
-$$ \lambda_1 \geq \lambda_2 \geq ... \geq \lambda_d, \quad \sum_{i=1}^d \lambda = n $$
-These partitions will define the methods in which calculate the dimensions of the irreducible representations present in $U_\lambda \otimes V_\lambda$.
-The \textit{Young Tableaux} provides a relatively simple combinatorial framework to facilitate these calculations. Suppose we are given a partition as defined above, then one can construct a corresponding \textit{Young frame} as follows: each $\lambda_i$ represents the number of cells present in the $i^{th}$ row of the Young frame. Furthermore, our rows index from top to bottom. For example, Young diagram shown in Figure \ref{fig:yd} represents a $(3,3,2,1)$ partition.
+We now describe the formal definition of the partitions $\lambda$ such that $\lambda \vdash_d n$, namely the partitions of $n$ having at most $d$ rows. A \textit{partition} $\lambda = (\lambda_1,...,\lambda_d)$ is described as a sequence of non-increasing non-negative integers such that:
+$$ \lambda_1 \geq \lambda_2 \geq ... \geq \lambda_d, \quad \sum_{i=1}^d \lambda_i = n $$
+These partitions will provide the visual groundwork for calculating the dimensions of the irreducible representations present in $U_\lambda \otimes V_\lambda$.
+The \textit{Young Tableaux} provide a relatively simple combinatorial framework to facilitate these calculations. Suppose we are given a partition as defined above, then one can construct a corresponding \textit{Young frame} as follows: each $\lambda_i$ represents the number of cells present in the $i^{th}$ row of the Young frame. Furthermore, our rows index from top to bottom, and our cells index from left to right. For example, the Young diagram shown in Figure \ref{fig:yd} represents a $(3,3,2,1)$ partition.
 
 \begin{figure}[ht]
     \centering
@@ -83,21 +83,20 @@ The \textit{Young Tableaux} provides a relatively simple combinatorial framework
     \label{fig:yd}
 \end{figure}
 
-This gives a bijective correspondence between Young frames containing $n$ cells with at most $d$ rows and partitions in $\lambda \vdash_d n$. Hence, we can simply refer to the Young frame $\lambda$ rather than the partition $\lambda$.
+\noindent This gives a bijective correspondence between Young frames containing $n$ cells with at most $d$ rows and partitions $\lambda$ such that $\lambda \vdash_d n$. Hence, we can simply refer to the Young frame $\lambda$ rather than the partition $\lambda$.
  Once we have determined the proper Young diagram for $\lambda$, the dimensions of the irreducible representations are calculated through filling these frames under specific rules respecting the symmetry imposed by the two groups. These rules are enforced via the \textit{standard Young tableau (SYT)} for $S_n$-representations and the \textit{semi-standard Young tableau (SSYT)} for $GL(d, \mathbb{C})$-representations.
 
 \subsubsection{Standard Young Tableau}
-Given Young frame $\lambda$ indicing an irreducible $S_n$-representation, a filling of $\lambda$ via the standard Young tableau follows the following conditions:
+Given Young frame $\lambda$ indicing an irreducible $S_n$-representation, a filling of $\lambda$ via the \textit{standard Young tableau (SYT)} obeys the following conditions:
 \begin{enumerate}
-  \item Cells are filled with any integer from $\{1,...,n\}$ where $|\lambda|$ is simply the number of cells in the frame. Each integer can only occur once in the tableau i.e can only be of weight one.
-  \item The rows must be strictly increasing from left to right and along columns from top to bottom.
+  \item Cells are filled with any integer from $\{1,...,n\}$ where $n$ will be the total number of cells in the frame. Each integer can only occur once in the tableau i.e can only be of weight one.
+  \item The rows must be \textit{strictly increasing} from left to right and along columns from top to bottom.
 \end{enumerate}
 
-\noindent Figure \ref{syt} is borrowed from \cite{botero} and gives fillings of a $(3,2)$ frame via this standard Young tableau.
+\noindent Figure \ref{fig:syt} is borrowed from \cite{botero} and gives fillings of a $(3,2)$ frame via this standard Young tableau.
 
 \begin{figure}[ht]
   \centering
-  \label{syt}
   \begin{ytableau}
   1 & 2 & 3 \\
   4 & 5
@@ -123,16 +122,17 @@ Given Young frame $\lambda$ indicing an irreducible $S_n$-representation, a fill
   3 & 5
   \end{ytableau}
   \caption{Fillings of a $(3,2)$ partition via SYT}
+  \label{fig:syt}
 \end{figure}
-
+\newpage
 \subsubsection{Semi-Standard Young Tableau}
-Given Young frame $\lambda$ indicing an irreducible $GL(d,\mathbb{C})$-representation, a filling of $\lambda$ via the semi-standard Young tableau follows the following conditions:
+Given Young frame $\lambda$ indicing an irreducible $GL(d,\mathbb{C})$-representation, a filling of $\lambda$ via the \textit{semi-standard Young tableau (SSYT)} follows the following conditions:
 \begin{enumerate}
-  \item Cells are filled with any integer from $\{1.,,,.,d\}$. These integers can be of arbitrary weight i.e occur more than once or not at all.
-  \item Rows are non-decreasing along rows from left to right and strictly increasing along columns from top to bottom.
+  \item Cells are filled with any integer from $\{1,,...,d\}$. These integers can be of arbitrary weight i.e occur more than once or not at all.
+  \item Rows are \textit{non-decreasing} along rows from left to right and \textit{strictly increasing} along columns from top to bottom.
 \end{enumerate}
 
-\noindent The following uses the same frame as Figure \ref{syt} except we look at with a filling with integers $\{1,2,3\}$
+\noindent Figure \ref{fig:ssyt} uses the same frame as Figure \ref{fig:syt} except we adhere to the semi-standard Young tableau with integers $\{1,2,3\}$
 \begin{figure}[ht]
   \centering
   \begin{ytableau}
@@ -160,25 +160,26 @@ Given Young frame $\lambda$ indicing an irreducible $GL(d,\mathbb{C})$-represent
     2 & 2
   \end{ytableau}
   \caption{Some fillings of $(3,2)$ parition with $\{1,2,3\}$ under SSYT}
+  \label{fig:ssyt}
 \end{figure}
 
-\noindent A more detailed exposition on the calculation of these Young Tableaux is given in \cite{FH}.
+\noindent A more detailed exposition on the calculation of these Young Tableaux is given in \cite{GW}, \cite{FH}.
 
 \subsection{Bounds on Dimension of $U_\lambda$ and $Y_\lambda$}
-Based on the Young Tableaux filling rules explained in the previous section, we can explicitly calculate $\dim U_\lambda$ and $\dim V_\lambda$ for a given a Young frame $\lambda$. For the irreducible $Gl(d, \mathbb{C})$-represenation $U_\lambda$:
+Based on the Young Tableau filling rules explained in the previous section, we can explicitly calculate $\dim U_\lambda$ and $\dim V_\lambda$ for a given Young frame $\lambda$ by counting the number of valid fillings possible. For the irreducible $Gl(d, \mathbb{C})$-represenation $U_\lambda$, we calculate the number of SSYT possible for Young frame $\lambda$:
 
 $$ \dim U_\lambda = \frac{\prod_{1 \leq i<j \leq d} (\lambda_i - \lambda_j - i + j)}{\prod_{i=1}^{d-1} i!} $$
 
-A simple analysis shows that $(\lambda_j - \lambda_i +i - j) \leq (n+1)$ and there are $d(d-1)/2$ distinct pairs. This immediately gives us the bound:
+\noindent A simple analysis shows that $(\lambda_j - \lambda_i +i - j) \leq (n+1)$. Furthermore, there are $d(d-1)/2$ distinct pairs considered in the numerator's product. This immediately gives us the bound:
 \begin{equation}\label{ubound}
   \dim U_\lambda \leq (n + 1)^{d(d-1)/2}
 \end{equation}
 
-The calculation for the dimension of the irreducible $S_n$-representation $V_\lambda$ requires an auxiliary computation called the \textit{Hook-length} of a box. Formally speaking:
+\noindent The calculation for the dimension of the irreducible $S_n$-representation $V_\lambda$ requires an auxiliary computation called the \textit{Hook-length} of a box. Formally speaking:
 \begin{gather*}
   \dim V_\lambda = \frac{n!}{\prod_{i} h(i)}
 \end{gather*}
-where the product walks over all boxes in the Young frame $\lambda$. The function value $h(i)$ refers to the hook length of box $i$ which is defined to be the number of cells vertically below and horizontally to the right of box $i$. We can bound this value by observing that we can simply disregard the vertical cells below each box in a row. Thus, given all boxes in row $i$, the hook length can be bounded from below:
+where the product walks over all boxes in the Young frame $\lambda$. The function value $h(i)$ refers to the hook length of box $i$ which is defined to be the number of cells \textit{below} and to the \textit{right} of box $i$. We can bound this value by observing that we can simply disregard the vertical cells below each box in a row. Thus, given all boxes in row $i$, the hook length can be bounded from below:
 $$ \lambda_i! \leq \prod_{r \in row_\lambda(i)} h(r) $$ where $row_\lambda(i)$ is the set of all cells comprising row $i$ of the Young frame $\lambda$. By applying this definition for each row, we get the following upper bound:
 
 \begin{equation}\label{vbound}
@@ -191,14 +192,14 @@ $$ \frac{n!}{\prod_i (\lambda +d)!} \leq \dim V_{\lambda} $$
 The bounds given for $\dim V_\lambda$ are particularly important for our connection to quantum information. To see this, note that we can reexpress our bounds as follows:
 $${n \choose \lambda_1+d,\lambda_2+d,...,\lambda_d+d} \leq \dim V_{\lambda} \leq {n \choose \lambda_1,\lambda_2,...,\lambda_d} $$ where the two bounds are expressed as multinomial coefficients. From classical Shannon entropy, we know that these multinomial coeffients are asymptotic to $2^{nH(\bar{\lambda})}$ where $H$ is the usual Shannon entropy function. Explicitly applying this to our coeffients above shows that:
 $$ {n \choose \lambda_1,\lambda_2,...,\lambda_d} \sim 2^{nH(\bar{\lambda})}$$
-where $\bar{\lambda} = (\frac{\lambda_1}{n}, \frac{\lambda_2}{n},...,\frac{\lambda_d}{n})$ is the \textit{reduced form} of the Young frame $\lambda$. Hence, the bounds above directly show that indeed:
+where $\bar{\lambda} = (\frac{\lambda_1}{n}, \frac{\lambda_2}{n},...,\frac{\lambda_d}{n})$ is the \textit{reduced form} of the Young frame $\lambda$. Hence, the bounds above directly yield that:
 
 \begin{equation} \label{asymp}
   \dim V_{\lambda} \sim 2^{nH(\bar{\lambda})}
 \end{equation}
 
 \subsection{Schur Polynomials}
-The final tool we need involves taking the trace of the $\pi_{U_{\lambda}}(g)$ for some $g \in GL(d, \mathbb{C})$. These are calculated through the \textit{Schur polynomials}:
+The final tool we need involves taking the trace of the $\pi_{U_{\lambda}}(g)$ for some $g \in GL(d, \mathbb{C})$. These are determined through the \textit{Schur polynomials}:
 
 \begin{equation}\label{schurdef}
     Tr(\pi_{U_\lambda}(g)) = s_{\lambda}(r_1,...,r_d)
@@ -222,7 +223,7 @@ On the other hand, recalling that the number of semi-standard Young tableau is e
 \section{Quantum Compression}
 
 \subsection{Keyl-Werner Theorem}
-Perhaps the foundations of our bridge between quantum information and representation theory roots itself in the celebrated Keyl-Werner Theorem. As mentioned in their original paper \cite{KW}, Keyl and Werner were originally motivation by the problem of seeking a set of observables which could be used to output good approximations of the spectra of an arbitrary density operator $\rho \in \mathcal{D}(\mathcal{H})$.  Roughly speaking, the theorem shows that measuring on the subspaces of the form $U_\lambda \otimes V_\lambda$ where the Young frames of $\lambda$ are ``close" to $spec(\rho)$ give good estimates of $spec(\rho)$. The formal proof of the theorem was refined by Hayashi and Matsumoto \cite{HM} and corrected slightly by Christandl and Mitchison \cite{CM}. We follow the latters' formulation.
+Perhaps the foundation of our bridge between quantum information and representation theory roots itself in the celebrated Keyl-Werner Theorem. As mentioned in their original paper \cite{KW}, Keyl and Werner were originally motivation by the problem of seeking a set of observables which could be used to output good approximations of the spectra of an arbitrary density operator $\rho \in \mathcal{D}(\mathcal{H})$ for $d$-dimensional Hilbert space $\mathcal{H}$.  Roughly speaking, the theorem shows that measuring on the subspaces of the form $U_\lambda \otimes V_\lambda$ where the Young frames of $\lambda$ are ``close" to $spec(\rho)$ give good estimates of $spec(\rho)$. The formal proof of the theorem was refined by Hayashi and Matsumoto \cite{HM} and corrected slightly by Christandl and Mitchison \cite{CM}. We follow the latters' formulation.
 
 \begin{thm} \label{keyl}
   Given a density operator $\rho$ with spectrum $r  = spec(\rho)$ and $\epsilon_1 > 0$, define projection operator $P_X = \sum_{\lambda \vdash_d n, \bar{\lambda} \in B_{\epsilon_1}(r)} P_{\lambda}$ where $P_{\lambda}$ is the projection on $U_{\lambda} \otimes V_{\lambda}$. Then for $\epsilon_2 > 0$, there exists sufficiently large $k$ such that:
@@ -267,41 +268,44 @@ Observe the following string of inequalities:
       \leq
             \sum_{\lambda \vdash_d n} (n+1)^{d(d-1)/2} \cdot exp \left\{ -n \min_{\lambda \vdash_d n, \bar{\lambda} \in \mathcal{S}} D(\bar{\lambda}||spec(\rho)) \right\} \\
       \leq (n+1)^d  (n+1)^{d(d-1)/2} \cdot exp \left\{ -n \min_{\lambda \vdash_d n, \bar{\lambda} \in \mathcal{S}} D(\bar{\lambda}||spec(\rho)) \right\} \\
-      = (n+1)^{d(d+1)/2} exp\left\{-n \min_{\lambda \vdash_d n, \bar{\lambda} \in \mathcal{S}}{D(\bar{\lambda}||spec(\rho))} \right\}
+      = (n+1)^{d(d+1)/2} \cdot exp\left\{-n \min_{\lambda \vdash_d n, \bar{\lambda} \in \mathcal{S}}{D(\bar{\lambda}||spec(\rho))} \right\}
   \end{gather*}
 \end{proof}
-
-\noindent We see that by taking our subset $\mathcal{S}$ to be the complement of the ball $\mathcal{B}_{\epsilon_1}(spec(\rho))$, projecting onto the subspaces indiced by Young frames which lie outside of of this ball tend to zero by the corollary above. This gives us Theorem \ref{keyl} as required.
+\noindent The last inequality comes from the bound
+\begin{equation}\label{framebound}
+|\{\lambda: \lambda \vdash_d n \}| \leq (n+1)^d
+\end{equation}
+which just follows from the binomial expansion.
+\noindent We see that by taking our subset $\mathcal{S}$ to be the complement of the ball $\mathcal{B}_{\epsilon_1}(spec(\rho))$, the probability of projecting onto the subspaces indiced by Young frames which lie outside of this ball tend to zero by the corollary above. This gives us Theorem \ref{keyl} as required.
 
 \subsection{Towards Compression}
-We now further develop the connection between quantum information and representation theory through an illustrative example concerning the Quantum Compression rate. Recall the setup of the Quantum Compresson problem where we have a quantum source describe by ensemble $\{p_X(x), \ket{\psi_i}\bra{\psi_i}\}$. This gives us the density operator $\rho = \sum_x p_X(x)\ket{\psi_x}\bra{\psi_x}$. The resulting state from $n$-outputs from the quantum source can thus be described as $\rho^{\otimes n}$. We wish to determine a compression rate $R$ such that we can project onto a subspace of $2^{nR}$. We wish for $R < \log{d}$; that is, ideally the subspace, say $W$, we wish to project onto is of smaller dimension than $d$. Furthermore, this subspace must capture enough of the quantum information encoded into $\rho$ in the sense that:
+We now further develop the connection between quantum information and representation theory through an illustrative example concerning the Quantum Compression rate. Recall the setup of the Quantum Compresson problem where we have a quantum source describe by ensemble $\{p_X(x), \ket{\psi_i}\bra{\psi_i}\}$. This gives us the density operator $\rho = \sum_x p_X(x)\ket{\psi_x}\bra{\psi_x}$. The resulting state from $n$-outputs from the quantum source can thus be described as $\rho^{\otimes n}$. We wish to determine a compression rate $R$ such that we can project onto a subspace of $2^{nR}$. Furthermore, we wish for $R < \log{d}$; that is, ideally the subspace $W$ we wish to project onto is of smaller dimension than $d$. Finally, this subspace must capture enough of the quantum information encoded into $\rho$ in the sense that:
 \begin{equation*}
   \limsup_{n \rightarrow \infty} || \rho^{\otimes n} - \Pi_{W}\rho_{\otimes n}\Pi_W ||_1 = 0
 \end{equation*}
 
-We can view this setup as the quantum analogue of the classical Shannon source compression result. This connection turns out to be deeper as Schumacher's compression theorem extends the concept of typical sequences to \textit{typical subspaces} \cite{sch}. In fact, the Keyl-Werner result tells that these subspaces can be taken to be the subspaces given by \textit{typical Young frames}. We formalize this below. Assume once again that $spec(\rho)$ is ordered in non-increasing order.
+We can view this setup as the quantum analogue of the classical Shannon source compression. This connection turns out to be deeper as Schumacher's compression theorem extends the concept of typical sequences in classical Shannon theory to \textit{typical subspaces} \cite{sch}. In fact, the Keyl-Werner result tells that these subspaces can be taken to be the subspaces given by \textit{typical Young frames}. We formalize this below. Assume once again that $spec(\rho)$ is ordered in non-increasing order.
 
-Define the projection operator $$ \Pi(T_{\epsilon}) = \bigoplus_{\lambda: \; |\bar{\lambda} - spec(\rho)| < \epsilon} P_{\lambda} $$
+\noindent Define the projection operator $$ \Pi(T_{\epsilon}) = \bigoplus_{\lambda: \; |\bar{\lambda} - spec(\rho)| < \epsilon} P_{\lambda} $$
 
-where $P_{\lambda}$ is the projection operator for the subspace $U_{\lambda} \otimes V_{\lambda}$. By the Keyl-Werner Theorem (Theorem \ref{keyl}), we know that
+\noindent where $P_{\lambda}$ is the projection operator for the subspace $U_{\lambda} \otimes V_{\lambda}$. By the Keyl-Werner Theorem (Theorem \ref{keyl}), we know that
 
 $$ \lim_{n \rightarrow \infty} ||\rho^{\otimes n} - \Pi(T_\epsilon) \rho^{\otimes n} \Pi(T_\epsilon) ||_1 = 0$$
 
-Furthermore, we use (\ref{ubound}), (\ref{vbound}) to calculate the dimension of the support of $\Pi(T_\epsilon)$:
+\noindent Furthermore, we use (\ref{ubound}), (\ref{vbound}) to calculate the dimension of the support of $\Pi(T_\epsilon)$:
 
 \begin{gather} \label{epsilbound}
   Tr(\Pi(T_\epsilon)) \leq \sum_{\lambda: \; |\bar{\lambda} - spec(\rho)| < \epsilon} \dim_{U_\lambda} \dim_{Y_\lambda} \leq |\mathcal{I}_{\epsilon,\rho}| (n+1)^{d(d-1)/2} \frac{n!}{\prod_{i=1}^d
    \lambda_i!}
 \end{gather}
-where $\mathcal{I}_{\epsilon,\rho}$ is the set of all Young frames which are $\epsilon$-close to $spec(\rho)$. Here we can take $(\lambda_1,...,\lambda_d)$ to be an $\epsilon$-typical Young frame such that $\prod_{i=1}^d \lambda_i!$ is minimized. Now this set is bounded by the total number of Young frames of $n$ cells having at most $d$ rows:
-$$ |\{\lambda: \lambda \vdash_d n \}| \leq (n+1)^d$$
+where $\mathcal{I}_{\epsilon,\rho}$ is the set of all Young frames which are $\epsilon$-close to $spec(\rho)$. Here we can take $(\lambda_1,...,\lambda_d)$ to be an $\epsilon$-typical Young frame such that $\prod_{i=1}^d \lambda_i!$ is minimized. Now this set is bounded by the total number of Young frames of $n$ cells having at most $d$ rows given by (\ref{framebound}).
 
-\noindent Hence by (\ref{asymp}), we see that the polynomial factors vanish asympotically to give way to exponential factor:
+\noindent Hence by (\ref{asymp}), we see that the polynomial factors vanish asympotically to give way to the exponential factor:
 $$ Tr(\Pi(T_\epsilon)) \sim 2^{nH({\bar{\lambda}})}  $$
 \noindent which yields that:
 $$ Tr(\Pi(T_\epsilon)) \sim 2^{n(S(\rho) + \epsilon)}  $$
 
-The derivation aligns with Schumachers result as we see that the dimension of our Young frame subspace is asymptotic to the von-Neumann entropy $S(\rho)$. As $n \rightarrow \infty$, we observe that we cannot compress better than the rate given by $S(\rho)$. The reader can find a more rigorous approach in \cite{harrow}.
+\noindent The derivation aligns with Schumacher's result by noting that the dimension of our Young frame subspace is asymptotic to the von-Neumann entropy $S(\rho)$. As $n \rightarrow \infty$, we observe that we cannot compress better than the rate given by $S(\rho)$. The reader can find a more rigorous approach in \cite{harrow}.
 
 \section{Subadditivity Properties of von-Neumann entropy}
 
@@ -341,7 +345,9 @@ An elegant proof of the subadditivity property of von-Neumann entropy arises fro
 
 In fact, a similar line of thought using recoupling coeffcients is used to prove the strong subadditivity property of von-Neumann entropy as well \cite{CSW}. These recoupling coefficients arise from a direct generalization of the Clebsch-Gordon decomposition introduced above, but the starting ingredients are more-or-less the same.
 
-\newpage
+\section{Conclusion}
+We introduced the Schur-Weyl Duality as a powerful tool allowing us to not only decompose $\mathcal{H}^{\otimes n}$ into tensor products of irreducible representations but also allowing us to utilize the Young Tableaux to easily calculate the dimensions of these irreducible representations. These methods yield deeper insight of the spectra of density operators as seen through the Keyl-Werner result. Instead of thinking about tensor products of eigenspaces of $\rho$, we can give good approximations through subspaces described by the more intuitive framework given by Young frames. These techniques give us slick proofs of the subadditivty property of von-Neumann entropy and a different interpretation of the Quantum Source Compression rate first derived by Schumacher. However, this is only scratching the bare surface of the deep intertwining of representation theory and quantum information theory. For a more detailed tract on the field, the reader is encouraged to read Aram Harrow's thesis \cite{harrow}. Matthias Christandl's thesis offers more insight into the role of Kronecker coefficients naturally arising from dimension calculations involving multipartite entangled systems \cite{chris}.
+
 \bibliography{biblio}
 \bibliographystyle{ieeetr}
 
