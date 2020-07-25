@@ -58,62 +58,81 @@ Additionally, we simplify the user interface with the tool and provide easy to u
 %
 %We also provide an easy to use interfact for plotting the reachable sets.
 %
-We believe that our tool has pedagogical use given the simplicity of the implementation and its user-friendliness.
+We believe that our tool has pedagogical value given the simplicity of the implementation and its user-friendliness.
 %
 %In addition to the simplicity of the implementation, our tool, named Kaa, also achieves better performance on standard benchmarks.
 \end{abstract}
 
-\keywords{Nonlinear Dynamical Systems; \and Reachable Set Computation; \and Bernstein Polynomials.}
+% \begin{keywords}
+% Nonlinear Dynamical Systems; Reachable Set Computation; Bernstein Polynomials.
+% \end{keywords}
+%\keywords{Nonlinear Dynamical Systems; Reachable Set Computation; Bernstein Polynomials.}
 
 %
 %
 %
 \section{Introduction}
 
-Reachable set computation is one of the many important tools available for verification of dynamical and hybrid systems.
+Reachable set computation is one of the 
+%many 
+important tools %available 
+for verification of safety properties of dynamical and hybrid systems.
 %
-One of the simpler and easier-to-understand reachable set computation algorithms utilizes Bernstein polynomials and parallelotopes~\cite{dang2009image}.
+A simpler and easier-to-understand reachable set computation algorithm that utilizes Bernstein polynomials and parallelotopes has been presented in~\cite{dang2009image}.
 %
-Several cumulative improvements~\cite{dang2012reachability,sassi2012reachability,dang2014parameter,dreossi2016parallelotope,dreossi2017reachability} have been made to improve the accuracy and efficiency of nonlinear systems reachability.
+Several cumulative improvements~\cite{dang2012reachability,sassi2012reachability,dang2014parameter,dreossi2016parallelotope,dreossi2017reachability} have been proposed to improve its accuracy and efficiency.
 %
-The tool SAPO~\cite{dreossi2017sapo} which implements these algorithms in C\texttt{++} is also available publically.
+The tool SAPO~\cite{dreossi2017sapo} which implements these algorithms in C\texttt{++} is available publicly.
 %
 In this paper, we present a Python implementation of algorithm presented in~\cite{dreossi2017reachability}.
 
 %
-Our primary motivation for reimplementing the algorithms in Python is two-fold.
+Our motivation for reimplementing the algorithms in Python is two-fold.
 %
-First, using some of the standard libraries for symbolic manipulation in Sympy, the algorithm for reachability can be implemented very concisely.
+First, using standard libraries for symbolic manipulation in Sympy, the algorithm for reachability can be implemented very concisely.
 %
-In fact, Kaa is roughly only $650$ lines of code.
+In fact, the main algorithm for computing the reachable set has be implemented in only one file with $150$ lines of code.
 %
-Additionally, the main algorithm for computing the reachable set is provided in just one file with $150$ lines of code.
+The total code base for Kaa is roughly only $650$ lines of code.
+%
+%Additionally, the main algorithm for computing the reachable set is provided in just one file with $150$ lines of code.
 %
 In contrast, SAPO is more than $2000$ lines of C\texttt{++} code with memory and pointer management performed completely by the developer.
 %
-We believe that such a simple implementation has pedagogical value and can be used for teaching one of the main algorithms for reachability of nonlinear systems.
+We believe that such a simple implementation can be used for teaching one of the main algorithms for reachability of nonlinear systems.
 %
 % Second, because of its implementation in C++, SAPO requires recompiling the code for every reachable set computation.
 % %
 Second, reimplementing the tool in Python makes user interaction significantly easy. 
 %
-In SAPO, for computing the reachable set, one has to recompile the code along with the model file to obtain the binary and execute the binary to compute reachable set.
+In SAPO, one has to recompile the code along with the model file to generate the binary and the user has to execute the binary for computing the reachable set.
 %
-Additionally, SAPO generates a separate MATLAB script for visualizing time or phase plots of the reachable set. This script must be fed separately into either MATLAB or Octave to illustrate the reachable set. 
+Additionally, visualizing the reachable set using SAPO is a two step process. In the first step, SAPO generates a MATLAB script that contains projections of reachable set for visualizing time or phase plots of the reachable set. In the second step, the user feeds the generated script into either MATLAB or Octave to illustrate the reachable set. 
 %
-In contrast, we provide a Jupyter notebook interface for Kaa to create an intuitive platform facilitating experimentation. Juypter notebooks are simple to create and known for their straightforward user interface. By leveraging the matplotlib library for visualizing the reachable set, we were able to design an engaging interactive tutorial and experimentation platform for visualzing reachable sets of non-linear systems.
+In contrast, Kaa has very intuitive interface for computing and visualizing reachable set.
+%
+The models and the code for computing reachable set using Kaa are provided in Python and do not read any compilation. 
+%
+We also leverage the matplotlib library for visualizing the reachable set. 
+%
+Integrating these two, we provide an easy to use Jupyter notebook interface for computing and visualizing reachable set with Kaa for some of the standard benchmark models.
+%
+%Juypter notebooks are simple to create and known for their straightforward user interface. %
+%we were able to design an engaging interactive tutorial and experimentation platform for visualzing reachable sets of non-linear systems.
 %
 %Therefore, the user has to 
 %we believe that for reimplementing it in Python improves the quality of user interaction with the tool and removes the barrier to use the tools.
 %
 
-Bernstein polynomials are also considered an active area of research in the domain of global optimization~\cite{nataray2002algorithm,garloff2003bernstein,nataraj2007new}.
+Bernstein polynomials are also an active area of research in the domain of global optimization~\cite{nataray2002algorithm,garloff2003bernstein,nataraj2007new}.
 %
-There have been several algorithms proposed for performing heuristics which improve the performance of optimization using Bernstein polynomials. Furthermore, these algorithms also improve the accuracy using sequential refinement techniques~\cite{smith2009fast,munoz2013formalization}.
+Several heuristics have been proposed for improving the performance of optimization using Bernstein polynomials~\cite{kodiak,smith2009fast,munoz2013formalization}. 
 %
-Having an accessible and flexible tool would make it more conducive to implement these heuristics and determine specific heuristics helpful in the domain of reachability.
+%Furthermore, these algorithms also improve the accuracy using sequential refinement techniques~\cite{}.
 %
-In light of these features and advantages, we believe Kaa can be used as a easy first step for introducing reachability due to its simplicity of implementation and its usability.
+Having an accessible and flexible tool would make it more conducive to implement these heuristics and determine if they are helpful in the domain of reachability.
+%
+In light of these features and advantages, we believe Kaa can be used as a easy first step for introducing reachability in a pedagogical setting.
 
 \section{Preliminaries}
 
@@ -123,7 +142,6 @@ The state of a system, denoted as $x$, lies in a domain $D \subseteq \mathbb{R}^
     x^{+} = f(x)
 \label{eq:system}
 \end{equation}
-
 where $f(x) : \mathbb{R}^n \rightarrow \mathbb{R}^n$ is polynomial in $x$. 
 %
 The trajectory of the system that evolves according to Equation~\eqref{eq:system}, denoted as $\xi(x_0)$, is the sequence $x_0, x_1, \ldots$ where $x_{i+1} = f(x_i)$. 
@@ -137,7 +155,19 @@ A parallelotope $P$ is a set of states in $\mathbb{R}^{n}$ denoted as $\langle \
 $$
 x \in P \mbox{ if and only if } \Lambda x \leq c.
 $$
-$\Lambda$ is called the \emph{direction matrix} $\Lambda_i$ denotes the $i^{th}$ row of $\Lambda$. $c$ is called the \emph{offset}. For a parallelotope $P$, we denote the affine transformation that maps $[0,1]^{n}$ to $P$ as $T_{p}$. A parallelotope bundle $Q$ is a set of parallelotopes $\{P_1, \ldots, P_m\}$ where $Q = \cap_{i=1}^{m}P_i$.
+$\Lambda$ is called the \emph{direction matrix} $\Lambda_i$ denotes the $i^{th}$ row of $\Lambda$. $c$ is called the \emph{offset}. 
+%
+Alternatively, a parallelotope can also be represented in vertex-generator representation as $\langle v, g_1, \ldots, g_n\rangle$. Here $v \in \mathbb{R}^n$ is called vertex and $g_1, \ldots, g_n$, $g_i \in \mathbb{R}^n$, are called generators. The parallelotope is defined as
+$$
+P \triangleq \{ x ~|~ \exists \alpha_1, \ldots, \alpha_n, x = v + \alpha_1 g_1 + \ldots + \alpha_n g_n, 0 \leq \alpha_i \leq 1\}
+$$
+This representation is very similar to Zonotopes~\cite{girard2005reachability,althoff2010computing} and Star sets~\cite{duggirala2016parsimonious}. 
+%
+Notice that for a parallelotope $P$, the vertex-generator representation also defines the affine transformation that maps $[0,1]^{n}$ to $P$. 
+%
+We denote this affine transformation as $T_{p}$. 
+%
+A parallelotope bundle $Q$ is a set of parallelotopes $\{P_1, \ldots, P_m\}$ where $Q = \cap_{i=1}^{m}P_i$.
 
 Given two multi-indices $i$ and $d$ of size $n$, where $i \leq d$, the Bernstein polynomial of degree $d$ and index $i$ is 
 $$
@@ -148,31 +178,34 @@ where $\beta_{i_m,d_m}(x_m) = \binom{d_m}{i_m}x_{m}^{i_m}(1-x_m)^{d_m - i_m}$.
 %
 Any polynomial function can be expressed in the Bernstein basis. 
 %
-The primary advantage of the Bernstein representation of a polynomial $p(x_1,...,x_n)$ is that an upper bound on the supremum and lower bound on the infimum of $p(x_1,...,x_n)$ in $[0,1]^{n}$ can be computed purely by observing the coefficients of the polynomial in the Bernstein basis.
+The primary advantage of the Bernstein representation of a polynomial $h(x_1,...,x_n)$ is that an upper bound on the supremum and lower bound on the infimum of $h(x_1,...,x_n)$ in $[0,1]^{n}$ can be computed purely by observing the coefficients of the polynomial in the Bernstein basis.
 
-In other words, given a polynomial $p(x_1,\ldots,x_n) = \sum_{j \in J} a_j {\bf x}_{j}$ where $J$ is a set of multi-indices iterating through the degrees found in $p$ with $a_j \in \mathbb{R}$, then $p(x_1,\ldots,x_n)$ can be converted into its counterpart under the Bernstein basis, $p(x_1,\ldots,x_n) = \sum_{j \in J} b_j \mathcal{B}_j $ where $b_j$ are the corresponding Bernstein coefficients. The upper and lower bounds of $p(x_1,\ldots,x_n)$ over $[0,1]^n$ are exactly bounded by the Bernstein coefficients:
+In other words, given a polynomial $h(x_1,\ldots,x_n) = \sum_{j \in J} a_j {\bf x}_{j}$ where $J$ is a set of multi-indices iterating through the degrees found in $p$ with $a_j \in \mathbb{R}$, then $h(x_1,\ldots,x_n)$ can be converted into its counterpart under the Bernstein basis, $h(x_1,\ldots,x_n) = \sum_{j \in J} b_j \mathcal{B}_j $ where $b_j$ are the corresponding Bernstein coefficients. 
+%
+The upper and lower bounds of $h(x_1,\ldots,x_n)$ over $[0,1]^n$ are bounded by the Bernstein coefficients:
 $$
 min \{b_1, \ldots, b_m\} ~~\leq~~ inf_{x \in [0,1]^n} h(x) ~~~~~\leq~~~~ sup_{x \in [0,1]^{n}} h(x) ~~\leq~~ max \{b, \ldots, b_m\}.
 $$
 
-Any parallelotope $P$ can be considered as a suitable affine transformation $T_{p}$ from $[0,1]^{n}$ to $P$. 
+As mentioned earlier, a parallelotope $P$ can also be represented as an affine transformation $T_{p}$ from $[0,1]^{n}$ to $P$. 
 %
 Therefore, upper bounds on the suprenum of a function $h$ over $P$ is equivalent to upper bound of $h \circ T_{p}$ over $[0,1]^{n}$.
 %
 A similar argument follows for the lower bound on infimum.
 %
-For the remainder of the document, we assume that by using functional composition and the Bernstein representation, we can easily compute the upper bound on supremum and lower bound on infimum of polynomial functions over parallelotopes.
-%
 
-Furthermore, we denote the procedures for calculating such upper and lower bounds for a polynomial $p$ over some parallelotope $S$ as $\mathsf{BernsteinUpper}(p,S)$ and $\mathsf{BernsteinLower}(p,S)$ respectively. 
+
+For the remainder of the document, we assume that by using functional composition and the Bernstein representation, we can compute the upper bound on supremum and lower bound on infimum of polynomial functions over parallelotopes.
+%
+We denote the procedures for calculating such upper and lower bounds for a polynomial $h$ over some parallelotope $P$ as $\mathsf{BernsteinUpper}(h,P)$ and $\mathsf{BernsteinLower}(h,P)$ respectively. 
 
 \section{Reachability of Nonlinear Systems Using Parallelotope Bundles and Bernstein Polynomials}
 
-Given a set represented as a parallelotope bundle $Q = \{P_1, P_2, \ldots, P_m\}$ and a discrete dynamical system $x^{+} = f(x)$, we now present the method for computing an overapproximation of $f(Q)$ as a parallelotope bundle $Q' = \{P_1', P_2', \ldots, P_m'\}$.
+Given a set represented as a parallelotope bundle $Q = \{P_1, P_2, \ldots, P_m\}$ and a discrete dynamical system $x^{+} = f(x)$, we now present the method for computing an overapproximation of the image $f(Q)$ as a new parallelotope bundle $Q' = \{P_1', P_2', \ldots, P_m'\}$.
 %
-We exert that the direction matrix of $P_i'$ is same as $P_i$ and the computation is required only to compute the offsets. 
+We ensure that direction matrix of $P_i'$ is same as $P_i$ and the computation is required only to compute the offsets. 
 %
-Denote the $j^{th}$ offset of $P_i$ and $P_i'$ as $c_{j,i}$ and $c'_{j,i}$ respectively and the $j^{th}$ direction in $P_i$ (same as $P_i'$) as $\Lambda_{j,i}$.
+Let us denote the $j^{th}$ offset of $P_i$ and $P_i'$ as $c_{j,i}$ and $c'_{j,i}$ respectively and the $j^{th}$ direction in $P_i$ (same as $P_i'$) as $\Lambda_{j,i}$.
 %
 Therefore, given $\Lambda$, transformation $f$, and offsets $c_{j,i}$ for $P_i$, we have to compute the values of $c'_{j,i}$.
 
@@ -209,15 +242,15 @@ Python's \emph{numpy} libraries are popular matrix-computation libraries which a
 %
 As we have seen before, there are two main sub-routines for computing the reachable set using Bernstein polynomials.
 %
-First, performing functional composition for computing uthe pper bound of a polynomial over a parallelotope.
+First, performing functional composition for computing the upper bound of a polynomial over a parallelotope.
 %
 Second, computing the Bernstein representation of a polynomial.
 %
-The library of \emph{sympy} has powerful symbolic manipulation tools which allow us to comfortably perform many sensitive symbolic subsititutions into polynomials. 
+The library of \emph{sympy} has powerful symbolic manipulation tools which allow us to comfortably perform many sensitive symbolic function composition of polynomials. 
 %
 We use \emph{sympy}'s internal representation of polynomials to (a) perform functional composition and (b) compute the Bernstein representations of the resulting polynomial.
 %
-Additionally, the \emph{matplotlib} library has easy plotting facilities that we integrate into our tool for visualizing the reachable set. In particular, \emph{matplotlib} facilitates the ability to visualize several reachable sets simultaneously. This will aid others in performing more complex bundle-transformation experiments in future. 
+Additionally, the \emph{matplotlib} library has easy plotting facilities that we integrate into our tool for visualizing the reachable set. In particular, \emph{matplotlib} facilitates the ability to plot several reachable sets simultaneously. This will aid others in performing more complex bundle-transformation experiments in future. 
 
 %
 Finally, Python has a rich set of multiprocessing libraries, namely \emph{multiprocessing} or \emph{mp} for short. In the future, we plan to exploit the parallelizable nature of bundle-transformtion computations using \emph{mp}'s ability to provide powerful multiprocessing features without much verbosity.
@@ -253,7 +286,7 @@ where $s,i,r$ represent the fractions of a population of individuals designated 
 
 \begin{table}[h]
 \centering
-\begin{tabular}{|c c c c c|}
+\begin{tabular}{|c| c c c c|}
     \hline
     {\bf Time Steps} & {\bf Kaa (offu) }  & { \bf Sapo (offu) } & {\bf Kaa (offl)} & {\bf Kaa (offl) }  \\
     \hline
@@ -307,7 +340,7 @@ The reachable sets are displayed in Figure \ref{fig2} and the table showing the 
 
 \begin{table}[hbt!]
 \centering
-\begin{tabular}{|c c c c c|}
+\begin{tabular}{|c| c c c c|}
     \hline
     {\bf Time Steps } & {\bf Kaa (offu) } & {\bf Sapo (offu) } & {\bf Kaa (offl) } & {\bf Kaa (offl) }  \\
     \hline
@@ -376,14 +409,14 @@ where $\alpha,\beta$ are two parameters assigned as $\alpha=0.5$ and $\beta=5$. 
 
 \subsection{Times}
 
-\noindent It is evident from Table~\ref{tab:one} that while implementation in Python is very intuitive and concise, the current implementation incurs severe performance penalties. 
+\noindent It is evident from Table~\ref{tab:one} that while the current implementation in Python is very intuitive and concise, it incurs severe performance penalties. 
 %
 Nevertheless, we pursued this activity because of the pedagogical value in making this an accessible tool for implementing and understanding reachability. To this end, the repository contains a Jupyter notebook with the name \href{https://github.com/Tarheel-Formal-Methods/kaa/blob/master/kaa-intro.ipynb}{kaa-intro} designed to interactively introduce graduate students and practitioners to the usage of Kaa. The notebook even contains a subset of the examples shown above, giving the auidence a chance to run the code for themselves. An immediate next step is to deploy extensive profiling to find performance bottlenecks and subsequently improve on them. 
 
 \begin{table}[h]
 \centering
 \caption{Reachable Set Computation Time of Benchmarks}\label{tab:one}
-\begin{tabular}{|l | l l|}
+\begin{tabular}{|l | c c|}
 \hline
 {\bf Model} &{\bf Kaa } & {\bf SAPO } (C\texttt{++})\\
 \hline
@@ -402,41 +435,48 @@ Lotka-Volterra & 18 min 95.05 sec  & 57.48 sec\\
 
 \section{Conclusions}
 
-We present Kaa, a Python implementation of reachable set computation of nonlinear systems that is focussed towards accessibility and pedagocial use.
+We present Kaa, a Python implementation of reachable set computation of nonlinear systems which is focused towards accessibility and pedagogical use.
 %
-The usage of inbuilt \emph{sympy} libraries makes the implementation very short and simple (only 650 LOC).
+The usage of inbuilt \emph{sympy} libraries makes the implementation short and simple (only 650 LOC).
 %
 While we do incur performance drawbacks from selecting Python for implementing this algorithm, we believe that it aids in fast prototyping and enables students to easily build on top of the library. In particular, Python's readability and extendibility will allow curious students to experiment with more involved bundle-transformations. 
 %
 The code can be accessed through \url{https://github.com/Tarheel-Formal-Methods/kaa}
+\newline
+\newline
+{\bf Acknowledgements: } This material is based upon work supported by the Air Force Office of Scientific Research under award number FA9550-19-1-0288 and National Science Foundation (NSF) under grant numbers CNS 1739936, 1935724. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the United States Air Force or National Science Foundation. 
+
+\bibliographystyle{splncs04}
+\bibliography{archbib}
+\newpage
 
 \begin{figure}[h]
-    \hspace{-15ex}
-    \begin{subfigure}{0.6\textwidth}
+%    \hspace{-15ex}
+    \begin{subfigure}{0.47\textwidth}
     \centering
     \includegraphics[width=\textwidth]{SapoFigures/SIR/SapoSIR_S.jpg}
     \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.47\textwidth}
     \centering
     \includegraphics[width=1.2\textwidth]{SapoFigures/SIR/KaaSIR_S.png}
     \end{subfigure}
  
-    \hspace{-15ex}   
-    \begin{subfigure}{0.6\textwidth}
+%    \hspace{-15ex}   
+    \begin{subfigure}{0.47\textwidth}
     \centering
     \includegraphics[width=\textwidth]{SapoFigures/SIR/SapoSIR_I.jpg}
     \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.2\textwidth]{SapoFigures/SIR/KaaSIR_I.png}
+    \includegraphics[width=1.2\textwidth,height=0.8\textwidth]{SapoFigures/SIR/KaaSIR_I.png}
     \end{subfigure}
   
-    \hspace{-15ex}  
-    \begin{subfigure}{0.6\textwidth}
+%    \hspace{-15ex}  
+    \begin{subfigure}{0.47\textwidth}
     \centering
     \includegraphics[width=\textwidth]{SapoFigures/SIR/SapoSIR_R.jpg}
     \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.47\textwidth}
     \centering
     \includegraphics[width=1.2\textwidth]{SapoFigures/SIR/KaaSIR_R.png}
     \end{subfigure}
@@ -446,73 +486,70 @@ The code can be accessed through \url{https://github.com/Tarheel-Formal-Methods/
 \end{figure}
 
 \begin{figure}[h]
-    \hspace{-15ex}
-    \begin{subfigure}{0.6\textwidth}
+%    \hspace{-15ex}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{SapoFigures/Rosslert/SapoRosslerX.jpg}
+    \includegraphics[width=\textwidth]{SapoFigures/Rosslert/SapoRossler_X.jpg}
     \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.1\textwidth]{SapoFigures/Rosslert/KaaRosslerX.png}
-    \end{subfigure}
-  
-     \hspace{-15ex}  
-    \begin{subfigure}{0.6\textwidth}
-    \centering
-    \includegraphics[width=\textwidth]{SapoFigures/Rosslert/SapoRosslerY.jpg}
-    \end{subfigure}
-    \hspace{-3ex}
-    \begin{subfigure}{0.6\textwidth}
-    \centering
-    \includegraphics[width=1.4\textwidth,height=0.9\textwidth]{SapoFigures/Rosslert/KaaRosslerY.png}
+    \includegraphics[width=1.3\textwidth]{SapoFigures/Rosslert/KaaRosslerX.png}
     \end{subfigure}
   
-    \hspace{-15ex}  
-    \begin{subfigure}{0.6\textwidth}
+%     \hspace{-15ex}  
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=\textwidth]{SapoFigures/Rosslert/SapoRosslerZ.jpg}
+    \includegraphics[width=\textwidth]{SapoFigures/Rosslert/SapoRossler_Y.jpg}
     \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
+    % \hspace{-3ex}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.25\textwidth]{SapoFigures/Rosslert/KaaRosslerZ.png}
+    \includegraphics[width=1.3\textwidth,height=0.8\textwidth]{SapoFigures/Rosslert/KaaRosslerY.png}
+    \end{subfigure}
+  
+%    \hspace{-15ex}  
+    \begin{subfigure}{0.47\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{SapoFigures/Rosslert/SapoRossler_Z.jpg}
+    \end{subfigure}
+    \begin{subfigure}{0.47\textwidth}
+    \centering
+    \includegraphics[width=1.3\textwidth]{SapoFigures/Rosslert/KaaRosslerZ.png}
     \end{subfigure}
     
     \caption{Figure depicting the reachable set computation of the Rossler model.} 
-    \label{fig3}
+    \label{fig2}
 \end{figure}    
 
 \begin{figure}[h]
-    \hspace{-12ex}
-    \begin{subfigure}{0.6\textwidth}
+%    \hspace{-12ex}
+    \begin{subfigure}{0.45\textwidth}
     \centering
-    \includegraphics[width=1.2\textwidth]{SapoFigures/Quad/SapoQuad_H.jpg}
+    \includegraphics[width=\textwidth]{SapoFigures/Quad/SapoQuad_H.jpg}
     \end{subfigure}
-    \hspace{5ex}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.13\textwidth]{SapoFigures/Quad/KaaQuad_H.jpg}
-    \end{subfigure}
-    
-     \hspace{-12ex}
-    \begin{subfigure}{0.6\textwidth}
-    \centering
-    \includegraphics[width=1.2\textwidth]{SapoFigures/Quad/SapoQuad_W.jpg}
-    \end{subfigure}
-    \hspace{5ex}
-    \begin{subfigure}{0.6\textwidth}
-    \centering
-    \includegraphics[width=1.13\textwidth]{SapoFigures/Quad/KaaQuad_W.png}
+    \includegraphics[width=1.1\textwidth,height=0.8\textwidth]{SapoFigures/Quad/KaaQuad_H.jpg}
     \end{subfigure}
     
-    \hspace{-12ex}
-    \begin{subfigure}{0.6\textwidth}
+%     \hspace{-12ex}
+    \begin{subfigure}{0.45\textwidth}
     \centering
-    \includegraphics[width=1.15\textwidth]{SapoFigures/Quad/SapoQuad_HI.jpg}
+    \includegraphics[width=\textwidth]{SapoFigures/Quad/SapoQuad_W.jpg}
     \end{subfigure}
-    \hspace{5ex}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.13\textwidth]{SapoFigures/Quad/KaaQuad_HI.png}
+    \includegraphics[width=1.1\textwidth,height=0.8\textwidth]{SapoFigures/Quad/KaaQuad_W.png}
+    \end{subfigure}
+    
+%    \hspace{-12ex}
+    \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{SapoFigures/Quad/SapoQuad_HI.jpg}
+    \end{subfigure}
+    \begin{subfigure}{0.47\textwidth}
+    \centering
+    \includegraphics[width=1.1\textwidth,height=0.85\textwidth]{SapoFigures/Quad/KaaQuad_HI.png}
     \end{subfigure}
     
     \caption{Figure depicting the reachable set computation of the Quadcopter model.} 
@@ -521,73 +558,73 @@ The code can be accessed through \url{https://github.com/Tarheel-Formal-Methods/
 
 
 \begin{figure}[h]
-    \hspace{-12ex}
-    \begin{subfigure}{0.6\textwidth}
+%    \hspace{-12ex}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.2\textwidth]{SapoFigures/LV/SapoLV_X1.jpg}
+    \includegraphics[width=\textwidth]{SapoFigures/LV/SapoLV_X1.jpg}
     \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.14\textwidth]{SapoFigures/LV/KaaLV_X1.png}
-    \end{subfigure}
-    
-     \hspace{-12ex}
-    \begin{subfigure}{0.6\textwidth}
-    \centering
-    \includegraphics[width=1.2\textwidth]{SapoFigures/LV/SapoLV_X2.jpg}
-    \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
-    \centering
-    \includegraphics[width=1.14\textwidth]{SapoFigures/LV/KaaLV_X2.png}
+    \includegraphics[width=1.1\textwidth,height=0.85\textwidth]{SapoFigures/LV/KaaLV_X1.png}
     \end{subfigure}
     
-    \hspace{-12ex}
-    \begin{subfigure}{0.6\textwidth}
+%     \hspace{-12ex}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.15\textwidth]{SapoFigures/LV/SapoLV_X3.jpg}
+    \includegraphics[width=\textwidth]{SapoFigures/LV/SapoLV_X2.jpg}
     \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.14\textwidth]{SapoFigures/LV/KaaLV_X3.png}
+    \includegraphics[width=1.1\textwidth,height=0.82\textwidth]{SapoFigures/LV/KaaLV_X2.png}
+    \end{subfigure}
+    
+%    \hspace{-12ex}
+    \begin{subfigure}{0.47\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{SapoFigures/LV/SapoLV_X3.jpg}
+    \end{subfigure}
+    \begin{subfigure}{0.47\textwidth}
+    \centering
+    \includegraphics[width=1.1\textwidth,height=0.82\textwidth]{SapoFigures/LV/KaaLV_X3.png}
     \end{subfigure}
     
     \caption{Figure depicting the reachable set computation of the Lotka-Volterra model.} 
-    \label{fig3}
+    \label{fig4}
 \end{figure}
 
 \begin{figure}[h]
-    \hspace{-12ex}
-    \begin{subfigure}{0.6\textwidth}
+%    \hspace{-12ex}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.15\textwidth]{SapoFigures/Phos/SapoKaa_X1.jpg}
+    \includegraphics[width=\textwidth]{SapoFigures/Phos/SapoKaa_X1.jpg}
     \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.12\textwidth]{SapoFigures/Phos/KaaPhos_X1.png}
-    \end{subfigure}
-    
-     \hspace{-12ex}
-    \begin{subfigure}{0.6\textwidth}
-    \centering
-    \includegraphics[width=1.15\textwidth]{SapoFigures/Phos/SapoPhos_X2.jpg}
-    \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
-    \centering
-    \includegraphics[width=1.12\textwidth]{SapoFigures/Phos/KaaPhos_X2.png}
+    \includegraphics[width=1.1\textwidth,height=0.82\textwidth]{SapoFigures/Phos/KaaPhos_X1.png}
     \end{subfigure}
     
-    \hspace{-12ex}
-    \begin{subfigure}{0.6\textwidth}
+%   \hspace{-12ex}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.15\textwidth]{SapoFigures/Phos/SapoPhos_X3.jpg}
+    \includegraphics[width=\textwidth]{SapoFigures/Phos/SapoPhos_X2.jpg}
     \end{subfigure}
-    \begin{subfigure}{0.6\textwidth}
+    \begin{subfigure}{0.47\textwidth}
     \centering
-    \includegraphics[width=1.12\textwidth]{SapoFigures/Phos/KaaPhos_X3.png}
+    \includegraphics[width=1.1\textwidth,height=0.82\textwidth]{SapoFigures/Phos/KaaPhos_X2.png}
     \end{subfigure}
     
-    \caption{Figure depicting the reachable set computation of the Phosporley model.} 
-    \label{fig3}
+%   \hspace{-12ex}
+    \begin{subfigure}{0.47\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{SapoFigures/Phos/SapoPhos_X3.jpg}
+    \end{subfigure}
+    \begin{subfigure}{0.47\textwidth}
+    \centering
+    \includegraphics[width=1.1\textwidth,height=0.82\textwidth]{SapoFigures/Phos/KaaPhos_X3.png}
+    \end{subfigure}
+    
+    \caption{Figure depicting the reachable set computation of the Phosporaley model.} 
+    \label{fig5}
 \end{figure}
 
 
@@ -614,8 +651,7 @@ The code can be accessed through \url{https://github.com/Tarheel-Formal-Methods/
 % BibTeX users should specify bibliography style 'splncs04'.
 % References will then be sorted and formatted in the correct style.
 %
-\bibliographystyle{splncs04}
-\bibliography{archbib}
+
 %
 % \begin{thebibliography}{8}
 % \bibitem{ref_article1}
