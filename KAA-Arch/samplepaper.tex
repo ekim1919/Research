@@ -46,15 +46,15 @@ University of North Carolina at Chapel Hill\\
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-Reachable set computation is one of the widely used techniques for verification of safety properties of dynamical system. 
+Reachable set computation is one of the many widely-used techniques for the verification of safety properties of dynamical systems. 
 %
 One of the simplest algorithms for computing reachable sets for discrete nonlinear systems uses parallelotope bundles and Bernstein polynomials.
 %For discrete nonlinear systems, using Bernstein polynomials and parallelotope bundles for computing reachable set have been investigated in the literature.
 %One of the reachable set computation techniques that has received considerable attention uses Bernstein polynomials and parallelotope bundles.
 %
-In this paper, we describe Kaa, a terse Python implementation of reachable set computation which leverages the widely used symbolic package sympy.
+In this paper, we describe Kaa, a terse Python implementation of reachable set computation which leverages the widely used symbolic package \emph{sympy}.
 %
-Additionally, we simplify the user interface with the tool and provide easy to use plotting utilities.
+Additionally, we simplify the user interface and provide easy-to-use plotting utilities.
 %
 %We also provide an easy to use interfact for plotting the reachable sets.
 %
@@ -85,11 +85,10 @@ Several cumulative improvements~\cite{dang2012reachability,sassi2012reachability
 The tool SAPO~\cite{dreossi2017sapo} which implements these algorithms in C\texttt{++} is available publicly.
 %
 In this paper, we present a Python implementation of algorithm presented in~\cite{dreossi2017reachability}.
-
 %
 Our motivation for reimplementing the algorithms in Python is two-fold.
 %
-First, using standard libraries for symbolic manipulation in Sympy, the algorithm for reachability can be implemented very concisely.
+First, using standard libraries for symbolic manipulation in Sympy, the algorithm for reachability can be implemented concisely.
 %
 In fact, the main algorithm for computing the reachable set has be implemented in only one file with $150$ lines of code.
 %
@@ -97,25 +96,23 @@ The total code base for Kaa is roughly only $650$ lines of code.
 %
 %Additionally, the main algorithm for computing the reachable set is provided in just one file with $150$ lines of code.
 %
-In contrast, SAPO is more than $2000$ lines of C\texttt{++} code with memory and pointer management performed completely by the developer.
+In contrast, SAPO consists of more than $2000$ lines of C\texttt{++} code with memory and pointer management performed completely by the developer.
 %
 We believe that such a simple implementation can be used for teaching one of the main algorithms for reachability of nonlinear systems.
 %
 % Second, because of its implementation in C++, SAPO requires recompiling the code for every reachable set computation.
 % %
-Second, reimplementing the tool in Python makes user interaction significantly easy. 
+Second, reimplementing the tool in Python makes user interaction significantly simpler. 
 %
-In SAPO, one has to recompile the code along with the model file to generate the binary and the user has to execute the binary for computing the reachable set.
+In SAPO, one has to recompile the code along with the model file to generate the binary. Subsequently the user has to execute the binary to compute the reachable set.
 %
-Additionally, visualizing the reachable set using SAPO is a two step process. In the first step, SAPO generates a MATLAB script that contains projections of reachable set for visualizing time or phase plots of the reachable set. In the second step, the user feeds the generated script into either MATLAB or Octave to illustrate the reachable set. 
+Additionally, visualizing the reachable set using SAPO is a two step process. In the first step, SAPO generates a MATLAB script which plots projections of reachable set for visualizing time or phase plots of the reachable set. In the second step, the user feeds the generated script into either MATLAB or GNU Octave to illustrate the reachable set. 
 %
-In contrast, Kaa has very intuitive interface for computing and visualizing reachable set.
+In contrast, Kaa offers plotting functionalities through the \emph{matplotlib} library for visualizing the reachable set.
 %
-The models and the code for computing reachable set using Kaa are provided in Python and do not read any compilation. 
+The models and the code for computing reachable set using Kaa are provided in Python and do not require any compilation steps.
 %
-We also leverage the matplotlib library for visualizing the reachable set. 
-%
-Integrating these two, we provide an easy to use Jupyter notebook interface for computing and visualizing reachable set with Kaa for some of the standard benchmark models.
+Integrating these two, we provide an easy-to-use Jupyter notebook interface for computing and visualizing reachable set with Kaa for some of the standard benchmark models.
 %
 %Juypter notebooks are simple to create and known for their straightforward user interface. %
 %we were able to design an engaging interactive tutorial and experimentation platform for visualzing reachable sets of non-linear systems.
@@ -132,7 +129,7 @@ Several heuristics have been proposed for improving the performance of optimizat
 %
 Having an accessible and flexible tool would make it more conducive to implement these heuristics and determine if they are helpful in the domain of reachability.
 %
-In light of these features and advantages, we believe Kaa can be used as a easy first step for introducing reachability in a pedagogical setting.
+In light of these features and advantages, we believe Kaa could be used as a natural first step for introducing reachability in a pedagogical setting.
 
 \section{Preliminaries}
 
@@ -191,11 +188,10 @@ As mentioned earlier, a parallelotope $P$ can also be represented as an affine t
 %
 Therefore, upper bounds on the suprenum of a function $h$ over $P$ is equivalent to upper bound of $h \circ T_{p}$ over $[0,1]^{n}$.
 %
-A similar argument follows for the lower bound on infimum.
+A similar argument follows for the lower bound on the infimum.
 %
 
-
-For the remainder of the document, we assume that by using functional composition and the Bernstein representation, we can compute the upper bound on supremum and lower bound on infimum of polynomial functions over parallelotopes.
+For the remainder of the document, we assume that by using functional composition and the Bernstein representation, we can compute the upper bound on supremum and the lower bound on the infimum of polynomial functions over parallelotopes.
 %
 We denote the procedures for calculating such upper and lower bounds for a polynomial $h$ over some parallelotope $P$ as $\mathsf{BernsteinUpper}(h,P)$ and $\mathsf{BernsteinLower}(h,P)$ respectively. 
 
@@ -235,7 +231,7 @@ c_{j+n,i} &=& max_{l = 1}^{m} \Big\{ \mathsf{BernsteinLower}\big(\Lambda_{j,i} \
 
 \subsection{Python Implementation of Reachable Set Computation}
 
-One of the primary reasons for preferring Python as an implementation language for this algorithm is the presence of powerful, well-tested symbolic and matrix-computation libraries.
+One of the primary reasons for preferring Python as the implementation language for this algorithm is the presence of powerful, well-tested symbolic and matrix-computation libraries.
 %
 Python's \emph{numpy} libraries are popular matrix-computation libraries which allow higher-level manipulation of matrices. This gives us an avenue of overcoming the verbosity and the possibility of memory leaks inherent in implementing identical features in C++. We believe that overcoming these obstacles results in a more readable, more compact approach to parallelotope reachability suitable for graduate students and curious practitioners. In addition, these libraries are known for their extensive set of useful functionalities which allow us to avoid reimplementing many fundamental operations.
 
@@ -246,14 +242,14 @@ First, performing functional composition for computing the upper bound of a poly
 %
 Second, computing the Bernstein representation of a polynomial.
 %
-The library of \emph{sympy} has powerful symbolic manipulation tools which allow us to comfortably perform many sensitive symbolic function composition of polynomials. 
+The library of \emph{sympy} has powerful symbolic manipulation tools which allow us to comfortably perform many sensitive symbolic function composition of polynomials.
 %
 We use \emph{sympy}'s internal representation of polynomials to (a) perform functional composition and (b) compute the Bernstein representations of the resulting polynomial.
 %
-Additionally, the \emph{matplotlib} library has easy plotting facilities that we integrate into our tool for visualizing the reachable set. In particular, \emph{matplotlib} facilitates the ability to plot several reachable sets simultaneously. This will aid others in performing more complex bundle-transformation experiments in future. 
+Additionally, the \emph{matplotlib} library has accessible plotting facilities that we integrate into our tool for visualizing the reachable set. In particular, \emph{matplotlib} facilitates the ability to plot several reachable sets simultaneously. This will aid others in performing more complex bundle-transformation experiments in the future. 
 
 %
-Finally, Python has a rich set of multiprocessing libraries, namely \emph{multiprocessing} or \emph{mp} for short. In the future, we plan to exploit the parallelizable nature of bundle-transformtion computations using \emph{mp}'s ability to provide powerful multiprocessing features without much verbosity.
+Finally, Python contains a rich set of multiprocessing libraries, namely \emph{multiprocessing} or \emph{mp} for short. We plan to exploit the parallelizable nature of bundle-transformtion computations using \emph{mp}'s ability to provide powerful multiprocessing features without much verbosity.
 
 % c_{j+n,i} &=& max_{l = 1}^{m} \big{ \mathsf{BernsteinLower} \Lambda_{j,i}\cdot f(x) \mbox{ over } P_l \big} \mbox{ otherwsie. } \label{eq:upper}
 
@@ -270,7 +266,7 @@ Finally, Python has a rich set of multiprocessing libraries, namely \emph{multip
 % they are formatted as run-in headings.
 
 \section{Evaluations}
-We evaluate our tool on the benchmarks that are shipped along with SAPO. With each benchmark, the reachable sets of SAPO are juxtaposed with that of Kaa's to demonstrate the accuracy and quality of our reachable set. A comparison of time taken by Kaa and SAPO for each benchmark is provided in Table~\ref{tab:one}.
+We evaluate our tool on the benchmarks that are shipped along with SAPO. With each benchmark, the reachable sets of SAPO are juxtaposed with that of Kaa's to demonstrate the accuracy and quality of our reachable sets. A comparison of time taken by Kaa and SAPO for each benchmark is provided in Table~\ref{tab:one}.
 
 \subsection{SIR Epidemic Model}
 \noindent The SIR Epidemic model is a 3-dimensional dynamical system governed by the following dynamics:
@@ -379,7 +375,7 @@ A set of inertial positions: $(p_n,p_e,h)$, linear velocities $(u,v,w)$, the qua
 % I see. Thank you.
 
 \subsection{Lotka-Volterra Model}
-\noindent We also test on the competetitive Lotka-Volterra models for predator-prey biological systems. Our instance is a 5-dimensional sysmtem governed as below:
+\noindent We also test on the competetitive Lotka-Volterra models for predator-prey biological systems. Our instance is a 5-dimensional system governed as below:
 \begin{align}
     \begin{split}
         x_{k+1} &= x_k + (x_k(1 - (x_k + \alpha y_k + \beta \ell_k))) \Delta \\
@@ -405,13 +401,13 @@ The Phosphoraley model describes a certain cellular regulatory system. It is cap
         x^7_{k+1} &= x^7_k + ( -\alpha x^7_k + \beta x^5_k x^6_k)\Delta
     \end{split}
 \end{align}
-where $\alpha,\beta$ are two parameters assigned as $\alpha=0.5$ and $\beta=5$. We set $\Delta =0.01$ here. The relevant figures can be found in Figure \ref{fig5}.
+where $\alpha,\beta$ are two parameters assigned as $\alpha=0.5$ and $\beta=5$. We set $\Delta =0.01$ here. The figures can be found in Figure \ref{fig5}.
 
 \subsection{Times}
 
-\noindent It is evident from Table~\ref{tab:one} that while the current implementation in Python is very intuitive and concise, it incurs severe performance penalties. 
+\noindent It is evident from Table~\ref{tab:one} that while the current implementation in Python is intuitive and concise, it incurs severe performance penalties. 
 %
-Nevertheless, we pursued this activity because of the pedagogical value in making this an accessible tool for implementing and understanding reachability. To this end, the repository contains a Jupyter notebook with the name \href{https://github.com/Tarheel-Formal-Methods/kaa/blob/master/kaa-intro.ipynb}{kaa-intro} designed to interactively introduce graduate students and practitioners to the usage of Kaa. The notebook even contains a subset of the examples shown above, giving the auidence a chance to run the code for themselves. An immediate next step is to deploy extensive profiling to find performance bottlenecks and subsequently improve on them. 
+Nevertheless, we pursued this direction because of the pedagogical value in making this an accessible tool for implementing and understanding reachability. To this end, the repository contains a Jupyter notebook with the name \href{https://github.com/Tarheel-Formal-Methods/kaa/blob/master/kaa-intro.ipynb}{kaa-intro} designed to interactively introduce graduate students and practitioners to the usage of Kaa. The notebook even contains a subset of the examples shown above, giving the auidence a hands-on method to run the code for themselves. An immediate next step is to deploy extensive profiling to find performance bottlenecks and subsequently improve on them. 
 
 \begin{table}[h]
 \centering
@@ -441,7 +437,7 @@ The usage of inbuilt \emph{sympy} libraries makes the implementation short and s
 %
 While we do incur performance drawbacks from selecting Python for implementing this algorithm, we believe that it aids in fast prototyping and enables students to easily build on top of the library. In particular, Python's readability and extendibility will allow curious students to experiment with more involved bundle-transformations. 
 %
-The code can be accessed through \url{https://github.com/Tarheel-Formal-Methods/kaa}
+The code can be accessed through \url{https://github.com/Tarheel-Formal-Methods/kaa}.
 \newline
 \newline
 {\bf Acknowledgements: } This material is based upon work supported by the Air Force Office of Scientific Research under award number FA9550-19-1-0288 and National Science Foundation (NSF) under grant numbers CNS 1739936, 1935724. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the United States Air Force or National Science Foundation. 
