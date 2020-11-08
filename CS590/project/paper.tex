@@ -1,0 +1,117 @@
+\documentclass{amsart}
+\usepackage{complexity}
+
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-2in}
+\calclayout
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{xca}[theorem]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+
+\begin{document}
+
+\title{On the Fourier Analysis of Boolean Functions and the Linai-Mansour-Nisan Theorem}
+
+\author{Edward Kim}
+\email{ehkim@cs.unc.edu}
+
+\begin{abstract}
+  We briefly summarize the basic tools of Fourier Analysis applied to the finite abelian group $\mathbb{Z}_2^n$. By viewing boolean functions $f:\{0,1\}^n \rightarrow \{0,1\}$ as square-integrable maps in the Hilbert space $L^2(\mathbb{Z}_2^n)$ under the uniform probability measure, we derive the Linai-Mansour-Nisan theorem concerning the tail of the Fourier spectrum of boolean functions in $\AC^0$. Finally, we highlight some applications of the LMN theorem in the context of sensitivity and influence of functions in $\AC^0$.
+\end{abstract}
+
+\maketitle
+
+\section{Fourier Analysis of Boolean Functions}
+
+\subsection{Characters}
+
+We introduce some stepping stones defining the tools used in the Fourier Analysis of boolean functions. Many of these tools can be defined using techniques from Representation Theory, but for the sake of briefity, we will not delve into those concepts here in detail. Instead, we will provide remarks and snippets on relevant topics as needed along with references to the standard literature at the end of the section.  \newline
+
+We first define some general concepts for any finite abelian group $G$. A group homomorphism from $\chi: G \rightarrow \mathbb{C}^*$ is called a \emph{character} of $G$ where $\mathbb{C}^* = \mathbb{C}/\{0\}$ is the multiplicative group of the complex numbers. We call the homomorphism $\chi_0:G \rightarrow \mathbb{C}^*, \; \chi_0 = 1$ the \emph{trivial character} of $G$. By definition, for $a,b \in G$,
+\begin{equation} \label{homo}
+\chi(a + b) = \chi(a)\chi(b)
+\end{equation}
+for all characters $\chi$. \newline
+
+Let us now consider the simplest finite abelian group, $\mathbb{Z}_n$ for some $n \in \mathbb{N}$. It follows from basic properties of cyclic groups that the only characters of $\mathbb{Z}_n$ are:
+%
+\begin{equation}
+  \chi_j(x) = e^{ 2\pi i jx/n} \quad j \in [n], \; x \in \mathbb{Z}_n
+\end{equation}
+%
+We can decompose any finite abelian group $G$ into a direct product of finite cyclic groups $G \cong \mathbb{Z}_{n_1} \times \mathbb{Z}_{n_2} \cdots \times\mathbb{Z}_{n_k}$. If we decompose $x = \sum_{i \in [k]} x_i$ for $x \in G$, then the characters of $G$ are defined as
+%
+\begin{equation}
+  \chi_a(x) = \prod_{i \in [k]} e^{2 \pi i a_k x_k/ n_k}
+\end{equation}
+%
+We see that every element $a \in G$ has an unique associated character $\chi_a$. Furthermore
+%
+\begin{gather} \label{chargroup}
+  \chi_{a+b}(x)  = \chi_{a}(x)\chi_{b}(x) \\
+  \chi_{a^{-1}}(x) = \frac{1}{\chi_a(x)}
+\end{gather}
+%
+This shows that the set whose elements are the characters of $G$ endowed with pointwise multiplication is an abelian group. Denote this set as $\hat{G}$. From the map $a \mapsto \chi_a$, we have a group isomorphism between $G \cong \hat{G}$. The group $\hat{G}$ is known as the \emph{character group} of $G$. \newline
+
+To define the Fourier transform, we must consider the Hilbert space $L_2(G)$ where $G$ endowed with the uniform probability measurel i.e the discrete measure mapping each subset $H \subseteq G$ to $\frac{|H|}{|G|}$. This yields the standard inner product for maps $f,g \in L_2(G)$:
+%
+\begin{equation}
+  \langle f,g \rangle = \frac{1}{|G|}\sum_{x\in G} f(x)\overline{g(x)}= \mathbb{E}_x f(x)\overline{g(x)}
+\end{equation}
+Note that this induces the norm $||f||_2 = \sqrt{\langle f, f \rangle} = \mathbb{E}_x |f(x)|^2$ on $L_2(G)$. It is simple to check that the characters of $G$ indeed lie in $L_2(G)$. However, we can prove something stronger: the characters of $G$, $\chi_a$ form an \emph{orthonormal basis} of $L_2(G)$.
+%
+
+\begin{theorem}
+  The characters $\chi_a \in \hat{G}$ form an orthonormal basis for $L_2(G)$
+\end{theorem}
+
+\begin{proof}
+  To show this, we must employ a lemma:
+
+
+
+
+\end{proof}
+
+We restrict our attention to the finite abelian group $\mathbb{Z}_2^n$ as a natural group to define boolean functions $f: \{0,1\}^n \rightarrow \{0,1\}$. By the observations above, we conclude that our characters for $\mathbb{Z}_2^n$ are defined as:
+
+\begin{equation}
+  \chi_a(x) = (-1)^{\sum_{i \in [n]} x_ia_i} = (-1)^{\sum_{i \in [n], \; a_i = 1} x_i}
+\end{equation}
+where $x_i$ is the $i^{th}$ bit of $x \in \{0,1\}^n$.
+
+
+%\begin{remark}
+%The above properties on characters can be shown through %techniques in Representation Theory. For instance, we %know representations of finite groups are group %homomorphisms into the group of linear isomorphisms of a %suitable complex vector space $\rho: G \rightarrow %GL(\mathbb{C}^n)$. The \emph{characters} of $\rho$ are %defined as $\chi(x) = Tr(\rho(x))$ where $Tr$ is the %trace operator. It turns out that the representations of %finite abelian groups are one-dimensional i.e isomorphic %to $\mathbb{C}$. Thus, $\rho(x)$ will just be multiplying %$\mathbb{C}$ by some scalar $\lambda_x \in \mathbb{C}^*$. %In this case, we can show that indeed for any $a,b \in G$ %and $\chi$ any character of $G$:
+%$$ \chi(a+b) = Tr(\rho(a+b)) = Tr(\rho(a)\circ\rho(b)) = %\lambda_a \lambda_b = Tr(\rho(a))Tr(\rho(b)) = %\chi(a)\chi(b)$$ Note that this relation does not hold %for arbitrary finite groups. For more information on the %Representation Theory of Finite Groups, see \ref{serre}.
+%\end{remark}
+
+
+
+
+
+%\section{Linai-Mansour-Nisan Theorem}
+
+
+%\section{Immediate Applications}
+
+
+
+
+
+%    Bibliographies can be prepared with BibTeX using amsplain,
+%    amsalpha, or (for "historical" overviews) natbib style.
+\bibliographystyle{amsplain}
+%    Insert the bibliography data here.
+
+\end{document}
