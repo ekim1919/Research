@@ -17,6 +17,9 @@
 \newtheorem{remark}[theorem]{Remark}
 \numberwithin{equation}{section}
 
+\theoremstyle{remark}
+\newtheorem{notation}[theorem]{Notation}
+
 \begin{document}
 
 \title{On the Fourier Analysis of Boolean Functions and the Linai-Mansour-Nisan Theorem}
@@ -42,7 +45,28 @@ We first define some general concepts for any finite abelian group $G$. A group 
 \end{equation}
 for all characters $\chi$. \newline
 
-Let us now consider the simplest finite abelian group, $\mathbb{Z}_n$ for some $n \in \mathbb{N}$. It follows from basic properties of cyclic groups that the only characters of $\mathbb{Z}_n$ are:
+Consider the set whose elements are the characters of $G$ and whose binary operation is pointwise multiplication of complex-valued functions on $G$. This set is also an \emph{abelian group} by the following theorem:
+%
+\begin{theorem}
+  If $G$ is a finite abelian group, then the characters of $G$ form an abelian group under pointwise multiplication.
+\end{theorem}
+%
+\begin{proof}
+  We first show that if $\chi, \phi$ are characters of $G$, then $\chi\phi$ is also a character of $G$. But this immediately follows from \ref{homo}:
+  $$ \chi\phi(a+b) = \chi(a)\chi(b)\phi(a)\phi(b) = [\chi(a)\phi(a)][\chi(b)\phi(b)] = \chi\phi(a)\chi\phi(b)$$
+  Hence, $\chi\phi$ is also a character of $G$. Furthermore, $\chi^{-1} = \frac{1}{\chi} = \overline{\chi}$ is also a character of $G$ since
+  $$ \chi^{-1}(a+b) = \frac{1}{\chi(a+b)} = \frac{1}{\chi(a)\chi(b)} = \frac{1}{\chi(a)}\frac{1}{\chi(b)} = \chi^{-1}(a)\chi^{-1}(b)$$
+  showing that the set has inverses.
+\end{proof}
+%
+\begin{remark}
+  We abuse notation a bit and just note that $\chi^{-1}$ is not the inverse of the $\chi$ as a \emph{map}. Rather, $\chi^{-1}$ will refer to the \emph{group inverse} of character $\chi$ from hereon.
+\end{remark}
+
+%
+Denote this set as $\hat{G}$. The group $\hat{G}$ is known as the \emph{character group} of $G$. It also will turn out that there is a bijective map between $G$ and $\hat{G}$ such that the map is also a \emph{group isomorphism}. We will prove this later on. \newline
+
+Let us now consider the simplest finite abelian group, $\mathbb{Z}_n = \mathbb{Z}/n\mathbb{Z}$ for some $n \in \mathbb{N}$. It follows from basic properties of cyclic groups that the only characters of $\mathbb{Z}_n$ are:
 %
 \begin{equation}
   \chi_j(x) = e^{ 2\pi i jx/n} \quad j \in [n], \; x \in \mathbb{Z}_n
@@ -53,42 +77,92 @@ We can decompose any finite abelian group $G$ into a direct product of finite cy
 \begin{equation}
   \chi_a(x) = \prod_{i \in [k]} e^{2 \pi i a_k x_k/ n_k}
 \end{equation}
-%
+where $x_i$ refers to the $i^{th}$ index of $x$. \newline
+
 We see that every element $a \in G$ has an unique associated character $\chi_a$. Furthermore
 %
 \begin{gather} \label{chargroup}
-  \chi_{a+b}(x)  = \chi_{a}(x)\chi_{b}(x) \\
-  \chi_{a^{-1}}(x) = \frac{1}{\chi_a(x)}
-\end{gather}
-%
-This shows that the set whose elements are the characters of $G$ endowed with pointwise multiplication is an abelian group. Denote this set as $\hat{G}$. From the map $a \mapsto \chi_a$, we have a group isomorphism between $G \cong \hat{G}$. The group $\hat{G}$ is known as the \emph{character group} of $G$. \newline
+  \chi_{a+b}(x)  = \chi_{a}(x)\chi_{b}(x)
+\end{gather} \newline
 
-To define the Fourier transform, we must consider the Hilbert space $L_2(G)$ where $G$ endowed with the uniform probability measurel i.e the discrete measure mapping each subset $H \subseteq G$ to $\frac{|H|}{|G|}$. This yields the standard inner product for maps $f,g \in L_2(G)$:
+To define the Fourier transform, we must consider the Hilbert space $L_2(G)$ where $G$ endowed with the uniform probability measure i.e the discrete measure mapping each subset $H \subseteq G$ to $\frac{|H|}{|G|}$. This yields the standard inner product for maps $f,g \in L_2(G)$:
 %
 \begin{equation}
   \langle f,g \rangle = \frac{1}{|G|}\sum_{x\in G} f(x)\overline{g(x)}= \mathbb{E}_x f(x)\overline{g(x)}
 \end{equation}
-Note that this induces the norm $||f||_2 = \sqrt{\langle f, f \rangle} = \mathbb{E}_x |f(x)|^2$ on $L_2(G)$. It is simple to check that the characters of $G$ indeed lie in $L_2(G)$. However, we can prove something stronger: the characters of $G$, $\chi_a$ form an \emph{orthonormal basis} of $L_2(G)$.
+Note that this induces the norm $||f||_2^2 = \langle f, f \rangle = \mathbb{E}_x |f(x)|^2$ on $L_2(G)$. It is simple to check that the characters of $G$ indeed lie in $L_2(G)$. However, we can prove something stronger: the characters of $G$, $\chi_a$ form an \emph{orthonormal basis} of $L_2(G)$.
 %
-
-\begin{theorem}
-  The characters $\chi_a \in \hat{G}$ form an orthonormal basis for $L_2(G)$
-\end{theorem}
-
+First, we prove a lemma:
+\begin{lemma} \label{totalsum}
+  Let $\chi$ be a non-trivial character of $G$. Then $\sum_{x \in G} \chi(x) = 0$
+\end{lemma}
+%
 \begin{proof}
-  To show this, we must employ a lemma:
-
-
-
-
+  Given any non-trivial character $\chi$, the following holds for all $y \in G$:
+    %
+    \[ \chi(y)\sum_{x \in G} \chi(x) = \sum_{x \in G} \chi(y+x) = \sum_{x \in G} \chi(x) \]
+    %
+    If $\sum_{x \in G} \chi(x) \neq 0$, then this would force $\chi(y) = 1$ for all $y \in G$. However, this would contradict the non-triviality of the $\chi$.
 \end{proof}
 
-We restrict our attention to the finite abelian group $\mathbb{Z}_2^n$ as a natural group to define boolean functions $f: \{0,1\}^n \rightarrow \{0,1\}$. By the observations above, we conclude that our characters for $\mathbb{Z}_2^n$ are defined as:
+\begin{theorem} \label{orthonormal}
+  The characters $\chi \in \hat{G}$ form an orthonormal basis for $L_2(G)$
+\end{theorem}
+%
+\begin{proof}
+We first note that $\langle \chi, \chi \rangle = \mathbb{E}_x|\chi(x)|^2 = 1$ since the image of character $\chi$ lies on the complex unit circle by the discussions above. Now given two non-trivial characters $\chi, \phi$
+$$ \langle \chi, \phi \rangle = \mathbb{E}_x \chi(x)\overline{\phi(x)} = \frac{1}{|G|} \sum_{x \in G} \chi\phi^{-1}(x)  = 0$$
+The last equality follows from Lemma \ref{totalsum} since $\chi\phi^{-1}$ must also be a non-trivial character if $\chi, \phi$ are non-trivial characters. The case where one of the character is trivial also follows from the lemma.
+Finally, observe that $L_2(G)$ is $|G|$-dimensional as a vector space by considering the dual of $G$. We know that there are at least $|G|$-characters, showing that the characters span $L_2(G)$. However, from the lemma, the characters must also be pairwise orthgonal to each other. This yields that the characters of $G$ form an \emph{orthonormal basis} of $L_2(G)$ and that there must be exactly $|G|$ characters in $\hat{G}$. Finally, by using \ref{chargroup}, it follows that the map $a \mapsto \chi_a$ must be a group isomorphism, so $G \cong \hat{G}$.
+\end{proof}
 
+To finish, we restrict our attention to the finite abelian group $\mathbb{Z}_2^n$ as a natural group to define boolean functions $f: \{0,1\}^n \rightarrow \{0,1\}$. By the observations above, we conclude that our characters for $\mathbb{Z}_2^n$ are defined as:
+%
 \begin{equation}
   \chi_a(x) = (-1)^{\sum_{i \in [n]} x_ia_i} = (-1)^{\sum_{i \in [n], \; a_i = 1} x_i}
 \end{equation}
 where $x_i$ is the $i^{th}$ bit of $x \in \{0,1\}^n$.
+%
+\begin{notation}
+  Instead of considering $x \in \{0,1\}^n$ as a bit-string, we would like to use the following notation: Let $S \subseteq [n]$ be such that $S_x = \{i \mid x_i = 1\}$. As there is a bijective correspondence between all such subsets $S_x$ and $x \in \{0,1\}^n$, we will start to identify bit strings with their subset counterparts for notational convenience.
+\end{notation}
+
+\subsection{The Fourier Transform}
+
+We have shown above that the members of the character group $\hat{G}$ form an orthonormal basis of $L_2(G)$. This bestows us the power of decomposing any $f \in L_2(G)$ into its orthogonal counterparts. The restriction to the case where $G = \mathbb{Z}_2^n$ is what motivates us as any $n$-ary boolean function $f: \{0,1\}^n \rightarrow \{0,1\}$ must lie in $L_2(\mathbb{Z}_2^n)$. As before, we begin by considering the general case for any finite abelian group $G$  \newline
+
+Let $\hat{f}: \hat{G} \rightarrow \mathbb{C}$ be the complex-valued function defined as:
+%
+\begin{equation}
+  \hat{f}(\chi_a) =  \langle f, \chi_a \rangle, \; a \in G
+\end{equation}
+%
+We can iterate this for all characters to get a direct sum decomposition for any $f \in L_2(G)$
+%
+\begin{equation}
+  f = \sum_{a \in G} \hat{f}(\chi_a)\chi_a
+\end{equation}
+
+It can be show that the map $f \mapsto \hat{f}$ is linear by the left-linearity of the inner product. This linear map is the \emph{Fourier Transform on $G$}.
+%
+\begin{notation}
+  We will sometimes denote $\hat{f}(a) = \hat{f}(\chi_a)$.
+\end{notation}
+
+
+A simple application of the Fourier Transform yields an useful identity which will be instrumental in our formulation of the Fourier tail of a boolean function.
+
+\begin{theorem}{(Parseval's Identity)}
+  Let $f \in L_2(G)$. Then
+  $$ ||f||_2^2 = \sum_{a \in G} |\hat{f}(a)|^2$$
+\end{theorem}
+%
+\begin{proof}
+  $$ ||f||^2_2 = \langle f, f \rangle = \langle \sum_{a \in G} \hat{f}(a) \chi_a,  \sum_{b \in G} \hat{f}(b) \chi_b \rangle = \sum_{a,b \in G} \hat{f}(a)\overline{\hat{f}(b)}\langle \chi_a, \chi_b \rangle = \sum_{a \in G} |\hat{f}(a)|^2 $$
+  The last equality is just the orthonormality of the characters (\ref{orthonormal}).
+\end{proof}
+
+%by the remark in the previous section, we will identify characters of %$\mathbb{Z}_2^n$ as $\chi_A$ for $A \subseteq [n]$.
 
 
 %\begin{remark}
