@@ -212,7 +212,7 @@ The Fourier Transform here is over the group $\mathbb{Z}_2^n$.
 \begin{remark}{\emph{(Further Topics)}}
   There are still many essential concepts in the Fourier Analysis of boolean functions which we have not covered in this chapter. For instance, one can endow a multiplication operator to $L_2(G)$ called the \emph{convolution operator}
   $$ (f * g)(x) = \frac{1}{|G|}\sum_{\substack{h,j \in G \\ hj = x}} f(h)g(j) = \frac{1}{|G|}\sum_{y \in G} f(xy^{-1})g(y), \quad f,g \in L_2(G)$$
-   The convolution $f * g$ can be interpreted as the average of $f(h)\cdot g(j)$ over all elements $h,j \in G, \; h + j = x$. Many natural, interesting functions can be defined through the convolution of two boolean functions. For instance, let ${\bf 1}_{B_r}$ be the indictator function for a closed ball centered at $0$ of radius $r$ in respect to the Hamming metric on $\mathbb{Z}_2^n$. Then for any $n$-ary boolean function $f:\{0,1\}^n \rightarrow \{0,1\}$, $f * {\bf 1}_{B_r}(x)$ will be the expected value of $f$ over the closed ball of radius $r$ centered at $x$. If one wished to proceed further, he/she can show that the convolution operator satisfies many fundamental algebraic properties such as associativity and commutativity, turning $L_2(G)$ into a commutative $\mathbb{C}$-algebra.
+   The convolution $f * g$ can be interpreted as the average of $f(h)\cdot g(j)$ over all elements $h,j \in G, \; h + j = x$. Many natural, interesting functions can be defined through the convolution of two boolean functions. For instance, let ${\bf 1}_{B_r}$ be the indictator function for a closed ball centered at $0$ of radius $r$ in respect to the Hamming metric on $\mathbb{Z}_2^n$. Then for any $n$-ary boolean function $f:\{0,1\}^n \rightarrow \{0,1\}$, $f * {\bf 1}_{B_r}(x)$ will be the expected value of $f$ over the closed ball of radius $r$ centered at $x$. Additionally, the convolution operator satisfies many fundamental algebraic properties such as associativity and commutativity, turning $L_2(G)$ into a commutative $\mathbb{C}$-algebra.
    For a more detailed introduction to these topics, see \cite{hatami},\cite{odonnell}. For a more general approach to harmonic analysis over groups, see \cite{rudin}, \cite{ceccherini}.
 \end{remark}
 
@@ -270,11 +270,10 @@ Let $f$ be a boolean function computed by a CNF of bottom fan-in of at most $t$,
      \item Suppose a gate initially has fan-in of at most $2s$. The probability of $\rho$ setting at least $s$ of the input variables to $*$ is ${2s \choose s}(1/10)^s < 2^{-s}$
    \end{enumerate}
    %
-  Since we assume that the $\AC^0$ circuit computing $f$ is in alternating normal form, once we invoke the switching lemma for the bottom two layer gates, we can merge the two $\vee$-gates to reduce the depth by one. The switching tells us that with probability of at least $1 - (5\frac{1}{10s}s)^s < 2^{-s}$, we can reduce the depth in each step such that the gates of distance two from the input variables have bottom fan-in of at most $s$. By the end of our depth-reduction routine, we are left with a CNF with bottom fan-in of at most $s$. Invoking Corollary (\ref{hastaddegree}) tells us that our final restricted function $f_{\rho_0\rho_1...\rho_{d-1}}$ has Fourier degree of at most $s$ with probability $< 2^{-s}$. The final bound arises from the observation that we applied the beginning analysis for each of the bottom gates exactly once, the switching lemma exactly once for each gate except for the output gate, and we invoked the corollary for the output gate. Each step contributed probability of $< 2^{-s}$
+  Since we assume that the $\AC^0$ circuit computing $f$ is in alternating normal form, once we invoke the switching lemma for the bottom two layer gates, we can merge the two $\vee$-gates to reduce the depth by one. The switching tells us that with probability of at least $1 - (5\frac{1}{10s}s)^s < 2^{-s}$, we can reduce the depth in each step such that the gates of distance two from the input variables have bottom fan-in of at most $s$. By the end of our depth-reduction routine, we are left with a CNF with bottom fan-in of at most $s$. Invoking Corollary (\ref{hastaddegree}) tells us that our final restricted function $f_{\rho_0\rho_1...\rho_{d-1}}$ has Fourier degree of at most $s$ with probability $< 2^{-s}$. The final bound arises from the observation that we applied the beginning analysis for each of the bottom gates exactly once, the switching lemma exactly once for each gate except for the output gate, and we invoked the corollary for the output gate. Each step contributed probability of $< 2^{-s}$.
 \end{proof}
 %
-Corollary \ref{fouriertail} tells us that the probability of the Fourier degree exceeding $s$ decays exponentially with $s$ given that we set our probability parameter to a specific quantity $p = \frac{1}{10^ds^{d-1}}$. This is reminiscent of the familiar Chernoff bounds encountered in
-probability theory.
+Corollary \ref{fouriertail} tells us that the probability of the Fourier degree exceeding $s$ decays exponentially with $s$ given that we set our probability parameter to a specific quantity $p = \frac{1}{10^ds^{d-1}}$.
 
 \begin{proof}{\emph{(Proof of Theorem \ref{lmn})}}
 We begin by first setting our probability parameter $p \leq \frac{1}{10^dk^{d-1}}$. The values $p, k$ will be fixed later to invoke Corollary \ref{fouriertail}.
@@ -314,13 +313,13 @@ Sampling over all such $p$-restrictions further shows that:
   \mathbb{E}_V\mathbb{E}_{x_V} ||f^{>k}_{x_V}||_2^2 \leq Pr[\text{deg}_{\mathcal{F}}(f_\rho) > k] \leq M2^{-k}
 \end{equation}
 The second-to-last inequality follows since $||f_\rho^{>k}||_2^2 \leq 1$. So we can just replace $||f_\rho^{>k}||_2^2$ with an indicator random variable flipping to one if deg$_{\mathcal{F}}(f_\rho) > k$ and zero otherwise. The last inequality is from Corollary (\ref{fouriertail}).
-
+%
 \begin{lemma}
   For any boolean function $f$ and $0 < p < 1$,
   $$ \sum_{|S| > t} |\hat{f}(S)|^2 \leq 2 \mathbb{E}_T \sum_{ \substack {S \subseteq [n] \\ |S \cap \overline{V}| > k}} |\hat{f}(S)|^2 $$
   for $k = pt/2$
 \end{lemma}
-
+%
 \begin{proof}
   We know that:
   \begin{align} \label{ineq1}
@@ -338,6 +337,47 @@ To finish the proof, set $p = \frac{1}{10t^{(d-1)/d}}$ and $k = t^{1/d}/20$. Dir
 
 \section{Basic Applications}
 
+\subsection{Approximation by Low-degree Polynomials}
+ Theorem (\ref{lmn}) shows that we can approximate functions in $f \in \AC^0$ by taking our polynomials to be $f^{\leq k}$ for some sufficiently large $k$. Here we make the distinction that our Fourier expansion of $f$ will be
+$$f = \sum_{S \subseteq [n]} \hat{f}(S) \prod_{i \in S} x_i $$ as a polynomial with complex coefficients.
+\begin{lemma}
+  Let $f \in \AC^0$ be a boolean function of polynomial size and depth $d$. Then there exists a complex polynomial of degree $\mathcal{O}((\log{n/\epsilon})^d)$ such that $||f - p ||_2 < \epsilon$
+\end{lemma}
+%
+\begin{proof}
+This follows from setting $t = \mathcal{O}((\log{n/\epsilon})^d)$ and invoking the LMN theorem to conclude that $||f - f^{\leq t}|| < \epsilon$.
+\end{proof}
+%
+This gives another scheme of approximating functions in $\AC^0$ through low-degree polynomials, complementing the results of \cite{razborov}, \cite{smolensky}. Here we make the extra distinction that our polynomials are also of low Fourier degree.
+
+\subsection{Sensitivity and Influence}
+LMN also shows that functions in $\AC^0$ have low average sensitivity i.e its output is not very sensitive to changes to the input.
+
+\begin{definition}
+  Let $f: \{0,1\}^n \rightarrow \{0,1\}$ be a boolean function. We define the \emph{sensitivity} of an input $x\in \{0,1\}^n$ in respect to $f$, $s_f(x)$ to be the number of indices $i$ such that $f(x) \neq f(x + e_i)$ where $e_i$ is the bit string with zeros everywhere except for the $i^{th}$ index.
+\end{definition}
+
+\begin{definition}
+  Let $f: \{0,1\}^n \rightarrow \{0,1\}$ be a boolean function. The \emph{influence} of $f$, $I_f$ is defined as the average sensitivity over all input bit strings
+  \begin{equation}
+    I_f = \mathbb{E}_x[s_f(x)]
+  \end{equation}
+\end{definition}
+
+The influence of $f$ can be expressed in terms of its Fourier coefficients:
+
+\begin{equation}
+  I_f = 4\sum_{S \subseteq [n]} |S||\hat{f}(s)|^2
+\end{equation}
+
+By combining this equivalence with Theorem (\ref{lmn}), we deduce the following upper bound on the influence of a function in $\AC^0$
+
+\begin{lemma}
+  Let $f \in \AC^0$ be of depth $d$. Then
+  \begin{equation}
+    I_f = \mathcal{O}((\log n)^d)
+  \end{equation}
+\end{lemma}
 
 %    Bibliographies can be prepared with BibTeX using amsplain,
 %    amsalpha, or (for "historical" overviews) natbib style.
