@@ -372,13 +372,31 @@ The influence of $f$ can be expressed in terms of its Fourier coefficients:
 
 By combining this equivalence with Theorem (\ref{lmn}), we deduce the following upper bound on the influence of a function in $\AC^0$
 
-\begin{lemma}
+\begin{lemma} \label{influence}
   Let $f \in \AC^0$ be of depth $d$. Then
   \begin{equation}
     I_f = \mathcal{O}((\log n)^d)
   \end{equation}
 \end{lemma}
 
+Lemma (\ref{influence}) shows that functions in $\AC^0$  are not suitable for constructing universal hash functions (\cite{mansour}) and pseudorandom function generators (\cite{lmn}). We give a rough definition and sketch based on the treatment found in (\cite{lmn}.
+
+\begin{definition}
+  A function $f:\{0,1\}^m \times \{0,1\}^n \rightarrow \{0,1\}$ is called a \emph{pseudorandom function generator} if there exists no polynomial-time oracle Turing machine which can distinguish between the outputs from a true random oracle versus $f(s,_)$ for some random seed $s \in \{0,1\}^m$.
+\end{definition}
+
+\begin{lemma}
+  No pseudorandom function generators exist in $\AC^0$
+\end{lemma}
+By taking advantage of the low average sensitivity, we can simply perturb the input slightly and check if the output of $f$ changes. If it doesn't, there is a good chance that
+it lies in $\AC^0$.
+
+\begin{remark}{(\emph{Some concluding remarks})}
+  It is worth noting that the bounds shown by Linai-Mansour-Nisan have been improved by Tal (\cite{tal}). Specifically, he showed that for any $n$-ary boolean function $f$ with size $M$ and depth $d$,\
+  \begin{equation}
+    \sum_{|S| > t} |\hat{f}(S)|^2 = 2^{\Omega(k/\log^{d-1}{M})}
+  \end{equation}
+\end{remark}
 %    Bibliographies can be prepared with BibTeX using amsplain,
 %    amsalpha, or (for "historical" overviews) natbib style.
 \bibliographystyle{amsplain}

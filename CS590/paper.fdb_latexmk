@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex paper"] 1605105398 "paper.aux" "paper.bbl" "paper" 1605108864
+["bibtex paper"] 1605110748 "paper.aux" "paper.bbl" "paper" 1605110949
   "/usr/local/texlive/2020/texmf-dist/bibtex/bst/amscls/amsplain.bst" 1513722769 25798 9b3546f2f237ee0ce4724eed95f954f4 ""
-  "biblio.bib" 1605105164 3340 a5150fb98fd9a2d5367b0969fabf24d9 ""
-  "paper.aux" 1605108864 1862 70447259e3fc7d44f82bd4bc0a156497 "pdflatex"
+  "biblio.bib" 1605109449 3616 59977d7c009197f82442500ee316a5d1 ""
+  "paper.aux" 1605110948 1997 4a563a039345d562200775e9f4695c92 "pdflatex"
   (generated)
   "paper.bbl"
   "paper.blg"
-["pdflatex"] 1605108863 "paper.tex" "paper.pdf" "paper" 1605108864
+["pdflatex"] 1605110948 "paper.tex" "paper.pdf" "paper" 1605110949
   "/usr/local/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -76,9 +76,9 @@
   "/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1586288239 4811913 0be9a7e86c70a26e5e3042966bcd7097 ""
   "/usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt" 1586288259 2432462 fd0fa20e9a3cb5f8169fd0ba1c955158 ""
   "/usr/local/texlive/2020/texmf.cnf" 1586288231 577 d60164b4589a341208aff7a667fbbdcb ""
-  "paper.aux" 1605108864 1862 70447259e3fc7d44f82bd4bc0a156497 "pdflatex"
-  "paper.bbl" 1605105398 1995 66d42bc79fa9267ecfe2b5fa3f22192e "bibtex paper"
-  "paper.tex" 1605108863 28190 c772d8ac780f5e825b99c3e54cd143a6 ""
+  "paper.aux" 1605110948 1997 4a563a039345d562200775e9f4695c92 "pdflatex"
+  "paper.bbl" 1605110748 2518 63b9850b699590af98c01a52c5b606de "bibtex paper"
+  "paper.tex" 1605110948 29451 7e418f1416622db41209f1ae9ce3c114 ""
   (generated)
   "paper.log"
   "paper.aux"
