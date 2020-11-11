@@ -1,0 +1,170 @@
+\documentclass{beamer}
+\usepackage{pgfpages}
+
+\usetheme{Madrid}
+\useinnertheme{rectangles}
+\usefonttheme{serif}
+
+\title{Linial-Mansour-Nisan Theorem}
+\subtitle{Crash Course on Fourier Analysis on Boolean Functions}
+\author{Edward Kim}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\label{contents}
+\frametitle{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Fourier Analysis on Boolean Functions}
+\subsection{sub a}
+
+\begin{frame}
+\frametitle{List}
+\begin{itemize}
+\pause
+\item Point A
+\pause
+\item Point B
+\begin{itemize}
+\pause
+\item part 1
+\pause
+\item part 2
+\end{itemize}
+\pause
+\item Point C
+\pause
+\item Point D
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{More Lists}
+\begin{enumerate}[(I)]
+\item<1-> Point A
+\item<2-> Point B
+\begin{itemize}
+\item<3-> part 1
+\item<4-> part 2
+\end{itemize}
+\item<5-> Point C
+\item<-2,4-5,7> Point D
+\end{enumerate}
+\end{frame}
+
+\subsection{sub b}
+\setbeamercovered{transparent}
+\begin{frame}
+\frametitle{Overlays}
+\only<1>{First Line of Text}
+
+\only<2>{Second Line of Text}
+
+\only<3>{Third Line of Text}
+\end{frame}
+
+\begin{frame}
+\frametitle{Overlay Compatible Commands}
+\textbf<2>{Example Text}
+
+\textit<3>{Example Text}
+
+\textsl<4>{Example Text}
+
+\textrm<5>{Example Text}
+
+\textsf<6>{Example Text}
+
+\textcolor<7>{orange}{Example Text}
+
+\alert<8>{Example Text}
+
+\structure<9>{Example Text}
+\end{frame}
+
+\begin{frame}
+\label{columns}
+\frametitle{Using Columns}
+\begin{columns}
+\column{0.5\textwidth}
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\column{0.5\textwidth}
+\end{columns}
+\end{frame}
+
+\section{Section 2}
+
+\begin{frame}
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\end{frame}
+
+\begin{frame}
+\frametitle{Descriptions}
+\begin{description}
+\item[API] Application Programming Interface
+\item[LAN] Local Area Network
+\item[ASCII] American Standard Code for Information Interchange
+\end{description}
+\end{frame}
+    
+\begin{frame}
+\frametitle{Blocks}
+\begin{block}{Block Title}
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+\end{block}
+\begin{alertblock}{Block Title}
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+\end{alertblock}
+\end{frame}
+
+\begin{frame}
+\frametitle{More Blocks}
+\begin{definition}
+A prime number is a number that...
+\end{definition}
+\begin{example}
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+\end{example}
+\end{frame}
+
+\begin{frame}
+\frametitle{Maths Blocks}
+\begin{theorem}<1->[Pythagoras]
+$ a^2 + b^2 = c^2$
+\end{theorem}
+\begin{corollary}<3->
+$ x + y = y + x  $
+\end{corollary}
+\begin{proof}<2->
+$\omega +\phi = \epsilon $
+\end{proof}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Including Code}
+\begin{semiverbatim}
+\\begin\{frame\}
+\\frametitle\{Outline\}
+\\tableofcontents
+\\end\{frame\}
+\end{semiverbatim}
+\end{frame}
+
+\begin{frame}
+\frametitle{buttons}
+\hyperlink{contents}{\beamerbutton{contents page}}
+
+\hyperlink{columns}{\beamergotobutton{columns page}}
+
+\hyperlink{pictures}{\beamerskipbutton{pictures page}}
+
+\hyperlink{pictures}{\beamerreturnbutton{pictures page}}
+\end{frame}
+
+\end{document}
