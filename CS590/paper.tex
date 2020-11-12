@@ -38,7 +38,7 @@
 
 \subsection{Characters}
 
-We introduce some stepping stones defining the tools used in the Fourier Analysis of boolean functions. Many of these tools can be defined using techniques from Representation Theory, but for the sake of briefity, we will not delve into those concepts here in detail. Instead, we will provide remarks and snippets on relevant topics as needed along with references to the standard literature at the end of the section. Our presentation follows that of \cite{hatami}. \newline
+We introduce some stepping stones defining the tools used in the Fourier Analysis of boolean functions. Many of these tools can be defined using techniques from Representation Theory of Finite Groups, but for the sake of briefity, we will not delve into those concepts here in detail. Instead, we will provide remarks and snippets on relevant topics along with references to some literature at the end of the section. Our presentation follows that of \cite{hatami}. \newline
 
 Let us first define some general concepts for any finite abelian group $G$. A group homomorphism from $\chi: G \rightarrow \mathbb{C}^*$ is called a \emph{character} of $G$ where $\mathbb{C}^* = \mathbb{C}/\{0\}$ is the multiplicative group of the complex numbers. We call the homomorphism $\chi_0:G \rightarrow \mathbb{C}^*, \; \chi_0 = 1$ the \emph{trivial character} of $G$. By definition, for $a,b \in G$,
 \begin{equation} \label{homo}
@@ -46,7 +46,7 @@ Let us first define some general concepts for any finite abelian group $G$. A gr
 \end{equation}
 for all characters $\chi$. \newline
 
-Consider the set whose elements are the characters of $G$ and whose binary operation is pointwise multiplication of complex-valued functions on $G$. This set is also an \emph{abelian group} by the following theorem:
+Consider the set whose elements are the \emph{characters} of $G$ and whose binary operation is \emph{pointwise multiplication} of complex-valued functions on $G$. This set is also an \emph{abelian group} by the following theorem:
 %
 \begin{theorem}
   If $G$ is a finite abelian group, then the characters of $G$ form an abelian group under pointwise multiplication.
@@ -73,20 +73,25 @@ Let us now consider the simplest finite abelian group, $\mathbb{Z}_n = \mathbb{Z
   \chi_j(x) = e^{ 2\pi i jx/n} \quad j \in [n], \; x \in \mathbb{Z}_n
 \end{equation}
 %
-We can decompose any finite abelian group $G$ into a direct product of finite cyclic groups $G \cong \mathbb{Z}_{n_1} \times \mathbb{Z}_{n_2} \cdots \times\mathbb{Z}_{n_k}$. If we decompose $x = \sum_{i \in [k]} x_i$ for $x \in G$, then the characters of $G$ are defined as
+We can decompose any finite abelian group $G$ into a direct product of finite cyclic groups $G \cong \mathbb{Z}_{n_1} \times \mathbb{Z}_{n_2} \cdots \times\mathbb{Z}_{n_k}$. If we decompose $x = \sum_{i \in [k]} x_i$ for $x_i \in \mathbb{Z}_{n_i},\; x \in G$, then the characters of $G$ are defined as
 %
 \begin{equation}
   \chi_a(x) = \prod_{i \in [k]} e^{2 \pi i a_k x_k/ n_k}
 \end{equation}
 where $x_i$ refers to the $i^{th}$ index of $x$. \newline
 
-We see that every element $a \in G$ has an unique associated character $\chi_a$. Furthermore
+\noindent We see that every element $a \in G$ has an unique associated character $\chi_a$. Furthermore
 %
 \begin{gather} \label{chargroup}
   \chi_{a+b}(x)  = \chi_{a}(x)\chi_{b}(x)
-\end{gather}
+\end{gather} \newline
 
-To define the Fourier transform, we must consider the Hilbert space $L_2(G)$ where $G$ endowed with the uniform probability measure i.e the discrete measure mapping each subset $H \subseteq G$ to $\frac{|H|}{|G|}$. This yields the standard inner product for maps $f,g \in L_2(G)$: \newline
+To define the Fourier transform, we must consider the Hilbert space $L_2(G)$ where $G$ endowed with the uniform probability measure i.e the discrete measure mapping each subset $H \subseteq G$ to $\frac{|H|}{|G|}$. These will be the complex-valued maps $f: G \rightarrow \mathbb{C}$ such that
+\begin{equation}
+  \frac{1}{|G|}\sum_{x \in G} |f(x)|^2 < \infty
+\end{equation}
+%
+\noindent This yields the standard inner product for maps $f,g \in L_2(G)$: \newline
 %
 \begin{equation}
   \langle f,g \rangle = \frac{1}{|G|}\sum_{x\in G} f(x)\overline{g(x)}= \mathbb{E}_x f(x)\overline{g(x)}
@@ -114,7 +119,7 @@ First, we prove a lemma:
 \begin{proof}
 We first note that $\langle \chi, \chi \rangle = \mathbb{E}_x|\chi(x)|^2 = 1$ since the image of character $\chi$ lies on the complex unit circle by the discussions above. Now given two non-trivial characters $\chi, \phi$
 $$ \langle \chi, \phi \rangle = \mathbb{E}_x \chi(x)\overline{\phi(x)} = \frac{1}{|G|} \sum_{x \in G} \chi\phi^{-1}(x)  = 0$$
-The last equality follows from Lemma \ref{totalsum} since $\chi\phi^{-1}$ must also be a non-trivial character if $\chi, \phi$ are non-trivial characters. The case where one of the character is trivial also follows from the lemma.
+The last equality follows from Lemma \ref{totalsum} since $\chi\phi^{-1}$ must also be a non-trivial character if $\chi, \phi$ are non-trivial characters. The case where one of the characters is trivial also follows from the lemma.
 Finally, observe that $L_2(G)$ is $|G|$-dimensional as a vector space by considering the dual of $G$. We know that there are at least $|G|$-characters, showing that the characters span $L_2(G)$. However, from the lemma, the characters must also be pairwise orthgonal to each other. This yields that the characters of $G$ form an \emph{orthonormal basis} of $L_2(G)$ and that there must be exactly $|G|$ characters in $\hat{G}$. Finally, by using \ref{chargroup}, it follows that the map $a \mapsto \chi_a$ must be a group isomorphism, so $G \cong \hat{G}$.
 \end{proof}
 
@@ -140,24 +145,24 @@ Let $\hat{f}: \hat{G} \rightarrow \mathbb{C}$ be the complex-valued function def
   \hat{f}(\chi_a) =  \langle f, \chi_a \rangle, \; a \in G
 \end{equation}
 %
-We can iterate this for all characters to get a direct sum decomposition for any $f \in L_2(G)$ which we call the \emph{Fourier Inversion Formula}\newline.
+The function $\hat{f}$ is deemed as the \emph{Fourier Transform of $f$}. By iterating this for all characters, we get a direct sum decomposition for any $f \in L_2(G)$ which we call the \emph{Fourier Inversion Formula}\newline
 %
 \begin{equation}
   f = \sum_{a \in G} \hat{f}(\chi_a)\chi_a
 \end{equation}
 
-It can be shown that the map $f \mapsto \hat{f}$ is linear by the left-linearity of the inner product. This linear map is the \emph{Fourier Transform on $G$} and (\ref{orthonormal}) shows that the decomposition is unique. Hence the Fourier Transform can be viewed as a linear isomorphism $\hat{}:L_2(G) \rightarrow L_2(\hat{G})$. The complex value $\hat{f}(\chi_a)$ is called the \emph{Fourier coefficient} associated to $\chi_a$.
+\noindent It can be shown that the map $f \mapsto \hat{f}$ is linear by the left-linearity of the inner product. This linear map is the \emph{Fourier Transform on $G$} and (\ref{orthonormal}) shows that the decomposition is unique. Hence the Fourier Transform can be viewed as a linear isomorphism $\hat{}:L_2(G) \rightarrow L_2(\hat{G})$. The complex value $\hat{f}(\chi_a)$ is called the \emph{Fourier coefficient} associated to $\chi_a$.
 %
 \begin{notation}
   We will sometimes denote $\hat{f}(a)$ for $\hat{f}(\chi_a)$.
 \end{notation}
 %
-From the above definition, we directly calculate that
+\noindent From the above definition, we directly calculate that
 \begin{equation}
   \hat{f}(0) = \langle f, \chi_0 \rangle = \mathbb{E}_x f(x)
 \end{equation}
 
-A simple application of the Fourier Transform yields an useful identity which will be instrumental in our formulation of the Fourier tail of a boolean function.
+\noindent Additionally, a simple application of the Fourier Transform yields an useful identity which will be instrumental in our formulation of the Fourier tail of a boolean function.
 
 \begin{theorem}{(Parseval's Identity)}
   Let $f \in L_2(G)$. Then
@@ -168,8 +173,8 @@ A simple application of the Fourier Transform yields an useful identity which wi
   $$ ||f||^2_2 = \langle f, f \rangle = \langle \sum_{a \in G} \hat{f}(a) \chi_a,  \sum_{b \in G} \hat{f}(b) \chi_b \rangle = \sum_{a,b \in G} \hat{f}(a)\overline{\hat{f}(b)}\langle \chi_a, \chi_b \rangle = \sum_{a \in G} |\hat{f}(a)|^2 $$
   The last equality is just the orthonormality of the characters (\ref{orthonormal}).
 \end{proof}
-%
-By combining Parseval's Identity with the observation that $||\hat{f}||_2^2 = \langle \hat{f}, \hat{f} \rangle = \frac{1}{|G|}\sum_{a \in G} |\hat{f}(a)|^2$, we arrive at the \emph{Plancheral Formula}
+
+\noindent By combining Parseval's Identity with the observation that $||\hat{f}||_2^2 = \langle \hat{f}, \hat{f} \rangle = \frac{1}{|G|}\sum_{a \in G} |\hat{f}(a)|^2$, we arrive at the \emph{Plancheral Formula}
 
 \begin{theorem}{(Plancheral Formula)}
   $$||\hat{f}||_2 = \sqrt{|G|}\cdot||f||_2$$
@@ -200,14 +205,13 @@ By combining Parseval's Identity with the observation that $||\hat{f}||_2^2 = \l
  \end{align}
  There is an exact formula for calculating the Fourier coefficients for Maj$_{n}$. It can be found in \cite{odonnell} page 108.
 \end{example}
-%
-We end with a defintion. Recall that we will identify $n$-bit strings with subsets $S \subseteq [n]$.
+\noindent We end with a definition. Recall that we will identify $n$-bit strings with subsets $S \subseteq [n]$.
 %
 \begin{definition}
   Let $f:\{0,1\}^n \rightarrow \{0,1\}$ be an $n$-ary boolean function. The \emph{Fourier degree} of $f$, denoted by def$_{\mathcal{F}}(f)$, is the largest $|S|$ such that $\hat{f}(S) \neq 0$.
 \end{definition}
 %
-The Fourier Transform here is over the group $\mathbb{Z}_2^n$.
+\noindent It's worth stressing that the Fourier Transform here is over the group $\mathbb{Z}_2^n$.
 
 \begin{remark}{\emph{(Further Topics)}}
   There are still many essential concepts in the Fourier Analysis of boolean functions which we have not covered in this chapter. For instance, one can endow a multiplication operator to $L_2(G)$ called the \emph{convolution operator}
@@ -229,7 +233,7 @@ We now present the LMN (Linial-Mansour-Nisan) Theorem concerning the Fourier tai
   The notation symbols $f^{=k},f^{\geq k}$ are defined in the same manner.
 \end{definition}
 %
-Let us state the relevant theorem first before proceeding further
+\noindent Let us state the relevant theorem first before proceeding further
 %
 \begin{theorem} (Linial, Mansour, Nisan \cite{lmn}) \label{lmn}
     Let $f$ be a boolean fucntion computed by a circuit of depth $d$ and size $M$ and let $t$ be any non-negative integer. Then
@@ -238,12 +242,12 @@ Let us state the relevant theorem first before proceeding further
     \end{equation}
 \end{theorem}
 
-The theorem reveals that the $t$-tails of the Fourier spectrum, i.e strings indexed by sets $|S| > t$, become exponentially small in $t$ for boolean functions in $\AC^0$. To prove the theorem, we need version of the H\aa stad's switching lemma shown in \cite{hastad}.
+\noindent The theorem reveals that the $t$-tails of the Fourier spectrum, i.e strings indexed by sets $|S| > t$, become exponentially small in $t$ for boolean functions in $\AC^0$. To prove the theorem, we need version of the H\aa stad's switching lemma shown in \cite{hastad}.
 %
 \begin{theorem}{(\emph{H\aa stad}, \cite{hastad})}
   Let $f$ be given by a CNF-formula where each clause has size at most $t$, and choose a random restriction $\rho$ with parameter $p$ such that $Pr[\rho(x_i)] = p$ for all input variables $x_i$. With probability of at least $1 - (5pt)^s$, $f_{\rho}$ can be expressed as a DNF formula where each clause has size of at most $s$, and the clause all accept disjoint sets of inputs i.e no string $x \in \{0,1\}^n$ satisfies more than one clause.
 \end{theorem}
-From H\aa stad's switching lemma, we derive two integral corollaries:
+\noindent From H\aa stad's switching lemma, we derive two integral corollaries:
 %
 \begin{corollary} \label{hastaddegree}
 Let $f$ be a boolean function computed by a CNF of bottom fan-in of at most $t$, and $\rho$ is a $p$-random restriction, then
@@ -273,8 +277,8 @@ Let $f$ be a boolean function computed by a CNF of bottom fan-in of at most $t$,
   Since we assume that the $\AC^0$ circuit computing $f$ is in alternating normal form, once we invoke the switching lemma for the bottom two layer gates, we can merge the two $\vee$-gates to reduce the depth by one. The switching tells us that with probability of at least $1 - (5\frac{1}{10s}s)^s < 2^{-s}$, we can reduce the depth in each step such that the gates of distance two from the input variables have bottom fan-in of at most $s$. By the end of our depth-reduction routine, we are left with a CNF with bottom fan-in of at most $s$. Invoking Corollary (\ref{hastaddegree}) tells us that our final restricted function $f_{\rho_0\rho_1...\rho_{d-1}}$ has Fourier degree of at most $s$ with probability $< 2^{-s}$. The final bound arises from the observation that we applied the beginning analysis for each of the bottom gates exactly once, the switching lemma exactly once for each gate except for the output gate, and we invoked the corollary for the output gate. Each step contributed probability of $< 2^{-s}$.
 \end{proof}
 %
-Corollary \ref{fouriertail} tells us that the probability of the Fourier degree exceeding $s$ decays exponentially with $s$ given that we set our probability parameter to a specific quantity $p = \frac{1}{10^ds^{d-1}}$.
-
+\noindent Corollary \ref{fouriertail} tells us that the probability of the Fourier degree exceeding $s$ decays exponentially with $s$ given that we set our probability parameter to a specific quantity $p = \frac{1}{10^ds^{d-1}}$.
+%
 \begin{proof}{\emph{(Proof of Theorem \ref{lmn})}}
 We begin by first setting our probability parameter $p \leq \frac{1}{10^dk^{d-1}}$. The values $p, k$ will be fixed later to invoke Corollary \ref{fouriertail}.
 We sample a random restriction $\rho$ by sampling some $V \subseteq$ to be the indices which are not set to $*$. Each index has a $1-p$ probability of being set to either $0,1$. For each index in $V$, we uniformly sample some bit string in $\{0,1\}^{|V|}$ to fix the indices contained in $V$. If we recall that our characters are defined as $\chi_A(x) = (-1)^{\sum_{i \in A} x_i}$ and let $x_{V}$ be the restriction of string $x$ on the input indices to those found in $V$ \newline
@@ -286,7 +290,7 @@ We sample a random restriction $\rho$ by sampling some $V \subseteq$ to be the i
 \end{align}
 %
 Let $f_{x_V} = f(x_V,*)$ as a function $f_{x_V}: \{0,1\}^{|x_{\overline{V}}|} \rightarrow \{0,1\}$.
-We can rearrange the Fourier decomposition of any function $f$ as follows:
+Rearrange the Fourier decomposition of any function $f$ as follows:
 %
 \begin{align}
 f(x)
@@ -318,7 +322,7 @@ The second-to-last inequality follows since $||f_\rho^{>k}||_2^2 \leq 1$. So we 
 %
 \begin{lemma}
   For any boolean function $f$ and $0 < p < 1$,
-  $$ \sum_{|S| > t} |\hat{f}(S)|^2 \leq 2 \mathbb{E}_T \sum_{ \substack {S \subseteq [n] \\ |S \cap \overline{V}| > k}} |\hat{f}(S)|^2 $$
+  $$ \sum_{|S| > t} |\hat{f}(S)|^2 \leq 2 \cdot \mathbb{E}_T \sum_{ \substack {S \subseteq [n] \\ |S \cap \overline{V}| > k}} |\hat{f}(S)|^2 $$
   for $k = pt/2$
 \end{lemma}
 %
@@ -331,7 +335,7 @@ The second-to-last inequality follows since $||f_\rho^{>k}||_2^2 \leq 1$. So we 
   $$  Pr[|A \cap \overline{T}| < (1- \frac{2|S| - t}{2|S|})p|S|] \leq  e^{-\frac{pt }{8}}$$ Thus, $Pr[|A \cap \overline{T}| > \frac{pt}{2}] \geq 1 - e^{-\frac{pt }{8}} \geq \frac{1}{2}$. This shows that:
     $$ \sum_{|S| > t} \frac{1}{2}|\hat{f}(S)|^2 \leq \mathbb{E}_T \sum_{ \substack {S \subseteq [n] \\ |S \cap \overline{V}| > k}} |\hat{f}(S)|^2 $$ by (\ref{ineq1}).
 \end{proof}
-To finish the proof, set $p = \frac{1}{10t^{(d-1)/d}}$ and $k = t^{1/d}/20$. Direct calculation shows that $p \leq \frac{1}{10^dk^{d-1}}$. This allows to us to invoke Corollary $(\ref{fouriertail})$ through (\ref{coroinvoke}) to yield the desired outcome:
+\noindent To finish the proof, set $p = \frac{1}{10t^{(d-1)/d}}$ and $k = t^{1/d}/20$. Direct calculation shows that $p \leq \frac{1}{10^dk^{d-1}}$. This allows to us to invoke Corollary $(\ref{fouriertail})$ through (\ref{coroinvoke}) to yield the desired outcome:
 \begin{equation}
   \sum_{|S| > t} |\hat{f}(S)|^2 \leq 2M2^{-t^{1/d}/20}
 \end{equation}
@@ -350,7 +354,7 @@ $$f = \sum_{S \subseteq [n]} \hat{f}(S) \prod_{i \in S} x_i $$ as a polynomial w
 This follows from setting $t = \mathcal{O}((\log{n/\epsilon})^d)$ and invoking the LMN theorem to conclude that $||f - f^{\leq t}|| < \epsilon$.
 \end{proof}
 %
-This gives another scheme of approximating functions in $\AC^0$ through low-degree polynomials, complementing the results of \cite{razborov}, \cite{smolensky}. Here we make the extra distinction that our polynomials are also of low Fourier degree.
+\noindent This gives another scheme of approximating functions in $\AC^0$ through low-degree polynomials, complementing the results of \cite{razborov}, \cite{smolensky}. Here we make the extra distinction that our polynomials are also of low Fourier degree.
 
 \subsection{Sensitivity and Influence}
 LMN also shows that functions in $\AC^0$ have low average sensitivity i.e its output is not very sensitive to changes to the input.
@@ -366,13 +370,13 @@ LMN also shows that functions in $\AC^0$ have low average sensitivity i.e its ou
   \end{equation}
 \end{definition}
 
-The influence of $f$ can be expressed in terms of its Fourier coefficients:
+\noindent The influence of $f$ can be expressed in terms of its Fourier coefficients:
 
 \begin{equation}
   I_f = 4\sum_{S \subseteq [n]} |S||\hat{f}(s)|^2
 \end{equation}
 
-By combining this equivalence with Theorem (\ref{lmn}), we deduce the following upper bound on the influence of a function in $\AC^0$
+\noindent By combining this equivalence with Theorem (\ref{lmn}), we deduce the following upper bound on the influence of a function in $\AC^0$
 
 \begin{lemma} \label{influence}
   Let $f \in \AC^0$ be of depth $d$. Then
@@ -381,7 +385,7 @@ By combining this equivalence with Theorem (\ref{lmn}), we deduce the following 
   \end{equation}
 \end{lemma}
 
-Lemma (\ref{influence}) shows that functions in $\AC^0$  are not suitable for constructing universal hash functions (\cite{mansour}) and pseudorandom function generators (\cite{lmn}). We give a rough definition and sketch based on the treatment found in (\cite{lmn}.
+\noindent Lemma (\ref{influence}) shows that functions in $\AC^0$  are not suitable for constructing universal hash functions (\cite{mansour}) and pseudorandom function generators (\cite{lmn}). We give a rough definition and sketch based on the treatment found in (\cite{lmn}.
 
 \begin{definition}
   A function $f:\{0,1\}^m \times \{0,1\}^n \rightarrow \{0,1\}$ is called a \emph{pseudorandom function generator} if there exists no polynomial-time oracle Turing machine which can distinguish between the outputs from a true random oracle versus $f(s,_)$ for some random seed $s \in \{0,1\}^m$.
@@ -390,14 +394,25 @@ Lemma (\ref{influence}) shows that functions in $\AC^0$  are not suitable for co
 \begin{lemma}
   No pseudorandom function generators exist in $\AC^0$
 \end{lemma}
-By taking advantage of the low average sensitivity, we can simply perturb the input slightly and check if the output of $f$ changes. If it doesn't, there is a good chance that
+\noindent By taking advantage of the low average sensitivity, we can simply perturb the input slightly and check if the output of $f$ changes. If it doesn't, there is a good chance that
 it lies in $\AC^0$.
 
 \begin{remark}{(\emph{Some concluding remarks})}
-  It is worth noting that the bounds shown by Linai-Mansour-Nisan have been improved by Tal (\cite{tal}). Specifically, he showed that for any $n$-ary boolean function $f$ with size $M$ and depth $d$,\
+  he bounds shown by Linai-Mansour-Nisan have been improved by Tal (\cite{tal}). Specifically, he showed that for any $n$-ary boolean function $f$ with size $M$ and depth $d$,\
   \begin{equation}
     \sum_{|S| > t} |\hat{f}(S)|^2 = 2^{\Omega(k/\log^{d-1}{M})}
   \end{equation}
+  Furthermore, he showed a converse to the proof direction employed by Linial et. al \cite{lmn}. Recall that in our proof we started with a switching lemma which bound the probability of the randomly-restricted function's Fourier degree exceeding a certain value. We then used this switching lemma to bound the tail Fourier spectrum. Tal showed a form of the opposite direction in \cite{talshrinkage}.
+  \begin{theorem}{\emph{(Tal \cite{talshrinkage})}}
+    Let $f\{1,-1\}^n \rightarrow \{-1,1\}$ be a Boolean function, let t,$C > 0$ such that for all $k$, $\sum_{|S| > k} |\hat{f}(S)|^2 \leq C e^{k/t}$ and let $\rho$ be a $p$-random restriction, then for all $d$, $Pr[\text{deg}(f_{\rho})] \leq C \cdot (4pt)^d$.
+  \end{theorem}
+  His work uses results in Quantum Query Complexity to ultimately culminate to another proof of the shrinkage exponent of Demorgan Formulae under random restrictions:
+  \begin{theorem}{\emph{(Tal \cite{talshrinkage})}}
+    Let $f$ be a Boolean function. For $p > 0$,
+    \begin{equation}
+      \mathbb{E}_{\rho \sim \mathcal{R}_p}[\mathcal{L}(f_\rho)] = \mathcal{O} \left(p^2\mathcal{L}(f) + p\sqrt{\mathcal{L}(f)} \right)
+    \end{equation}
+  \end{theorem}
 \end{remark}
 %    Bibliographies can be prepared with BibTeX using amsplain,
 %    amsalpha, or (for "historical" overviews) natbib style.
