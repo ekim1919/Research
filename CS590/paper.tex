@@ -37,7 +37,6 @@
 \section{Fourier Analysis of Boolean Functions}
 
 \subsection{Characters}
-
 We introduce some stepping stones defining the tools used in the Fourier Analysis of boolean functions. Many of these tools can be defined using techniques from Representation Theory of Finite Groups, but for the sake of briefity, we will not delve into those concepts here in detail. Instead, we will provide remarks and snippets on relevant topics along with references to some literature at the end of the section. Our presentation follows that of \cite{hatami}. \newline
 
 Let us first define some general concepts for any finite abelian group $G$. A group homomorphism from $\chi: G \rightarrow \mathbb{C}^*$ is called a \emph{character} of $G$ where $\mathbb{C}^* = \mathbb{C}/\{0\}$ is the multiplicative group of the complex numbers. We call the homomorphism $\chi_0:G \rightarrow \mathbb{C}^*, \; \chi_0 = 1$ the \emph{trivial character} of $G$. By definition, for $a,b \in G$,
@@ -91,7 +90,7 @@ To define the Fourier transform, we must consider the Hilbert space $L_2(G)$ whe
   \frac{1}{|G|}\sum_{x \in G} |f(x)|^2 < \infty
 \end{equation}
 %
-\noindent This yields the standard inner product for maps $f,g \in L_2(G)$: \newline
+\noindent which yields the standard inner product for maps $f,g \in L_2(G)$: \newline
 %
 \begin{equation}
   \langle f,g \rangle = \frac{1}{|G|}\sum_{x\in G} f(x)\overline{g(x)}= \mathbb{E}_x f(x)\overline{g(x)}
@@ -222,7 +221,7 @@ The function $\hat{f}$ is deemed as the \emph{Fourier Transform of $f$}. By iter
 
 \begin{remark}{\emph{(Generalizations of Fourier Analysis)}}
 The above properties on characters can be shown through techniques in Representation Theory. For instance, we know representations of finite groups are group homomorphisms into the group of linear automorphisms of a suitable finite-dimensional complex vector space $\rho: G \rightarrow GL(\mathbb{C}^n)$. The \emph{characters} of $\rho$ are defined as $\chi(x) = Tr(\rho(x))$ where $Tr$ is the trace operator. It turns out that the representations of finite abelian groups are one-dimensional i.e isomorphic to $\mathbb{C}$. Thus, $\rho(x)$ will just be multiplying $\mathbb{C}$ by some scalar $\lambda_x \in \mathbb{C}^*$. In this case, we can show that indeed for any $a,b \in G$ and $\chi$ any character of $G$:
-$$ \chi(a+b) = Tr(\rho(a+b)) = Tr(\rho(a)\circ\rho(b)) = \lambda_a \lambda_b = Tr(\rho(a))Tr(\rho(b)) = \chi(a)\chi(b)$$ Note that this relation does not hold for arbitrary finite groups. The genealizations of the Fourier Transform generally lie in \emph{Harmonic Analysis}. For more information on the Representation Theory of Finite Groups, see \cite{serre}, \cite{webb}.
+$$ \chi(a+b) = Tr(\rho(a+b)) = Tr(\rho(a)\circ\rho(b)) = \lambda_a \lambda_b = Tr(\rho(a))Tr(\rho(b)) = \chi(a)\chi(b)$$ Note that this relation does not hold for arbitrary finite groups since the trace is generally not multiplicative. The genealizations of Fourier Analysis generally lie in \emph{Harmonic Analysis}. For more information on the Representation Theory of Finite Groups, see \cite{serre}, \cite{webb}.
 \end{remark}
 
 \section{Linial-Mansour-Nisan Theorem}
@@ -274,7 +273,7 @@ Let $f$ be a boolean function computed by a CNF of bottom fan-in of at most $t$,
      \item Suppose a gate initially has fan-in of at most $2s$. The probability of $\rho$ setting at least $s$ of the input variables to $*$ is ${2s \choose s}(1/10)^s < 2^{-s}$
    \end{enumerate}
    %
-  Since we assume that the $\AC^0$ circuit computing $f$ is in alternating normal form, once we invoke the switching lemma for the bottom two layer gates, we can merge the two $\vee$-gates to reduce the depth by one. The switching tells us that with probability of at least $1 - (5\frac{1}{10s}s)^s < 2^{-s}$, we can reduce the depth in each step such that the gates of distance two from the input variables have bottom fan-in of at most $s$. By the end of our depth-reduction routine, we are left with a CNF with bottom fan-in of at most $s$. Invoking Corollary (\ref{hastaddegree}) tells us that our final restricted function $f_{\rho_0\rho_1...\rho_{d-1}}$ has Fourier degree of at most $s$ with probability $< 2^{-s}$. The final bound arises from the observation that we applied the beginning analysis for each of the bottom gates exactly once, the switching lemma exactly once for each gate except for the output gate, and we invoked the corollary for the output gate. Each step contributed probability of $< 2^{-s}$.
+  Since we assume that the $\AC^0$ circuit computing $f$ is in alternating normal form, once we invoke the switching lemma for the bottom two layer gates, we can merge the two $\vee$-gates to reduce the depth by one. The switching tells us that with probability of at least $1 - (5\frac{1}{10s}s)^s < 2^{-s}$, we can reduce the depth in each step such that the gates of distance two from the input variables have bottom fan-in of at most $s$. By the end of our depth-reduction routine, we are left with a CNF with bottom fan-in of at most $s$. Invoking Corollary (\ref{hastaddegree}) tells us that our final restricted function $f_{\rho_0\rho_1...\rho_{d-1}}$ has Fourier degree of at most $s$ with probability $< 2^{-s}$. The final bound arises from the observation that we applied the beginning analysis for each of the bottom gates exactly once, the switching lemma exactly once for each gate above the bottom gates except for the output gate, and we invoked the corollary for the output gate. Each step contributed probability $< 2^{-s}$.
 \end{proof}
 %
 \noindent Corollary \ref{fouriertail} tells us that the probability of the Fourier degree exceeding $s$ decays exponentially with $s$ given that we set our probability parameter to a specific quantity $p = \frac{1}{10^ds^{d-1}}$.
@@ -398,15 +397,15 @@ LMN also shows that functions in $\AC^0$ have low average sensitivity i.e its ou
 it lies in $\AC^0$.
 
 \begin{remark}{(\emph{Some concluding remarks})}
-  he bounds shown by Linai-Mansour-Nisan have been improved by Tal (\cite{tal}). Specifically, he showed that for any $n$-ary boolean function $f$ with size $M$ and depth $d$,\
+  The bounds shown by Linai-Mansour-Nisan have been improved by Tal (\cite{tal}). Specifically, he showed that for any $n$-ary boolean function $f$ with size $M$ and depth $d$
   \begin{equation}
     \sum_{|S| > t} |\hat{f}(S)|^2 = 2^{\Omega(k/\log^{d-1}{M})}
   \end{equation}
   Furthermore, he showed a converse to the proof direction employed by Linial et. al \cite{lmn}. Recall that in our proof we started with a switching lemma which bound the probability of the randomly-restricted function's Fourier degree exceeding a certain value. We then used this switching lemma to bound the tail Fourier spectrum. Tal showed a form of the opposite direction in \cite{talshrinkage}.
   \begin{theorem}{\emph{(Tal \cite{talshrinkage})}}
-    Let $f\{1,-1\}^n \rightarrow \{-1,1\}$ be a Boolean function, let t,$C > 0$ such that for all $k$, $\sum_{|S| > k} |\hat{f}(S)|^2 \leq C e^{k/t}$ and let $\rho$ be a $p$-random restriction, then for all $d$, $Pr[\text{deg}(f_{\rho})] \leq C \cdot (4pt)^d$.
+    Let $f\{1,-1\}^n \rightarrow \{-1,1\}$ be a Boolean function, let $t,C > 0$ such that for all $k$, $\sum_{|S| > k} |\hat{f}(S)|^2 \leq C e^{k/t}$ and let $\rho$ be a $p$-random restriction, then for all $d$, $Pr[\text{deg}(f_{\rho})] \leq C \cdot (4pt)^d$.
   \end{theorem}
-  His work uses results in Quantum Query Complexity to ultimately culminate to another proof of the shrinkage exponent of Demorgan Formulae under random restrictions:
+  His work uses results in Quantum Query Complexity to ultimately culminate into another proof of the shrinkage exponent of Demorgan Formulae under random restrictions:
   \begin{theorem}{\emph{(Tal \cite{talshrinkage})}}
     Let $f$ be a Boolean function. For $p > 0$,
     \begin{equation}

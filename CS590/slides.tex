@@ -185,14 +185,15 @@ Let us first define some general concepts for any finite abelian group $G$.
     \pause
     \item
     Recall how we sample a random restriction $\rho$ by sampling some $V \subseteq [n]$ to be the indices which are \emph{not} set to $*$. Each index has a $1-p$ probability of being set to either $0,1$. For each index in $V$, we uniformly sample some bit string in $\{0,1\}^{|V|}$ to fix the indices contained in $V$.
-    \pause
-    \item Let $x_{V}$ be the restriction of string $x$ on the input indices to those found in $V$
+
   \end{enumerate}
 \end{frame}
 
 \begin{frame}
   \frametitle{Proof of LMN Theorem}
   \begin{enumerate}
+    \item Let $x_{V}$ be the restriction of string $x$ on the input indices to those found in $V$
+    \pause
     \item If we recall that our characters are defined as $\chi_A(x) = (-1)^{\sum_{i \in A} x_i}$
     \pause
     \begin{block}{How characters separate}
