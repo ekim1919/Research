@@ -3,6 +3,8 @@
 \addtolength{\textwidth}{-2in}
 \calclayout
 
+\usepackage{appendix}
+
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}{Corollary}[theorem]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -34,29 +36,32 @@
 
 \section{Introduction}
 
-The power of randomness in computation is a cornerstone of contemporary computation theory as evidenced by decades of beautiful, celebrated results. Quantum Information is, by no means, a stranger to this trend. Numerous applications of random unitaries have been discovered in the areas of quantum tomography, cryptography, and, rather naturally, randomized algorithms. To gain access to uniformly-sampled elements from $\mathbb{U}(d)$, one must sample from the Haar distribution over $\mathbb{U}(d)$ where $\mathbb{U}(d)$ denotes the group of unitary $d \times d$ matrices. One method of sampling from the Haar distribution is to apply local random unitaries sampled from distributions over lower-dimensional unitary groups. For example, if we consider an $n$-qubit system, one method of sampling from the Haar distribution over $\mathbb{U}(2^n)$ would be through the following scheme:
+The power of randomness in computation is a cornerstone of contemporary computation theory as evidenced by decades of beautiful, celebrated results. Quantum Information has not become stranger to this trend. Numerous applications of random unitaries have been discovered in the areas of quantum tomography, quantum cryptography, and, rather naturally, quantum algorithms. To gain access to uniformly-sampled elements from $\mathbb{U}(d)$, one must sample from the Haar distribution over $\mathbb{U}(d)$ where $\mathbb{U}(d)$ denotes the group of unitary $d \times d$ matrices. One method of sampling from the Haar distribution is to apply local random unitaries sampled from distributions over lower-dimensional unitary groups. For example, if we consider an $n$-qubit system, one method of sampling from the Haar distribution over $\mathbb{U}(2^n)$ would be through the following scheme:
 \begin{enumerate}
   \item Sample from the Haar distribution over $\mathbb{U}(4)$ to produce a random gate $G$
   \item Uniformly pick two distinct qubits and locally apply $G$ to the pair.
 \end{enumerate}
 However, this becomes computationally infeasible as even reasonably approximating the Haar distribution under this manner requires an exponential number of local 2-qubit gates \cite{knill}. This hurdle motivates us to study the construction of efficient $k$-designs i.e distributions over $\mathbb{U}(4)$ such that sampling over these distributions and applying our scheme above will converge to good approximations of the $k^{th}$ moments of the Haar distributon over $\mathbb{U}(2^n)$. To this end, we begin with annotations of the seminal paper by Harrow and Low \cite{harrlow}. We first introduce concepts germane to the area of efficient $k$-designs and summarize the techniques employed in the analyses presented in the paper.
-nally infeasible as the number of local random unitaries grows exponentially in the number of qubits.
 
 \section{Approximate 2-designs}
 
 \subsection{Definitions and Motivations}
 In \cite{harrlow}, the authors tackle the problem of approximate $2$-designs, specifically \emph{unitary} $2$-designs. The central result of the paper claims that the scheme of applying sampled $2$-qubit unitaries from certain distributions with a $k$-gapped property converge to the second moment of the Haar distribution rapidly. The crux of the rapid convergence argument relies on mapping the evolution of an initial state under our random circuit to that of a Markov chain's.
-Consequently, the analysis becomes amenable to classic techniques created to study mixing times of Markov chains. To begin, we first state the relevant definitions as employed by Harrow and Low.
+Consequently, the analysis becomes amenable to classic techniques created to study mixing times of Markov chains. To begin, we first state the relevant definitions as introduced by Harrow and Low.
+%
+\begin{remark}
+  As dissecting every proof in \cite{harrlow} may unnecessarily length this report, we occasionally omit proofs of lemmas. Some major theorems will have their proofs delegated to the appendix of this report.
+\end{remark}
 
 \begin{definition}
   An ensemble of operators $\mathcal{E} = \{p_i, U_i\}$ over $\mathbb{U}(d)$ is called an \emph{(exact) unitary $k$-design} if $\mathcal{G}_W = \mathcal{G}_H$ where
-  \begin{gather}
-    \mathcal{G}_W(\rho) = \sum_{i} p_i U_i^{\otimes k}\rho (U_i^{\dagger})^{\otimes k} \\
-    \mathcal{G}_H(\rho) = \int_{\mathbb{U}(d)} U^{\otimes k} \rho (U^\dagger)^{\otimes k} \; dU
-  \end{gather}
+  \begin{align}
+    & \mathcal{G}_W(\rho) = \sum_{i} p_i U_i^{\otimes k}\rho (U_i^{\dagger})^{\otimes k} \\
+    & \mathcal{G}_H(\rho) = \int_{\mathbb{U}(d)} U^{\otimes k} \rho (U^\dagger)^{\otimes k} \; dU
+  \end{align}
 \end{definition}
 %
- We would naturally like to define some distance between $\mathcal{G}_W$ and $\mathcal{G}_H$. One formulation involves interpreting the two $\mathcal{G}_W, \mathcal{G}_H$ as quantum channels to utilize the diamond norm:
+ We would naturally like to define some distance between $\mathcal{G}_W$ and $\mathcal{G}_H$. One formulation involves interpreting the two $\mathcal{G}_W, \mathcal{G}_H$ as quantum channels in order to utilize the diamond norm:
 %
 \begin{definition}
   The diamond norm of an operator $T$ is defined as
@@ -92,7 +97,7 @@ As discussed in the introduction above, the unitary constructed by sampling from
 \end{equation}
 %
 \begin{remark}
-  This is the convolution product in the sense of measures. For example, if we let $\mu,\sigma$ be two Borel measures over $\mathbb{R}$, then the Borel measure $\mu \star \sigma$:
+  This is the convolution product in the context of \emph{measures}. For example, if we let $\mu,\sigma$ be two finite Borel measures over $\mathbb{R}$, then we have a new finite Borel measure on $\mathbb{R}$, $\mu \star \sigma$:
   $$ \mu \star \sigma(A) = \int_{\mathbb{R}}\int_{\mathbb{R}} \mathbb{I}_A(x+y) d\mu(x)d\sigma(y)$$
   where $\mathbb{I}$ is the characteristic function for measurable set $A \subset \mathbb{R}$.
 \end{remark}
@@ -101,14 +106,14 @@ As discussed in the introduction above, the unitary constructed by sampling from
 \begin{theorem} \label{maintheorem}
   Let $\mu$ be a $2$-copy gapped distribution over $\mathbb{U}(4)$ and $W$ a random circuit of length $t$ drawn from sampling $2$-qubit unitaries from $\mu$ and applying them to random pairs of of a system of $n$-qubits. Then there exists a constant $C$ depending on $\mu$ such that for $\epsilon > 0$, $\mathcal{G}_W$ is an $\epsilon$-approximate $2$-design if $t \geq n(n + \log 1/\epsilon)$.
 \end{theorem}
-
+%
 \begin{notation}
-  Let $\rho$ be an initial state such that $\rho \in \mathbb{C}^{2n}$. We can expand $\rho$ in terms of the Pauli basis $\{\sigma_i\}_{0 \leq i \leq 3}$ as follows:
+  Let $\rho$ be an initial state of an $n$-qubit system i.e $\rho \in (\mathbb{C}^{2})^{\otimes n}$. We can expand $\rho$ in terms of the Pauli basis $\{\sigma_i\}_{0 \leq i \leq 3}$ as follows:
   \begin{equation}
     \rho = \frac{1}{2^n} \sum_{p_1,p_2} \gamma_0(p_1,p_2) \sigma_{p_1} \otimes \sigma_{p_2}, \quad \gamma_0(p_1,p_2) \in \in \mathbb{C}
    \end{equation}
-  where $p_1,p_2$ run over all strings of Pauli indices of length $n$, $\{0,1,2,3\}^n$. Let $\gamma_W(p_1,p_2)$ be the coefficient of the term $\sigma_{p_1} \otimes \sigma_{p_2}$ for $\rho_W = W^{\otimes 2} \rho (W^\dagger)^{\otimes 2}$. Extending this notation allows us to express the expected coefficient after $t$-samples from our distribution $\mu$ as
-  $\gamma_t(p_1,p_2) = \mathbb{E}_W [\gamma_W(p_1,p_2)]$, averaging over all $t$-length random circuits.
+  where $p_1,p_2$ run over all strings of Pauli indices of length $n$, $\{0,1,2,3\}^n$. Let $\gamma_W(p_1,p_2)$ be the coefficient of the term $\sigma_{p_1} \otimes \sigma_{p_2}$ for the output state after applying random circuit $W$, $\rho_W = W^{\otimes 2} \rho (W^\dagger)^{\otimes 2}$. Extending this notation allows us to express the expected coefficient after $t$-samples from our distribution $\mu$ as
+  $\gamma_t(p_1,p_2) = \mathbb{E}_W [\gamma_W(p_1,p_2)]$. Note that the expectation is taken over all $t$-length random circuits.
 \end{notation}
 %
 \begin{lemma}
@@ -135,6 +140,144 @@ As discussed in the introduction above, the unitary constructed by sampling from
 \end{corollary}
 
 \subsection{Analysis of Moments}
+
+We turn back to the general case and begin to define concepts and definitions for group $\mathbb{U}(d)$ and for $d$-qudit states. Set a Hermitian basis of $d \times d$ to be $\sigma_0,\sigma_1,\cdots \sigma_{d^2 -1}$ such that $\sigma_0 = I$. These basis elements span the $d$-qudit states. Here we stress that we sample our unitaries over the \emph{Haar distribution} over $\mathbb{U}(d)$. We denote sampling from the Haar distribution with the notation $U \sim \mathbb{U}(d)$ when necessary. Furthermore, our Hermitian basis operators are such that $Tr(\sigma_p\sigma_q) = d \cdot \delta_{p,q}$ i,e orthogonal under the Hilbert-Schmidt inner product. \newline
+
+\noindent Let ${\bf p} = (p_1, \cdots, p_k) \in \{0,1,\cdots, d^2 -1\}^k$ denote a $k$-string of basis indices. We will be interested in the quantity:
+%
+\begin{equation}
+  T({\bf p}) := \mathbb{E}_{U \sim \mathbb{U}(d)} \left[ U^{\otimes k} \sigma_{p_1} \otimes \sigma_{p_2} \otimes \cdots \otimes \sigma_{p_k} (U^\dagger)^{\otimes k} \right]
+\end{equation}
+This will be the expected state after applying a sampled unitary $U$ from the uniform distribution over $\mathbb{U}(d)$. Naturally, we can reexpress this resulting state into the $\sigma_p$ basis:
+%
+\begin{equation}
+  T({\bf p}) = \sum_{{\bf q}} \widehat{G}(\textbf{p},\textbf{q}) \sigma_{q_1} \otimes \cdots \otimes \sigma_{q_k}
+\end{equation}
+where the same is taken over all $k$-strings in $\{0, \cdots, d^2-1\}^k$. This allows us to define the matrix $\widehat{G}$ where the rows and columns are indiced by $k$-strings with entries $\widehat{G}(\textbf{q},\textbf{p})$. This matrix turns out to be a \emph{symmetric projector}.
+
+\begin{lemma}
+  The matrix $\widehat{G}$ above is symmetric i.e. $\widehat{G}(\textbf{p},\textbf{q}) = \widehat{G}(\textbf{q},\textbf{p})$
+\end{lemma}
+%
+\begin{proof}
+  By orthogonality:
+  \begin{align}
+    \widehat{G}(\textbf{q},\textbf{p})
+    & = d^{-k} \cdot Tr(\sigma_{q_1} \otimes \cdots \otimes \sigma_{q_k} T(\textbf{p}) ) \\
+    & = d^{-k} \mathbb{E}_{U}\left[ Tr(\sigma_{q_1} \otimes \cdots \otimes \sigma_{q_k}) U^{\otimes k} (\sigma_{p_1} \otimes \sigma_{p_2} \otimes \cdots \otimes \sigma_{p_k}) (U^\dagger)^{\otimes k}\right]
+  \end{align}
+\end{proof}
+%
+Note that the expectation and the trace operator commute by linearity of latter. The result follows from the cyclic invariance of trace.
+%
+\begin{lemma} \label{permfix}
+$\widehat{G}$ fixes permutation operators $P_{\pi}, \; \pi \in S_k$.
+\end{lemma}
+%
+These two results are all that is required to show that $\widehat{G}$ is indeed a projector.
+%
+\begin{theorem} \label{g-proj}
+  $\widehat{G}$ is a projector i.e. $\widehat{G}^2 = \widehat{G}$
+\end{theorem}
+%
+\begin{proof}
+  Expanding the matrix product shows that
+  \begin{align}
+     \widehat{G}(\textbf{p},\textbf{q})
+     & = \sum_{\textbf{q'}} \widehat{G}(\textbf{p},\textbf{q'})\widehat{G}(\textbf{q'},\textbf{q}) = \\
+     & = \sum_{\textbf{q'}} \widehat{G}(\textbf{p},\textbf{q'})
+          \left( d^{-k} \cdot Tr(\sigma_{q_1'} \otimes \cdots \otimes \sigma_{q_k'}T(\textbf{q})) \right)
+  \end{align}
+  By Schur-Weyl Duality, $T(\text{q})$ must be a linear combination of permutation operators ($T(\textbf{p})$ commutes with all unitaries of the form $U^{\otimes k}$ by the invariance of the Haar integral). However, by Lemma (\ref{permfix}) above, $\widehat{G}$ fixes the permuatation operators. To understand this more explicitly, rewrite the Lemmma (\ref{permfix}) as follows:
+  \begin{equation}
+    \sum_{\textbf{q}} \widehat{G}(\textbf{p},\textbf{q})\cdot Tr(\sigma_{q_1} \otimes \cdots \otimes \sigma_{q_k} P_\pi) = Tr(\sigma_{p_1} \otimes \cdots \otimes \sigma_{p_k}P_\pi)
+  \end{equation}
+  This simply expressing the equality $\widehat{G}P_\pi = P_\pi$ for permutation operator $p_\pi, \; \pi \in S_{k}$. By linearity of trace, the equality above reduces to
+  \begin{align}
+    \sum_{\textbf{q'}} \widehat{G}(\textbf{p},\textbf{q'})
+         \left( d^{-k} \cdot Tr(\sigma_{q_1'} \otimes \cdots \otimes \sigma_{q_k'}T(\textbf{q})) \right)
+         & = Tr(\sigma_{p_1} \otimes \cdots \otimes \sigma_{p_k} T(\text{q})) \\
+         & = \widehat{G}(\textbf{p},\textbf{q})
+  \end{align}
+\end{proof}
+
+\begin{corollary}
+$\widehat{G}$ has eigenvalues 0 and 1
+\end{corollary}
+
+\subsubsection{Explicit calculation of $T(\textbf{p})$}
+The calculation is divided into the two pertinent cases $k=1,2$. \newline
+
+\begin{enumerate}
+  \item \emph{(For $k = 1$)} For this case, a random unitary sampled from the uniform distribution will randomize the initial state. Thus:
+  $$
+  T(p) = \begin{cases}
+    \sigma_0 & p = 0 \\
+    0 & p \neq 0
+  \end{cases}
+  $$
+  \item \emph{(For $k=2$)} From Lemma (\ref{permfix}) and Theorem (\ref{g-proj}), $\widehat{G}$ must fix the only two permutation operators $I, \mathcal{F}$ where $\mathcal{F}$ is the swap operator on two qubits. We note that we will normalize the swap operator
+  %
+  \begin{equation}
+    \mathcal{F} = \frac{1}{d^2 -1 }\sum_{1 \leq q \leq d^2 -1} \sigma_{q} \otimes \sigma_{q}
+  \end{equation}
+  %
+  We then deduce the following about $\widehat{G}$: \newline
+    \begin{enumerate}
+      \item $\widehat{G}(p_1,p_2;q_1,q_2) = 0, \quad p_1 \neq p_2$ or $q_1 \neq q_2$
+      \begin{proof}
+        To see this, observe that both $I, \mathcal{F}$ have vanishing $\sigma_{q_1} \otimes \sigma_{q_2}$ components for $q_1 \neq q_2$. Thus, multiplying $\widehat{G}$ with either one should also result in vanishing $\sigma_{q_1} \otimes \sigma_{q_2}$ components. This with the fact that all other operators are sent to zero by $\widehat{G}$ yields the result.
+      \end{proof}
+
+      \item $\widehat{G}(p;0) = \delta_{p0}$ (Here we denote $\widehat{G}(p;0) := \widehat{G}(p,p;0,0)$)
+      \begin{proof}
+        This just derives from $\widehat{G}$ acting on $I$
+      \end{proof}
+
+      \item $\widehat{G}(p,a) = \frac{1}{d^2-1}, \quad a,p \neq 0$
+      \begin{proof}
+        As above, this results from $\widehat{G}$ acting on $\mathcal{F}$ along with the condition that it must send all other operators to zero.
+      \end{proof}
+    \end{enumerate}
+    We conclude from the definition of $T(p,q)$ for $p,q \in \{0,\cdots,d^2-1\}$ that
+    %
+    \begin{equation}
+      T(p,q) = \begin{cases}
+        0 \quad & p \neq q \\
+        \sigma_0 \otimes \sigma_0 & p = q = 0 \\
+        \frac{1}{d^2 - 1}\sum_{\ell \neq 0}  \sigma_\ell \otimes \sigma_\ell & p = q \neq 0
+      \end{cases}
+    \end{equation}
+\end{enumerate}
+%
+Recall that $T(p,q)$ refers to the expected \emph{state} from applying unitary $U \sim \mathbb{U}(d)$ to the basis state $\sigma_p \otimes \sigma_q$. From the determination above, it is simple to see that $U$ uniformly samples from all diagonal basis states when acting on $\sigma_p \otimes \sigma_p, \; p \neq 0$. Strikingly enough, applying $U \sim \mathbb{U}(d)$ conserves the total sum of the coefficients of the diagonal basis states.
+%
+\begin{lemma}
+  The total sum of the coefficients $\sum_{p} \gamma_0(p,p)$ is conserved by $U \sim \mathbb{U}(d)$ for state $\rho = \frac{1}{d}\sum_{p_1,p_2} \gamma_0(p_1,p_2) \sigma_{p_1} \otimes \sigma_{p_2}$.
+\end{lemma}
+%
+Normalizing this sum allows us to view it as a \emph{probability distribution}. Furthermore, the evolution of our random circuit scheme is amenable to Markov chain analysis. As an illustrative example, suppose we have an $n$-qubit system and so far have appied $t$ steps of our scheme. As per usual, we pick our $2$-qubit unitary $U \sim \mathbb{U}(4)$. Now if we were to pick qubits $1,2$ for our local unitary transformation, the expected \emph{coefficients} for step $t+1$ will work out to be
+%
+\begin{align}
+    \gamma_{t+1}(p_1,\cdots,p_n,q_1,\cdots,q_n) = \begin{cases}
+       0 & (p_1 ,p_2) \neq (q_1, q_2) \\
+       \gamma_t(0,0,\cdots, p_n, 0,0,\cdots,q_n ) & (p_1,p_2) = (q_1, q_2) = (0,0) \\
+       \frac{1}{15}\sum_{\substack{r_1,r_2 \\ r_1r_2 \neq 00}} \gamma_t(r_1,r_2,\cdots p_n,r_1,r_2,\cdots,q_n) & (p_1,p_2) = (q_1,q_2) \neq (0,0)
+    \end{cases}
+\end{align}
+It is worth reiterating that our random $2$-qubit unitary is only acting on the first two qubits non-trivially whereas every other qubit is acted on by identity. Our desired Markov chain is then defined naturally as such \newline
+%
+\begin{enumerate}
+  \item The states of the Markov chain are $\Omega = \{0,1,2,3\}^n$
+  \item The transitions adhere to the guidelines below: Suppose we start with a state indexed by string $\alpha = \alpha_1\cdots\alpha_n$
+    \begin{enumerate}
+      \item Pick two distinct sites $i < j$ uniformly at random.
+      \item If $i = j = 0$, remain at the same state. Otherwise pick $\beta_i\beta_j = \{0,1,2,3\}^2/\{00\}$ uniformly at random. Transition to the string
+      $$\alpha_1\alpha_2,\cdots\alpha_{i-1}\beta_i\alpha_{i+1}\cdots \alpha_{j-1}\beta_{j}\alpha_{j+1}\cdots\alpha_n$$
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Convergence of the Random Circuit}
 
 \newpage
 \bibliographystyle{amsplain}
