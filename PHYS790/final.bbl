@@ -7,6 +7,10 @@
 \providecommand{\href}[2]{#2}
 \begin{thebibliography}{1}
 
+\bibitem{cover}
+Thomas~M Cover, \emph{Elements of information theory}, John Wiley \& Sons,
+  1999.
+
 \bibitem{harrlow}
 Aram~W Harrow and Richard~A Low, \emph{Random quantum circuits are approximate
   2-designs}, Communications in Mathematical Physics \textbf{291} (2009),
@@ -15,5 +19,13 @@ Aram~W Harrow and Richard~A Low, \emph{Random quantum circuits are approximate
 \bibitem{knill}
 Emanuel Knill, \emph{Approximation by quantum circuits}, arXiv preprint
   quant-ph/9508006 (1995).
+
+\bibitem{montenegro}
+Ravi~R Montenegro and Prasad Tetali, \emph{Mathematical aspects of mixing times
+  in markov chains}, Now Publishers Inc, 2006.
+
+\bibitem{oliveira}
+Roberto Oliveira, Oscar~CO Dahlsten, and Martin~B Plenio, \emph{Efficient
+  generation of generic entanglement}, arXiv preprint quant-ph/0605126 (2006).
 
 \end{thebibliography}
