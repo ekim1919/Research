@@ -258,7 +258,7 @@ Recall that $T(p,q)$ refers to the expected \emph{state} from applying unitary $
   The total sum of the coefficients $\sum_{p} \gamma_0(p,p)$ is conserved by $U \sim \mathbb{U}(d)$ for state $\rho = \frac{1}{d}\sum_{p_1,p_2} \gamma_0(p_1,p_2) \sigma_{p_1} \otimes \sigma_{p_2}$.
 \end{lemma}
 %
-Normalizing this sum allows us to view it as a \emph{probability distribution}. Furthermore, the evolution of our random circuit scheme is amenable to Markov chain analysis. As an illustrative example, suppose we have an $n$-qubit system and so far have applied $t$ steps of our scheme. As per usual, we pick our $2$-qubit unitary $U \sim \mathbb{U}(4)$. Now if we were to pick qubits $1,2$, our random $2$-qubit unitary would only act on the first two qubits non-trivially whereas every other qubit would just transform via the identity map. By the explicit calculation shown in Equation \ref{concreteT}, the expected \emph{coefficients} for step $t+1$ will work out to be
+Normalizing this sum allows us to view it as a \emph{probability distribution}. Furthermore, the evolution of our random circuit scheme is amenable to Markov chain analysis. As an illustrative example, suppose we have an $n$-qubit system and so far have applied $t$ steps of our scheme. As per usual, we pick our $2$-qubit unitary $U \sim \mathbb{U}(4)$. Now if we were to pick qubits $1,2$, our random $2$-qubit unitary would only act on the first two qubits non-trivially whereas every other qubit would just transform via the identity map. By the explicit calculation shown in Equation \ref{concreteT} and linearity, the expected \emph{coefficients} for step $t+1$ will work out to be
 %
 \begin{align} \label{evolexample}
     \gamma_{t+1}(p_1,\cdots,p_n,q_1,\cdots,q_n) = \begin{cases}
@@ -282,6 +282,7 @@ Normalizing this sum allows us to view it as a \emph{probability distribution}. 
       \end{enumerate}
   \end{enumerate}
 \end{theorem}
+%
 In the context of the example above, if we start with the coeffcient $\gamma_t(\textbf{q},\textbf{q})$ for $q \in \{0,1,2,3\}^n$, the only two possibilities are $(\textbf{q},\textbf{q}) = (0,0)$ and $(\textbf{q},\textbf{q}) \neq (0,0)$ since it is impossible for the coefficient to vanish by the first case in Equation \ref{evolexample}. Thus, the transitions presented in Theorem \ref{haarevol} indeed lead to the correct expected coefficient value $\gamma_{t+1}(\textbf{p},\textbf{p})$. Note that this is not the complete value for $\gamma_{t+1}$ as we still have to take the expectation over all the remaining qubit pairs.
 
 \subsection{Convergence of the Random Circuit}
@@ -560,8 +561,21 @@ The integral property about this zero chain is that it mixes rapidly
   The total chain mixes in time $\Theta(n \log\frac{n}{\epsilon})$
 \end{theorem}
 \begin{remark}
-  Diniz and Johnathan point out in \cite{diniz} a faulty assumption made by the authors of \cite{harrlow}. In the proof of Corollary \ref{totalchainmixing},
+  Diniz and Johnathan point out in \cite{diniz} a faulty assumption made by the authors of \cite{harrlow}. In the proof of Corollary \ref{totalchainmixing}, Harrow and Low make the argument that once every site has been paired with another site with non-zero value, the total chain will be uniformly mixed. This would reduce the mixing time to a coupon collectors problem. However, the authors of \cite{diniz} show a simple counterexample to this statement. Let us focus our attention to a $3$-qubit system with initial state $(0,0,1)$. We want to see the resulting distribution after hitting all three sites with two transitions.
+  First, observe that we have the following transitions $(0,0,1) \rightsquigarrow (1,0,0)$
+  \begin{align*}
+    & 001 \rightsquigarrow 100 \rightsquigarrow 100 \\
+    & 001 \rightsquigarrow 010 \rightsquigarrow 100 \\
+    & 001 \rightsquigarrow 001 \rightsquigarrow 100
+  \end{align*}
+  whereas we have the transitions $(0,0,1) \rightsquigarrow (0,0,1)$
+  \begin{align*}
+    & 001 \rightsquigarrow 001 \rightsquigarrow 001 \\
+    & 001 \rightsquigarrow 001 \rightsquigarrow 001 \\
+  \end{align*}
+   by first hitting the sites $2,3$ and $1,3$. The second transition hits the sites in the reverse order.
 \end{remark}
+
 The proofs of these two theorems will also be assigned a portion of the appendix.
 By the discussion of Corollary \ref{muchainmix}, this proves Lemma \ref{mainlemma}.
 
