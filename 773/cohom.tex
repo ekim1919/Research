@@ -72,7 +72,7 @@ This further shows that diffeomorphisms between manifolds induce isomorphisms be
 \section{Left-invariant Forms}
 We base a good bit of our presentation on the articles by Fok and Zhang (\cite{fok},\cite{zhang}). The discussions on invariant forms are based on the treatment in \cite{chevalley}. The original paper detailing these arguments is \cite{reeder}.
 
-We begin by deeming $G$ to be a connected compact Lie group. First, we start with the definition of a left-invariant
+We begin by deeming $G$ to be a connected compact Lie group. First, we start with the definition of a left-invariant form
 %
 \begin{definition}
   Let $\omega \in \Omega^p(G)$. Then $\omega$ is said to be \emph{left-invariant} if
@@ -92,8 +92,8 @@ We begin by deeming $G$ to be a connected compact Lie group. First, we start wit
 \end{proof}
 \noindent This shows that $\Omega_L^{*}(G)$ form a cochain complex under $d$. Define $H^p_L(G)$ be cohomology of $\Omega^p_L(G)$. Furthermore, note that since pullbacks distribute over the wedge product:
 $$ L^*_g(\omega_1 \wedge \omega_2) = L^*_g\omega_1 \wedge L^*_g\omega_2  = \omega_1 \wedge \omega_2$$
-This shows that when $\omega_1 \in \Omega_L^n(G)$ and $\omega_2 \in \Omega_L^m(G)$, then $\omega_1 \wedge \omega_2 \in \Omega_L^{n+m}(G)$. In fact, the wedge product becomes a well-defined map: $\wedge: H^n_L(G) \times H^{m}_L(G) \rightarrow H^{n+m}_L(G)$ given by $$([\omega_1] ,[\omega_2]) \mapsto [\omega_1 \wedge \omega_2]$$
-This endows a ring structure on $H^{*}_L(G)$ and an identical argument shows that $H^*(G)$ is also a ring. Now as subspaces, there exists an inclusion map $i: \Omega_L^p(G) \hookrightarrow \Omega^p(G)$ which induces a cohomology map between complexes $i': H^*_L(G) \rightarrow H^*(G)$. In fact, $i'$ is a ring isomorphism:
+This shows that when $\omega_1 \in \Omega_L^n(G)$ and $\omega_2 \in \Omega_L^m(G)$, then $\omega_1 \wedge \omega_2 \in \Omega_L^{n+m}(G)$. In fact, the wedge product becomes a well-defined map: $\cup : H^n_L(G) \times H^{m}_L(G) \rightarrow H^{n+m}_L(G)$ given by $$([\omega_1] ,[\omega_2]) \mapsto [\omega_1 \wedge \omega_2]$$
+This endows a ring structure on $H^{*}_L(G)$, and an identical argument shows that $H^*(G)$ is also a ring. Now as subspaces, there exists an inclusion map $i: \Omega_L^p(G) \hookrightarrow \Omega^p(G)$ which induces a ring homomorphism between $i': H^*_L(G) \rightarrow H^*(G)$.
 %
 \begin{theorem} \label{leftrep}
 $i'$ is a ring isomorphism
@@ -105,15 +105,31 @@ $i'$ is a ring isomorphism
   \begin{equation}
     \omega' = \int_G L^*_g\omega \; dg
   \end{equation}
-  Recall that a similar trick is used to create an invariant inner product from an existing inner product on some representation space. Then
-  %Arugment zhang
+  Recall that a similar trick is used to create an invariant inner product from an existing inner product on some representation space. We summarize the proof of \cite{chevalley}. The main goal is to show that $\omega',\omega$ lie in the same cohomology class.
+
+  Recall the de Rham theorem (see \cite{lee}, Theorem 18.14) stating that $H^p(G)$ is isomorphic to $S^p(M,\mathbb{R})$ where $S^p(M, \mathbb{R})$ refers to the singular cohomology groups of $G$. This isomorphism is defined by the de Rahm homomorphism $d_{\ell}: H^p(M) \rightarrow S^p(M,\mathbb{R})$:
+  $$ d_\ell[\omega][c] = \sum_{i}r_i\int_{Z_i} \omega $$
+  where $c = \sum_{i}r_iZ_i$ is a linear combination of $p$-simplexes on $G$. If we can show that
+  $$ \int_Z \omega - \omega' = 0 $$ for all $p$-simplexes $Z$, the de Rham isomorphism will force $[\omega - \omega'] = 0$, yielding surjectivity. Since $G$ is connected, $exp$ is surjective which means that we find a continuous curve connecting the identity $e$ to any $g \in G$. The curve along with its corresponding left-invariant vector field shows that it is possible to continuously deform the identity map Id$_G$ to the left-translation map $G$, proving the two maps are homotopic. By homotopy-invariance of singular cohomology (\cite{lee}, Prop 18.5), the induced cohomology map $(L_g)_*: S^p(G, \mathbb{R}) \rightarrow S^p(G, \mathbb{R})$ must simply be identity. To state this explicitly, $[gZ] = [Z]$ for all $g \in G$. This just leaves a calculation:
+  \begin{align*}
+    \int_Z \omega - \omega'
+    & = \int_Z \omega - \int_Z\int_G L^*_{g}\omega dg \\
+    & = \int_Z \omega - \int_G\int_Z L^*_{g}\omega dg \\
+    & = \int_Z \omega - \int_G\int_{gZ} \omega dg \\
+    & = \int_Z \omega - \int_G\int_{Z} \omega dg \\
+    & = \int_Z \omega - \int_{Z} \omega  \\
+    &= 0
+  \end{align*}
+
+  The second equality follows from Fubini's theorem. The third equality follows from the definition of the $L_{g}^*\omega$. The second-to-last equality is just $\int_G dg = 1$. \newline
+
   To show injectivity: let $\omega \in \Omega_L^p(G)$ such that $\omega = d\eta$ for some $\eta \in \Omega^{p-1}(G)$. Then
   $$\omega = \omega' = \int_G L^*_g\omega \; dg = \int_G L^*_g d\eta \; dg = d \int_G L^*_g \eta \; dg = d\eta' $$
   The first equality is by left-invariance of $\omega$. Then $\omega$ must be an exact in respect to cochain complex $\Omega^*_L(G)$, showing injectivity.
 \end{proof}
 %
-Theorem \ref{leftrep} states that the classes of the de Rham complex of $G$, $H^p(G)$ can be represented through its left-invariant counterparts $H^p_L(G)$. The additional structure placed on the left-invariant forms on $G$ give rise to an isomorphism between alternating forms on the Lie algebra of $G$, $\mathfrak{g}$  and the left-invariant forms
-\begin{lemma}
+Theorem \ref{leftrep} states that the classes of the de Rham complex of $G$, $H^p(G)$ can be represented through its left-invariant counterparts $H^p_L(G)$. The additional structure placed on the left-invariant forms on $G$ give rise to an isomorphism between alternating forms on the Lie algebra of $G$, $\mathfrak{g}$ and the left-invariant forms
+\begin{lemma} \label{nyaa}
 Define
       \begin{gather}
         \psi: \Omega_L^{*}(G) \rightarrow \bigwedge^* \mathfrak{g}^* \\
@@ -182,7 +198,7 @@ with the explicit form
   \end{align*}
   since $\mathcal{L}_{X_i}\omega = 0$ and $\mathcal{L}_{X_i}X_i = [X_i,X_i] = 0$. Taking the total sum reveals that:
   \begin{equation}
-    \sum_{i=0}^{n+1}X_i\omega(X_1,\cdots,\widehat{X_i},\cdots,X_{n+1}) = 0
+    \sum_{i=1}^{n+1}\sum_{j = 1, j \neq i } \omega(X_1, \cdots, \widehat{X_i}, \cdots, [X_i,X_j], \cdots X_{n+1}) = 0
   \end{equation}
   The third equality is once again just from the restrictions of the $X_i$ and the definition of $\psi$.
 \end{proof}
@@ -212,6 +228,53 @@ A similar argument to Theorem \ref{leftrep} yields that the inclusion of subspac
 %
 \begin{theorem}
   $H_B^{*}(G) \cong H^*(G)$ as rings
+\end{theorem}
+%
+\noindent Define $\left( \bigwedge^*\mathfrak{g}^* \right)^G$ to be the subspace of all alternating tensors invariant under $Ad_g$ action with:
+\begin{align*}
+\rho: & \Omega_B^*(G) \rightarrow \left( \bigwedge^*\mathfrak{g}^* \right)^G \\
+      & \omega \mapsto \{\omega\}
+\end{align*}
+where $\{\omega\}$ refers to the restriction of $\omega$ to $\mathfrak{g}$. As before, $\rho$ is a ring isomorphism.
+%
+\begin{proposition}
+$\rho$ is a ring isomorphism
+\end{proposition}
+%
+\begin{proof}
+Showing $\rho$ is a ring homomorphism follows by reasoning on the restriction of wedge products of biinvariant forms. As pullbacks distribute over the wedge product, products of bi-invariant forms restrict to $Ad_g$-invariant alternating forms on $\mathfrak{g}$. To show surjectivity, we define an identical form to the one shown in Lemma \ref{nyaa}, namely for $\mu \in \left( \bigwedge^n\mathfrak{g}^* \right)^G$,
+$$ \omega_h((X_1)_h,\cdots,(X_n)_h) = \mu(L_{h^{-1}}(X_1)_h,\cdots, L_{h^{-1}}(X_n)_h)$$
+Lemma \ref{nyaa} gave us left-invariance. To show right-invariance:
+\begin{align*}
+  (R^*_g\omega)_h((X_1)_h,\cdots,(X_n)_h)
+  & = \omega_{hg}((R_{g})_*(X_1)_h, \cdots, (R_{g})_*(X_n)_h) \\
+  & = \mu((L_{g^{-1}h^{-1}}R_{g})_*(X_1)_h, \cdots, (L_{g^{-1}h^{-1}}R_{g})_*(X_n)_h) \\
+  & = \mu((L_{g^{-1}}R_{g}L_{h^{-1}})_*(X_1)_h, \cdots, (L_{g^{-1}}R_{g}L_{h^{-1}})_*(X_n)_h) \\
+  & = \mu(Ad_g(L_{h^{-1}})_*(X_1)_h, \cdots, Ad_g(L_{h^{-1}})_*(X_n)_h) \\
+  & = \mu((L_{h^{-1}})_*(X_1)_h, \cdots, (L_{h^{-1}})_*(X_n)_h) \\
+  & = \omega_h((X_1)_h, \cdots, (X_n)_h)
+\end{align*}
+The second-to-last equality is by $Ad_g$-invariance of $\mu$, and the last equality is by left-invariance of $\omega$.
+\end{proof}
+%
+\begin{lemma}
+There exist a linear map $\delta$ which makes the below diagram commute:
+\begin{figure}[h!]
+  \centering
+  %
+  \begin{tikzcd}
+    \Omega_B^n \arrow[r, "d"] \arrow[d, "\rho"] &
+    \Omega_B^{n+1} \arrow[d, "\rho"] \\
+    \left( \bigwedge^n\mathfrak{g}^* \right)^G \arrow[r, "\delta"] &
+    \left( \bigwedge^{n+1}\mathfrak{g}^* \right)^G
+  \end{tikzcd}
+\end{figure}
+
+with the same explicit form.
+\end{lemma}
+%
+\begin{theorem}
+  $H^*_B(G) \cong H^*(\left( \bigwedge^*\mathfrak{g}^* \right)^G,\delta)$
 \end{theorem}
 
 \bibliographystyle{amsplain}
