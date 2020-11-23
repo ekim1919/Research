@@ -38,7 +38,7 @@
 
 \section{Introduction}
 
-The power of randomness in computation is a cornerstone of contemporary computation theory as evidenced by decades of beautiful, celebrated results. Quantum Information has, by no means, become stranger to this trend. Numerous applications of random unitaries have been discovered in the areas of quantum tomography, quantum cryptography, and, rather naturally, quantum algorithms. To gain access to uniformly-sampled elements from $\mathbb{U}(d)$, one must sample from the Haar distribution over $\mathbb{U}(d)$ where $\mathbb{U}(d)$ denotes the group of unitary $d \times d$ matrices. One method of sampling from the Haar distribution is to apply local random unitaries sampled from distributions over lower-dimensional unitary groups. For example, if we consider an $n$-qubit system, one method of sampling from the Haar distribution over $\mathbb{U}(2^n)$ would be through the following scheme:
+The theory of randomness and its role in computation are cornerstones of contemporary computation theory as evidenced by decades of beautiful, celebrated results. Quantum Information has, by no means, become stranger to this trend. Numerous applications of random unitaries have been discovered in the areas of quantum tomography, quantum cryptography, and, rather naturally, quantum algorithms. To gain access to uniformly-sampled elements from $\mathbb{U}(d)$, one must sample from the Haar distribution over $\mathbb{U}(d)$ where $\mathbb{U}(d)$ denotes the group of unitary $d \times d$ matrices. One method of sampling from the Haar distribution is to apply local random unitaries sampled from distributions over lower-dimensional unitary groups. For example, if we consider an $n$-qubit system, one method of sampling from the Haar distribution over $\mathbb{U}(2^n)$ would be through the following scheme:
 \begin{enumerate}
   \item Sample from the Haar distribution over $\mathbb{U}(4)$ to produce a random gate $G$
   \item Uniformly pick two distinct qubits and locally apply $G$ to the pair.
@@ -48,7 +48,7 @@ However, this becomes computationally infeasible as even reasonably approximatin
 \section{Approximate 2-designs via Local Random Quantum Circuits}
 
 \subsection{Definitions and Motivations}
-In \cite{harrlow}, the authors tackle the problem of approximate $2$-designs, specifically \emph{unitary} $2$-designs. The central result of the paper claims that the scheme of applying sampled $2$-qubit unitaries from certain distributions with a $k$-gapped property converge to the second moment of the Haar distribution rapidly. The crux of the rapid convergence argument relies on mapping the evolution of an initial state under our random circuit to that of a Markov chain's.
+In \cite{harrlow}, the authors tackle the problem of approximate $2$-designs, specifically \emph{unitary} $2$-designs. The central result of the paper claims that the scheme of applying sampled $2$-qubit unitaries from certain distributions with a $k$-gapped property converge to the second moment of the Haar distribution rapidly. The crux of the convergence argument relies on mapping the evolution of  diagonal states to that of a Markov chain's.
 Consequently, the analysis becomes amenable to classic techniques created to study mixing times of Markov chains. To begin, we first state the relevant definitions as introduced by Harrow and Low.
 %
 \begin{remark}
@@ -77,20 +77,20 @@ Consequently, the analysis becomes amenable to classic techniques created to stu
   \end{equation}
 \end{definition}
 %
-As discussed in the introduction above, the unitary constructed by sampling from a universal gate set and applying them to random pairs of qubits will converge to a unitary sampled from Haar distribution. However, we would like to find \emph{efficient approximate} $k$-designs. Here, efficient refers to random circuits of length polynomial in the number of qubits. The authors actually prove some stronger, namely that \emph{$k$-copy gapped} distributions suffice.
+As discussed in the introduction above, the unitary constructed by sampling from a universal gate set and applying them to random pairs of qubits will converge to a unitary sampled from Haar distribution. However, we would like to find \emph{efficient approximate} $k$-designs. Here, efficient refers to random circuits of asymptotic length polynomial in the number of qubits and $\log 1/\epsilon$. The authors actually prove some stronger, namely that \emph{$k$-copy gapped} distributions suffice.
 %
 \begin{definition} \label{gappeddef}
   Let $\mu$ be a (possibly continuous) probability measure on $\mathbb{U}(d)$. If
   \begin{equation}
     \mathcal{G}_{\mu} = \int_{\mathbb{U}(d)} d\mu(U) U^{\otimes k} \otimes (U^*)^{\otimes k}
   \end{equation}
-  then we say that $\mathcal{G}_\mu$ is $k$-copy gapped if $\mathcal{G}_\mu$ has only $k!$ unit eigenvalues.
+  then we say that $\mathcal{G}_\mu$ is \emph{$k$-copy gapped} if $\mathcal{G}_\mu$ has only $k!$ eigenvectors with unit eigenvalues.
 \end{definition}
 %
-\noindent A more general definition of universality of gatesets can be defined as well:
+\noindent A more general definition for the universality of gatesets can be defined as well:
 %
 \begin{definition} \label{univdef}
-  Let $\mu$ be a distribution over $\mathbb{U}(d)$. $\mu$ is deemed to be \emph{universal} for $\mathbb{U}(d)$ if for any open ball $B \subset \mathbb{U}(d)$, there exists a sufficiently large integer $\ell$ such that $\mu^{\star \ell}(B) > 0$
+  Let $\mu$ be a distribution over $\mathbb{U}(d)$. Then $\mu$ is deemed to be \emph{universal} for $\mathbb{U}(d)$ if for any open ball $B \subset \mathbb{U}(d)$, there exists a sufficiently large integer $\ell$ such that $\mu^{\star \ell}(B) > 0$
   where $\mu^{\star \ell}$ refers to the $\ell$-fold \emph{convolution} product of $\mu$:
 \end{definition}
 %
@@ -99,25 +99,28 @@ As discussed in the introduction above, the unitary constructed by sampling from
 \end{equation}
 %
 \begin{remark}
-  This is the convolution product in the context of \emph{measures}. For example, if we let $\mu,\sigma$ be two finite Borel measures over $\mathbb{R}$, then we have a new finite Borel measure on $\mathbb{R}$, $\mu \star \sigma$:
-  $$ \mu \star \sigma(A) = \int_{\mathbb{R}}\int_{\mathbb{R}} \mathbb{I}_A(x+y) d\mu(x)d\sigma(y)$$
-  where $\mathbb{I}$ is the characteristic function for measurable set $A \subset \mathbb{R}$.
+  This is the convolution product in the context of \emph{measures}. For example, if we let $\mu,\sigma$ be two finite Borel measures over $\mathbb{U}(d)$, then we have a new finite Borel measure on $\mathbb{U}(d)$, $\mu^{\star \ell}$:
+  $$ \mu^{\star \ell} (S) = \int_{\mathbb{U}(d)}\cdots\int_{\mathbb{U}(d)} \mathbb{I}_S(U_1\cdots U_{\ell}) d\mu(U_1) \cdots d\mu(U_\ell) $$
+  where $\mathbb{I}_S$ is the characteristic function for measurable set $S \subset \mathbb{U}(d)$.
 \end{remark}
-\noindent Intuitively, universality implies that sampling enough times over $\mu$ is enough to approximate any gate in $\mathbb{U}(d)$. This aligns with the definition introduced for discrete measures $\mu$ over finite gate sets. We will prove later that any universal gate set will be $k$-copy gapped on $\mathbb{U}(4)$ (Lemma \ref{universal}). For now, let us state the main theorem and its auxiliary lemma to guide our upcoming analysis:
+%
+\noindent Intuitively, universality implies that sampling enough times over $\mu$ is enough to approximate any gate in $\mathbb{U}(d)$. This aligns with the definition introduced for discrete measures $\mu$ over finite gate sets. We will prove later that any universal gate set will be $k$-copy gapped on $\mathbb{U}(4)$ (Theorem  \ref{convergence}). For now, let us state the main theorem and its auxiliary lemma to guide our upcoming analysis:
 %
 \begin{theorem} \label{maintheorem}
   Let $\mu$ be a $2$-copy gapped distribution over $\mathbb{U}(4)$ and $W$ a random circuit of length $t$ drawn from sampling $2$-qubit unitaries from $\mu$ and applying them to random pairs of of a system of $n$-qubits. Then there exists a constant $C$ depending on $\mu$ such that for $\epsilon > 0$, $\mathcal{G}_W$ is an $\epsilon$-approximate $2$-design if $t \geq n(n + \log 1/\epsilon)$.
 \end{theorem}
 %
 \begin{notation}
-  Let $\rho$ be an initial state of an $n$-qubit system i.e $\rho \in (\mathbb{C}^{2})^{\otimes n}$. We can expand $\rho$ in terms of the Pauli basis $\{\sigma_i\}_{0 \leq i \leq 3}$ as follows:
+  Let $\rho$ be an initial state of an $2n$-qubit system. We can expand $\rho$ in terms of the Pauli basis $\{\sigma_i\}_{0 \leq i \leq 3}$ as follows:
+
   \begin{equation}
-    \rho = \frac{1}{2^n} \sum_{p_1,p_2} \gamma_0(p_1,p_2) \sigma_{p_1} \otimes \sigma_{p_2}, \quad \gamma_0(p_1,p_2) \in \in \mathbb{C}
+    \rho = \frac{1}{2^n} \sum_{p_1,p_2} \gamma_0(p_1,p_2) \sigma_{p_1} \otimes \sigma_{p_2}, \quad \gamma_0(p_1,p_2) \in \mathbb{C}
    \end{equation}
+   %
   where $p_1,p_2$ run over all strings of Pauli indices of length $n$, $\{0,1,2,3\}^n$. Let $\gamma_W(p_1,p_2)$ be the coefficient of the term $\sigma_{p_1} \otimes \sigma_{p_2}$ for the output state after applying random circuit $W$, $\rho_W = W^{\otimes 2} \rho (W^\dagger)^{\otimes 2}$. Extending this notation allows us to express the expected coefficient after $t$-samples from our distribution $\mu$ as
   $\gamma_t(p_1,p_2) = \mathbb{E}_W [\gamma_W(p_1,p_2)]$. Note that the expectation is taken over all $t$-length random circuits.
 \end{notation}
-
+%
 \begin{lemma} \label{mainlemma}
   Let $\rho$ be a an initial state such that $\gamma_0(p,p) \geq 0$ and $\sum_{p} \gamma_0(p,p) = 1$ with $\mu$ and $W$ as in Theorem \ref{maintheorem}. Then there exists constant $C$ such that for $\epsilon > 0$
 
@@ -129,33 +132,33 @@ As discussed in the introduction above, the unitary constructed by sampling from
   \begin{equation}
     \sum_{p_1,p_2 \neq 00} \left| \gamma_t(p_1,p_2) - \delta_{p_1p_2} \frac{1}{2^n(2^n + 1)} \right| \leq \epsilon
   \end{equation}
-  for $t \geq n(n + \log 1/\epsilon)$
+  for $t \geq Cn(n + \log 1/\epsilon)$
 \end{lemma}
 
 \begin{corollary} \label{maincorollary}
-  Let $\mu$, $W$, $\gamma_W$ be as above. Then for \emph{any} initial state $\rho$, there exists constant $C$ such that for $\epsilon > 0$,
+  Let $\mu$, $W$, $\gamma_W$ be as above. Then for \emph{\bf any} initial state $\rho$, there exists constant $C$ such that for $\epsilon > 0$,
   \begin{align}
-    & \sum_{p_1,p_2 \neq 00} \left( \gamma_t(p_1,p_2) - \delta_{p_1p_2}(\frac{\sum_{p\neq 0} \gamma_0(p,p)}{4^n - 1} \right)^2 \leq \epsilon \\
-    & \sum_{p_1,p_2 \neq 00} \left| \gamma_t(p_1,p_2) - \delta_{p_1p_2}(\frac{\sum_{p\neq 0} \gamma_0(p,p)}{4^n - 1} \right| \leq \epsilon
+    & \sum_{p_1,p_2 \neq 00} \left( \gamma_t(p_1,p_2) - \delta_{p_1p_2}\frac{\sum_{p\neq 0} \gamma_0(p,p)}{4^n - 1} \right)^2 \leq \epsilon \\
+    & \sum_{p_1,p_2 \neq 00} \left| \gamma_t(p_1,p_2) - \delta_{p_1p_2}\frac{\sum_{p\neq 0} \gamma_0(p,p)}{4^n - 1} \right| \leq \epsilon
   \end{align}
   both for $t \geq Cn(n + \log 1/ \epsilon)$
 \end{corollary}
 
 \subsection{Analysis of Moments}
 
-We turn back to the general case and begin to define concepts and definitions for group $\mathbb{U}(d)$ and for $d$-qudit states. Set a Hermitian basis of $d \times d$ to be $\sigma_0,\sigma_1,\cdots \sigma_{d^2 -1}$ such that $\sigma_0 = I$. These basis elements span the $d$-qudit states. Here we stress that we sample our unitaries over the \emph{Haar distribution} over $\mathbb{U}(d)$. We denote sampling from the Haar distribution with the notation $U \sim \mathbb{U}(d)$ when necessary. Furthermore, our Hermitian basis operators are such that $Tr(\sigma_p\sigma_q) = d \cdot \delta_{p,q}$ i,e orthogonal under the Hilbert-Schmidt inner product. \newline
+We turn back to the general case and begin to define concepts and definitions for group $\mathbb{U}(d)$ and for $d$-qudit states. Set a Hermitian basis of $d \times d$ to be $\sigma_0,\sigma_1,\cdots \sigma_{d^2 -1}$ such that $\sigma_0 = I$. These basis elements span the $d$-qudit states. Here we stress that we sample our unitaries over the \emph{Haar distribution} over $\mathbb{U}(d)$. We denote sampling from the Haar distribution with the notation $U \sim \mathbb{U}(d)$ when necessary. Furthermore, our Hermitian basis operators are such that $Tr(\sigma_p\sigma_q) = d \cdot \delta_{p,q}$ i.e orthogonal under the Hilbert-Schmidt inner product. \newline
 
 \noindent Let ${\bf p} = (p_1, \cdots, p_k) \in \{0,1,\cdots, d^2 -1\}^k$ denote a $k$-string of basis indices. We will be interested in the quantity:
 %
 \begin{equation} \label{Tdef}
   T({\bf p}) := \mathbb{E}_{U \sim \mathbb{U}(d)} \left[ U^{\otimes k} \sigma_{p_1} \otimes \sigma_{p_2} \otimes \cdots \otimes \sigma_{p_k} (U^\dagger)^{\otimes k} \right]
 \end{equation}
-This will be the expected state after applying a sampled unitary $U$ from the uniform distribution over $\mathbb{U}(d)$. Naturally, we can reexpress this resulting state into the $\sigma_p$ basis:
+This will be the expected state after applying a sampled unitary $U$ from the Haar distribution over $\mathbb{U}(d)$. Naturally, we can reexpress this resulting state into the $\sigma_p$ basis:
 %
 \begin{equation}
   T({\bf p}) = \sum_{{\bf q}} \widehat{G}(\textbf{p},\textbf{q}) \sigma_{q_1} \otimes \cdots \otimes \sigma_{q_k}
 \end{equation}
-where the same is taken over all $k$-strings in $\{0, \cdots, d^2-1\}^k$. This allows us to define the matrix $\widehat{G}$ where the rows and columns are indiced by $k$-strings with entries $\widehat{G}(\textbf{q},\textbf{p})$. This matrix turns out to be a \emph{symmetric projector}.
+where the same is taken over all $k$-strings in $\{0, \cdots, d^2-1\}^k$. This allows us to define the matrix $\widehat{G}$ where the rows and columns are indiced by $k$-strings with entries $\widehat{G}(\textbf{p},\textbf{q})$. By virtue of the invariance of the Haar distribution, this matrix turns out to be a \emph{symmetric projector}.
 
 \begin{lemma}
   The matrix $\widehat{G}$ above is symmetric i.e. $\widehat{G}(\textbf{p},\textbf{q}) = \widehat{G}(\textbf{q},\textbf{p})$
@@ -170,13 +173,13 @@ where the same is taken over all $k$-strings in $\{0, \cdots, d^2-1\}^k$. This a
   \end{align}
 \end{proof}
 %
-Note that the expectation and the trace operator commute by linearity of latter. The result follows from the cyclic invariance of trace.
+\noindent Note that the expectation and the trace operator commute by linearity of latter. The result follows from the cyclic invariance of trace.
 %
 \begin{lemma} \label{permfix}
-$\widehat{G}$ fixes permutation operators $P_{\pi}, \; \pi \in S_k$.
+$\widehat{G}$ fixes the permutation operators $P_{\pi}, \; \pi \in S_k$.
 \end{lemma}
 %
-These two results are all that is required to show that $\widehat{G}$ is indeed a projector.
+\noindent These two results are all that is required to show that $\widehat{G}$ is indeed a projector.
 %
 \begin{theorem} \label{g-proj}
   $\widehat{G}$ is a projector i.e. $\widehat{G}^2 = \widehat{G}$
@@ -231,12 +234,12 @@ The calculation is divided into the two pertinent cases $k=1,2$. \newline
         To see this, observe that both $I, \mathcal{F}$ have vanishing $\sigma_{q_1} \otimes \sigma_{q_2}$ components for $q_1 \neq q_2$. Thus, multiplying $\widehat{G}$ with either one should also result in vanishing $\sigma_{q_1} \otimes \sigma_{q_2}$ components. This with the fact that all other operators are sent to zero by $\widehat{G}$ yields the result.
       \end{proof}
 
-      \item $\widehat{G}(p;0) = \delta_{p0}$ (Here we denote $\widehat{G}(p;0) := \widehat{G}(p,p;0,0)$)
+      \item $\widehat{G}(\textbf{p};\textbf{0}) = \delta_{p0}$ (Here we denote $\widehat{G}(\textbf{p};\textbf{0}) := \widehat{G}(p,p;0,0)$. )
       \begin{proof}
         This just derives from $\widehat{G}$ acting on $I$
       \end{proof}
 
-      \item $\widehat{G}(p,a) = \frac{1}{d^2-1}, \quad a,p \neq 0$
+      \item $\widehat{G}(\textbf{p},\textbf{a}) = \frac{1}{d^2-1}, \quad \textbf{p},\textbf{a} \neq 0$
       \begin{proof}
         As above, this results from $\widehat{G}$ acting on $\mathcal{F}$ along with the condition that it must send all other operators to zero.
       \end{proof}
@@ -252,7 +255,7 @@ The calculation is divided into the two pertinent cases $k=1,2$. \newline
     \end{equation}
 \end{enumerate}
 %
-Recall that $T(p,q)$ refers to the expected \emph{state} from applying unitary $U \sim \mathbb{U}(d)$ to the basis state $\sigma_p \otimes \sigma_q$. From the determination above, it is simple to see that $U$ uniformly samples from all diagonal basis states when acting on $\sigma_p \otimes \sigma_p, \; p \neq 0$. Strikingly enough, applying $U \sim \mathbb{U}(d)$ conserves the total sum of the coefficients of the diagonal basis states.
+Recall that $T(p,q)$ refers to the expected state from applying unitary $U \sim \mathbb{U}(d)$ to the basis state $\sigma_p \otimes \sigma_q$. From the determination above, it is simple to see that $U$ uniformly samples from all diagonal basis states when acting on $\sigma_p \otimes \sigma_p, \; p \neq 0$. Strikingly enough, applying $U \sim \mathbb{U}(d)$ conserves the total sum of the coefficients of the diagonal basis states.
 %
 \begin{lemma}
   The total sum of the coefficients $\sum_{p} \gamma_0(p,p)$ is conserved by $U \sim \mathbb{U}(d)$ for state $\rho = \frac{1}{d}\sum_{p_1,p_2} \gamma_0(p_1,p_2) \sigma_{p_1} \otimes \sigma_{p_2}$.
@@ -286,11 +289,11 @@ Normalizing this sum allows us to view it as a \emph{probability distribution}. 
 In the context of the example above, if we start with the coeffcient $\gamma_t(\textbf{q},\textbf{q})$ for $q \in \{0,1,2,3\}^n$, the only two possibilities are $(\textbf{q},\textbf{q}) = (0,0)$ and $(\textbf{q},\textbf{q}) \neq (0,0)$ since it is impossible for the coefficient to vanish by the first case in Equation \ref{evolexample}. Thus, the transitions presented in Theorem \ref{haarevol} indeed lead to the correct expected coefficient value $\gamma_{t+1}(\textbf{p},\textbf{p})$. Note that this is not the complete value for $\gamma_{t+1}$ as we still have to take the expectation over all the remaining qubit pairs.
 
 \subsection{Convergence of the Random Circuit}
-Before embarking on the Markov chain analysis, we must prove that our random circuit indeed converges to Haar distribution. This will be proven for the general case of a universal distribution (Definition (\ref{univdef})) on $\mathbb{U}(d)$. Specifcally, we will prove that any universal distribution on $\mathbb{U}(d)$ will be $k$-copy gapped (Definition (\ref{gappeddef})). In turn, this leads to convergence in sense of $\lim_{t \rightarrow \infty} (\widehat{G}_{\mu})^{t} = \widehat{G}_{\mathbb{U}(d)}$. To see this, observe that another formulation of a $k$-copy gapped distributon over $\mathbb{U}(d)$ is
+Before embarking towards Markov chain techniques, we must prove that our random circuit construction indeed converges to Haar distribution. Specifcally, we will prove that any universal distribution (Definition \ref{univdef}) on $\mathbb{U}(d)$ will be $k$-copy gapped (Definition \ref{gappeddef}). In turn, this leads to convergence in sense of $\lim_{t \rightarrow \infty} (\widehat{G}_{\mu})^{t} = \widehat{G}_{\mathbb{U}(d)}$. To see this, observe that another formulation of a $k$-copy gapped distributon over $\mathbb{U}(d)$ is
 \begin{equation} \label{gappeddis}
   ||G_{\mu} - G_{\mathbb{U}(d)}||_\infty < 1
 \end{equation}
-where $G_{\mu} = \mathbb{E}_{U \sim \mu} \left[ U^{\otimes k} \otimes (U^\dagger)^{\otimes k} \right]$. To justify this, first recall that $\widehat{G}$ and $G$ are unitarily-related by Definition \ref{Tdef}, so in proving \ref{gappeddis}, we can argue on the operators $\widehat{G}$ instead. In view of this, $\widehat{G}_{\mathbb{U}(d)}$ is a projector and thus has eigenvalues 0 and 1. If we can prove that any eigenvector of $\widehat{G}_{\mathbb{U}(d)}$ of eigenvalue one is also an eigenvector of $\widehat{G}_{\mu}$ of eigenvalue one i.e the $k$-symmetric subspace of $(\mathbb{C}^d)^{\otimes k}$ is also fixed by $\widehat{G}_{\mu}$. Thus, Equation $\ref{gappeddis}$ shows that indeed we can converge to $G_{\mathbb{U}(d)}$ by iterating our scheme (as denoted by $(\widehat{G}_\mu)^t$). Note that $\widehat{G}_{\mu}$ may not even be Hermitian, so we cannot directly argue on its spectrum (as the spectrum may not completely contain real values).
+where $G_{\mu} = \mathbb{E}_{U \sim \mu} \left[ U^{\otimes k} \otimes (U^\dagger)^{\otimes k} \right]$. To justify this, first recall that $\widehat{G}$ and $G$ are unitarily-related by Definition \ref{Tdef}, so in proving \ref{gappeddis}, we can argue on the operators $\widehat{G}$ instead. In view of this, $\widehat{G}_{\mathbb{U}(d)}$ is a projector and thus has eigenvalues 0 and 1. If we can prove that any eigenvector of $\widehat{G}_{\mathbb{U}(d)}$ of eigenvalue one is also an eigenvector of $\widehat{G}_{\mu}$ of eigenvalue one i.e the $k$-symmetric subspace of $(\mathbb{C}^d)^{\otimes k}$ is also fixed by $\widehat{G}_{\mu}$. Thus, Equation $\ref{gappeddis}$ shows that indeed we can converge to $G_{\mathbb{U}(d)}$ as all eigenvectors shrink by iterating our construction. Note that $\widehat{G}_{\mu}$ may not even be Hermitian, so we cannot directly argue on its spectrum (as the spectrum may not completely contain real eigenvalues).
 %
 \begin{theorem} \label{convergence}
   Let $\mu$ be a universal distribution over $\mathbb{U}(d)$. Then all eigenvectors of $G_{\mathbb{U}(d)}$ of eigenvalue one will also be eigenvectors of $G_{\mu}$ of eigenvalue one. Furthermore, $\mu$ will be $k$-copy gapped.
@@ -299,7 +302,9 @@ where $G_{\mu} = \mathbb{E}_{U \sim \mu} \left[ U^{\otimes k} \otimes (U^\dagger
 \noindent For the sake of presentation, the proof of this will be delegated towards the appendix of this report.
 %
 \subsection{Markov Chain Analysis}
-As discussed in a previous section, the central idea of proving \emph{rapid} convergence involves mapping the evolution of the inital state under our random circuit to that of a Markov chain's. In fact, we can explicitly determine the operator $P$ capturing our dynamics. Let $\widehat{G}^{(ij)}$ denote the unitary transformation resulting from sampling some unitary $U \sim \mathbb{U}(d)$ and applying $U$ to qubits $i$ and $j$ while leaving all other qubits undisturbed.
+As discussed in a previous section, the central idea of proving \emph{rapid} convergence involves mapping the evolution of the diagonal states under our random circuit to that of a Markov chain's. Here, we refer to states of the form
+$$ \psi = \frac{1}{2^n}\sum_{p}\gamma(p,p) \sigma_{p} \otimes \sigma_{p}, \quad p \in \{0,1,2,3\}^n, \; \gamma(p,p) \in \mathbb{C} $$
+In fact, we can explicitly determine the operator $P$ capturing our dynamics. Let $\widehat{G}^{(ij)}$ denote the unitary transformation resulting from sampling some unitary $U \sim \mathbb{U}(4)$ and applying $U$ to qubits $i$ and $j$ while leaving all other qubits undisturbed.
 %
 \begin{equation} \label{schemechain}
 P = \frac{1}{n(n-1)}\sum_{i \neq j} \widehat{G}^{(ij)}
@@ -310,18 +315,19 @@ as evidenced by the equality
 \end{equation}
 where $\textbf{p},\textbf{q} \in \{0,1,2,3\}^2$ and $\gamma_t(\textbf{p})$ represents the expected coeffcients at timestep $t$.
 %
-A major caveat of interpreting $P$ as a \emph{transition matrix} for some suitable Markov chain on the diagonal states $\sigma_p \otimes \sigma_p$ is the possibility that our initial coefficients of diagonal states $\gamma_0(p,p)$ may not even sum to one or even be non-negative. It turns out that this doesn't bring too much trouble into the analysis as pointed out by Corollary \ref{maincorollary}. For now, let us tackle the case where the two conditions above are true and direct our focus on the evolution of the diagonal states. The ultimate goal of this line of thought will be to first prove Lemma \ref{mainlemma} through a carefully-done investigation of the \emph{mixing time} of $P$. Of course, we need to also show that the expected coeffcients of the non-diagonal states $\gamma_0(p,q)$ vanish rapidly as well. These matters will be addressed in a future section.
+A major caveat of interpreting $P$ as a \emph{transition matrix} for some suitable Markov chain on the diagonal states is the possibility that our initial coefficients of the diagonal states $\gamma_0(p,p)$ may not even sum to one or even be non-negative. It turns out that this doesn't bring too much trouble into the analysis as pointed out by Corollary \ref{maincorollary}. For now, let us tackle the case where the two conditions above are true and direct our focus on the evolution of the diagonal states. The ultimate goal of this line of thought will be to first prove Lemma \ref{mainlemma} through a carefully-done investigation of the \emph{mixing time} of $P$. Of course, we need to also show that the expected coeffcients of the non-diagonal states $\gamma_0(p,q)$ vanish rapidly as well. These matters will be addressed in a future section.
 
 \subsubsection{Preliminaries on Markov Chains}
-Let us introduce some defintions of properties of the Markov chains we are interested in. Although we assume familiarity with the definition of a Markov chain along with the its associated transition matrix $P$, we refer the reader to the reference \cite{cover} for greater detail. Recall that if $q^{(0)}$ is some initial  distribution over the $\Omega$ then $q^{(t)} = q^{(0)}P^t$. The \emph{stationary distribution} of a Markov chain $\pi$ is a probability distribution over $\Omega$ such that $\pi P = \pi$.
+Let us introduce some definitions for properties of the Markov chains we are interested in. Although we assume familiarity with the definition of a Markov chain along with the its associated transition matrix $P$, we refer the reader to the reference \cite{cover} for greater detail. Recall that if $q^{(0)}$ is some initial  distribution over the $\Omega$ then $q^{(t)} = q^{(0)}P^t$. The \emph{stationary distribution} of a Markov chain $\pi$ is a probability distribution over $\Omega$ such that $\pi P = \pi$.
 %
 \begin{definition}
   A Markov chain is said to be \emph{irreducible} if there exists a path $s \rightsquigarrow j$ for every pair of states $s,j \in \Omega$.
 \end{definition}
 %
 \begin{definition}
-  A Markov chain is said to be \emph{periodic} at state $i \in \Omega$ if there exists a positive integer $T > 1$ such for that some initial distribution $q^(0)$, if $q_i^{(t)} > 0$ then $t \in \{a + Tm \mid m \in \mathbb{N}\}$. A Markov chain is deemed as \emph{aperiodic} if none of its states are periodic. Equivaently, a Markov chain is aperiodic if all of its states contain self-loops.
+  A Markov chain is said to be \emph{periodic} at state $i \in \Omega$ if there exists a positive integer $T > 1$ such for that some initial distribution $q^(0)$, if $q_i^{(t)} > 0$ then $t \in \{a + Tm \mid m \in \mathbb{N}\}$. A Markov chain is deemed as \emph{aperiodic} if none of its states are periodic.
 \end{definition}
+\noindent Hence, a Markov chain containing self-loops i.e transitions to itself with positive probability, is aperiodic.
 %
 \begin{definition}
   A Markov chain is \emph{ergodic} if it is aperiodic and irreducible.
@@ -332,7 +338,7 @@ Let us introduce some defintions of properties of the Markov chains we are inter
   If a Markov chain is ergodic, then it converges to a unique stationary distributon $\pi$ i.e $P$ has a unique eigenvector with eigenvalue one.
 \end{theorem}
 %
-\noindent One can see this through a special case of the \emph{Perron-Frobenius Theorem for Regular Matrices}
+\noindent One can view this as special case of the \emph{Perron-Frobenius Theorem for Regular Matrices}.
 %
 \begin{theorem} \label{perron}
   Suppose that $P$ is transition matrix with positive entries and also that $P_{ij}^{k} > 0$ for some sufficiently large $k$ and for all entries $i,j$ (Regularity). Then the following must hold:
@@ -374,7 +380,7 @@ Let us introduce some defintions of properties of the Markov chains we are inter
     \caption{An irreducible but periodic chain}
   \end{figure}
 
-  Once again, this chain does not have a unique left eigenvector of unit eigenvalue. Although the stationary distribution $\pi = [\frac{1}{2} \; \frac{1}{2}]$ is unique, no initial distribution converges to it besides $\pi$ itself.
+  Once again, this chain does not have a unique left eigenvector of unit eigenvalue. Although the stationary distribution $\pi = [\frac{1}{2} \; \frac{1}{2}]$ is unique, no initial distribution converges to it besides $\pi$ itself. Finally, consider the chain
 
   \begin{figure}[h!]
     \centering
@@ -389,7 +395,7 @@ Let us introduce some defintions of properties of the Markov chains we are inter
     \end{tikzpicture}
     \caption{An aperiodic, reducible chain which converges}
   \end{figure}
-  The transition matrix will be $$ P = \left[ \begin{matrix} \frac{1}{2} & \frac{1}{2} \\
+  \noindent The transition matrix will be $$ P = \left[ \begin{matrix} \frac{1}{2} & \frac{1}{2} \\
   0 & 1 \end{matrix} \right]$$ which has eigenvalues $\lambda_1 = 1, \lambda_2 = \frac{1}{2}$. Every initial distribution also converges to the unique stationary distribution $\pi = [0 \; 1]$. Hence, this chain exhibits a counterexample to a converse of Theorem \ref{perron}.
 \end{remark}
 %
@@ -450,7 +456,7 @@ Finally, one more integral tool is required to lower bound the spectral gap of o
 \begin{equation}
 P_\mu - \frac{1}{n(n-1)}\sum_{i\neq j}\widehat{G_\mu}^{(ij)}
 \end{equation}
-For this chain, we sample from a $2$-copy gapped distribution $\mu $ over $\mathbb{U}(4)$ rather than over Haar distribution. It is unclear exactly how this chain evolves as we cannot explicitly compute $P_\mu$ as we did for $P_{\mathbb{U}(d)}$. However, with the \emph{Comparision Theorem}, we can at least lower bound the spectral gap associated with $P_\mu$, say $\Delta_\mu$, with $\Delta_{\mathbb{U}(d)}$. We first state a more general version of the theorem
+For this chain, we sample from a $2$-copy gapped distribution $\mu $ over $\mathbb{U}(4)$ rather than over Haar distribution. It is unclear exactly how this chain evolves as we cannot explicitly compute $P_\mu$ as we did for $P_{\mathbb{U}(4)}$. However, with the \emph{Comparision Theorem}, we can at least lower bound the spectral gap associated with $P_\mu$, say $\Delta_\mu$, with $\Delta_{\mathbb{U}(4)}$. We first state a more general version of the theorem
 %
 \begin{theorem}[Refer to \cite{montenegro}, Theorem 2.3] \label{comptheorem}
   Let $P$ and $\widehat{P}$ be two Markov chains with the same state space $\Omega$ and the same stationary distribution $\pi$. Then, for ever $x \neq y \in \Omega$ with $\widehat{P}_{xy} > 0$, construct a set of directed paths $\mathcal{P}_{xy}$ from $x$ to $y$ along edges in $P$. Let $\mathcal{P} = \bigsqcup_{x\neq y} \mathcal{P}_{xy}$. We define the flow function $f: \mathcal{P} \rightarrow [0,1]$ such that
@@ -466,12 +472,34 @@ For this chain, we sample from a $2$-copy gapped distribution $\mu $ over $\math
                           (a,b) \in \gamma_{xy}}}  \pi(x)f(\gamma_{xy})|\gamma_{xy}|$$
   where $|\gamma_{xy}|$ refers to the length of the path $\gamma_{xy}$.
 \end{theorem}
-\noindent Note that the bounds yielded will depend on the paths chosen for all $x \neq y \in \Omega$ such that $\widehat{P}_{xy} > 0$ and the values assigned to those paths by the constructed flow function $f$.
-\newline
+\noindent Note that the bounds yielded will depend on the paths chosen for all $x \neq y \in \Omega$ such that $\widehat{P}_{xy} > 0$ and the values assigned to those paths by the constructed flow function $f$. Figure \ref{compfig} shows an example of creating paths as specified in the theorem.
+%
+\begin{figure}[h!] \label{compfig}
+  \centering
+  \begin{tikzpicture}[node distance=1.5]
+      \node[state] at (0,0) (start) {x};
+      \node[state, right=of start] at (6.5,0) (finish) {y};
+      \node[state, below=of start] at (-1,0) (one) {1};
+      \node[state, right=of one] (two) {2};
+      \node[draw=none, right=of two] (three) {$\cdots$};
+      \node[state, right=of three] (four) {4};
+      \node[state, right=of four] (five) {5};
 
-By Theorem \ref{convergence}, both $P_{\mu}$ and $P_{\mathbb{U}(4)}$ converge to same stationary distribution and both share the same state space. Using Theorem \ref{comptheorem}, we can bound the spectral gap of $P_\mu$, $\Delta_\mu$ with the with spectral gap of the $P_{\mathbb{U}(4)}$ chain, $\Delta_{\mathbb{U}(4)}$. However, we must first ensure that the Markov chain associated $P_\mu$ is ergodic. To achieve this, we simply delete the state $\sigma_0 \otimes \sigma_0$ from the state space.   This will turn $P$ into an irreducible chain as $\sigma_0 \otimes \sigma_0$ the only isolated component in the chain. This chain has self-loops by Theorem \ref{haarevol} and thus, it must be ergodic. This puts us in the position to state the lower bound
+      \draw[every loop]
+            (start) edge[auto=left] node {$\widehat{P}(x,y) > 0$} (finish)
+            (start) edge[auto=right, line width=1mm] node {{\tiny $P(x,1) > 0$}} (one)
+            (one) edge[auto=right, line width=1mm] node {{\tiny $P(1,2) > 0$}} (two)
+            (two) edge[line width=1mm] node {} (three)
+            (three) edge[line width=1mm] node {} (four)
+            (four) edge[auto=right, line width=1mm] node {{\tiny $P(4,5) > 0$}} (five)
+            (five) edge[auto=right, line width=1mm] node {{\tiny $P(5,y) > 0$}} (finish);
+  \end{tikzpicture}
+  \caption{Creating paths in spirit of Theorem \ref{comptheorem}. Thick lines delineate the constructed path.}
+\end{figure}
 
-%Mention Hermitian conjugation at some point.
+By Theorem \ref{convergence}, both $P_{\mu}$ and $P_{\mathbb{U}(4)}$ converge to same stationary distribution and both share the same state space. Using Theorem \ref{comptheorem}, we can bound the spectral gap of $P_\mu$, $\Delta_\mu$ with the with spectral gap of the $P_{\mathbb{U}(4)}$ chain, $\Delta_{\mathbb{U}(4)}$. However, we must first ensure that the Markov chain associated $P_\mu$ is ergodic. To achieve this, we simply delete the state $\sigma_0 \otimes \sigma_0$ from the state space.   This will turn $P$ into an irreducible chain as $\sigma_0 \otimes \sigma_0$ the only isolated component in the chain. This chain has self-loops by Theorem \ref{haarevol} and thus, it must be ergodic. This puts us in a good position to state the lower bound
+
+%!!!Mention Hermitian conjugation at some point.
 
 \begin{theorem} \label{gapbound}
   Let $\mu$ be any 2-copy gapped distribution of gates. If $\mu$ is invariant under Hermitian conjugation then let $\Delta_\mu$ be the spectral gap of resulting Markov chain $P_\mu$. Then
@@ -573,7 +601,7 @@ The integral property about this zero chain is that it mixes rapidly
     & 001 \rightsquigarrow 001 \rightsquigarrow 001 \\
     & 001 \rightsquigarrow 001 \rightsquigarrow 001 \\
   \end{align*}
-   by first hitting the sites $2,3$ and $1,3$. The second transition hits the sites in the reverse order.
+   by first hitting the sites $2,3$ and $1,3$. The second transition hits the sites in the reverse order. This reveals that the number of ways to get to states $(1,0,0),(0,0,1)$ will be in ratio $3:2$; the final state will not be uniformly distributed.
 \end{remark}
 
 The proofs of these two theorems will also be assigned a portion of the appendix.
