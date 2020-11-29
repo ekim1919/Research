@@ -5,45 +5,45 @@ The style file: amsplain.bst
 Database file #1: biblio.bib
 Warning--missing pages in knill
 Warning--missing pages in oliveira
-You've used 6 entries,
+You've used 7 entries,
             2213 wiz_defined-function locations,
-            532 strings with 4673 characters,
-and the built_in function-call counts, 1623 in all, are:
-= -- 134
-> -- 71
+            536 strings with 4777 characters,
+and the built_in function-call counts, 1869 in all, are:
+= -- 152
+> -- 84
 < -- 0
-+ -- 28
-- -- 22
-* -- 131
-:= -- 273
-add.period$ -- 6
-call.type$ -- 6
-change.case$ -- 29
++ -- 33
+- -- 26
+* -- 146
+:= -- 315
+add.period$ -- 7
+call.type$ -- 7
+change.case$ -- 34
 chr.to.int$ -- 0
-cite$ -- 8
-duplicate$ -- 68
-empty$ -- 145
-format.name$ -- 22
-if$ -- 326
+cite$ -- 9
+duplicate$ -- 80
+empty$ -- 169
+format.name$ -- 26
+if$ -- 378
 int.to.chr$ -- 0
-int.to.str$ -- 6
-missing$ -- 14
-newline$ -- 28
-num.names$ -- 12
-pop$ -- 41
+int.to.str$ -- 7
+missing$ -- 17
+newline$ -- 31
+num.names$ -- 14
+pop$ -- 50
 preamble$ -- 1
-purify$ -- 23
+purify$ -- 27
 quote$ -- 0
-skip$ -- 39
+skip$ -- 47
 stack$ -- 0
-substring$ -- 80
-swap$ -- 8
+substring$ -- 85
+swap$ -- 9
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 20
+type$ -- 22
 warning$ -- 2
-while$ -- 16
-width$ -- 7
-write$ -- 57
+while$ -- 18
+width$ -- 8
+write$ -- 65
 (There were 2 warnings)

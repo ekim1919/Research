@@ -1,12 +1,12 @@
 # Fdb version 3
-["bibtex final"] 1606095851 "final.aux" "final.bbl" "final" 1606096474
+["bibtex final"] 1606630997 "final.aux" "final.bbl" "final" 1606634402
   "/usr/local/texlive/2020/texmf-dist/bibtex/bst/amscls/amsplain.bst" 1513722769 25798 9b3546f2f237ee0ce4724eed95f954f4 ""
   "biblio.bib" 1606088188 2402 96c8cdd1ebf81fd3f1ba716e5507d1a8 ""
-  "final.aux" 1606096447 3485 573326d906b1b769292f0cfe8ff62489 "pdflatex"
+  "final.aux" 1606634402 3891 e1c66a59602fe09d08c205e13d0dcf14 "pdflatex"
   (generated)
-  "final.blg"
   "final.bbl"
-["pdflatex"] 1606096446 "final.tex" "final.pdf" "final" 1606096474
+  "final.blg"
+["pdflatex"] 1606634401 "final.tex" "final.pdf" "final" 1606634402
   "/usr/local/texlive/2020/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2020/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -162,12 +162,12 @@
   "/usr/local/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1586288239 4811913 0be9a7e86c70a26e5e3042966bcd7097 ""
   "/usr/local/texlive/2020/texmf-var/web2c/pdftex/pdflatex.fmt" 1586288259 2432462 fd0fa20e9a3cb5f8169fd0ba1c955158 ""
   "/usr/local/texlive/2020/texmf.cnf" 1586288231 577 d60164b4589a341208aff7a667fbbdcb ""
-  "final.aux" 1606096447 3485 573326d906b1b769292f0cfe8ff62489 "pdflatex"
-  "final.bbl" 1606095851 1369 57a77db51f27126b859ca83c6ff7957a "bibtex final"
-  "final.tex" 1606096474 46893 b84f3b295ff726ee8fa91ccff5788c95 ""
-  "final.toc" 1606096447 926 e44d3c71f0da2ca3b62b5596cf15b602 "pdflatex"
+  "final.aux" 1606634402 3891 e1c66a59602fe09d08c205e13d0dcf14 "pdflatex"
+  "final.bbl" 1606630998 1504 913f6f959b887c5919fcdcaa81db720e "bibtex final"
+  "final.tex" 1606634401 58625 f68a12f1ea145388c5a5d7d9cf5f0e68 ""
+  "final.toc" 1606634402 1121 875ce68c33ae62560c57b6dfd73a3ed0 "pdflatex"
   (generated)
   "final.pdf"
   "final.aux"
-  "final.toc"
   "final.log"
+  "final.toc"

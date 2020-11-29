@@ -67,7 +67,7 @@ Consequently, the analysis becomes amenable to classic techniques created to stu
 %
 \begin{definition}
   The diamond norm of an operator $T$ is defined as
-  $$||T||_{\diamond} = \sup_d ||T \otimes I_d ||_{\infty} $$
+  $$||T||_{\diamond} = \sup_d ||T \otimes I_d ||_{\infty} = \sup_d \sup_{X \neq 0} \frac{||(T \otimes I_d)(X)||_1}{||X||_1}$$
 \end{definition}
 %
 \begin{definition}
@@ -607,15 +607,148 @@ The integral property about this zero chain is that it mixes rapidly
 The proofs of these two theorems will also be assigned a portion of the appendix.
 By the discussion of Corollary \ref{muchainmix}, this proves Lemma \ref{mainlemma}.
 
-%\subsection{Tying Some Loose Ends}
+\subsection{Tying Some Loose Ends}
+We dedicate this section to addressing some details glossed over in the previous two sections. In particular, the vanishing rate of the non-diagonal terms must be handled before considering the proof for Theorem \ref{maintheorem}. First, the proof from Lemma \ref{mainlemma} to the more general statement of Corollary \ref{maincorollary} must be given. The proof will demonstrate how the more restricted set of initial states used in Lemma \ref{mainlemma} can easily generalize to all initial states, even those with negative diagonal coefficients.
+%
+\begin{proof}[(Proof of Corollary \ref{maincorollary})]
+ Begin by first noting that Lemma \ref{mainlemma} immediately implies the corollary for coeffcients of non-diagonal terms $\gamma(p,q), \; p \neq q$. Thus, it suffices to only consider the diagonal terms $\gamma(p,p)$. Now from the observations made in Theorem \ref{haarevol} and linearity, we can view the expected coeffcients $\mathbb{E}_{W}\gamma_W(p,p)$ over all $t$-length random circuits $W$ to follow that of a random walk over the diagonal states. Let $g_t(p;q)$ be the probability of arriving at state $p,p$ in $t$-steps starting from state $q,q$ via the random walk defined in Theorem \ref{haarevol}. This means that $g_0(p,q) = \delta_{p,q}$. We can calculate the expected coeffcients as
+ \begin{equation}
+   \gamma_t(p,p) = \sum_{q \neq 0} g_t(p,q)\gamma_0(q,q)
+ \end{equation}
+\end{proof}
+By performing an effective normalization, we can generalize Lemma \ref{mainlemma} to the corollary as follows: Consider first the inequality for the 2-norm
+%
+\begin{align*}
+\sum_{p \neq 0} \left( \gamma_t(p,p) - \frac{\sum_{q \neq 0} \gamma_0(q,q)}{4^n -1}\right)^2
+& = \sum_{p \neq 0} \left(\sum_{q\neq 0} \gamma_0(q,q) \left( g_t(p,q) - \frac{1}{4^n -1} \right)\right)^2 \\
+& \leq \left( \sum_{q \neq 0} |\gamma_0(q,q)|^2 \right) \sum_{q' \neq 0} \sum_{p \neq 0 }\left( g_t(p,q') - \frac{1}{4^n -1} \right)^2 \\
+& \leq  \left( \sum_{q \neq 0} |\gamma_0(q,q)|^2 \right) (4^n -1)\epsilon \\
+& = 4^n\epsilon \cdot Tr(\rho^2) \\
+& \leq 4^n \epsilon
+\end{align*}
 
+The first inequality arises from the Cauchy-Schwartz inequality and rearranging terms. The second inequality is Lemma \ref{mainlemma}, and the final inequality is just $Tr(\rho^2) \leq 1$ for any state $\rho$. Invoking Lemma \ref{mainlemma} shows that the above inequality holds for $t \geq n(n + \log4^n/\epsilon) = Cn((\log 4 + 1)n + \log1/\epsilon)$ for sufficiently large $C$ chosen in the Lemma. Now choose a larger constant $C'$ dominating the righthand expression to prove the desired result. The 1-norm case proceeds similarly:
+%
+\begin{align*}
+ \sum_{p \neq 0} \left( \gamma_t(p,p) - \frac{\sum_{q \neq 0} \gamma_0(q,q)}{4^n -1}\right)
+ & = \sum_{p \neq 0} \left|\sum_{q\neq 0} \gamma_0(q,q) \left( g_t(p,q) - \frac{1}{4^n -1} \right) \right| \\
+ & \leq \sum_{q \neq 0}|\gamma_0(q,q)|\sum_{p \neq 0} \left| g_t(p,q) - \frac{1}{4^n -1} \right| \\
+ & \leq \sum_{q \neq 0}|\gamma_0(q,q)| 2^n \epsilon \\
+ & \leq 2^n \epsilon
+\end{align*}
+%
+\subsubsection{First and Second Moments Convergence for 1-designs}
+We show that our scheme acts an approximate 1-design in the sense below:
+%
+\begin{lemma} \label{onedesign}
+  \begin{equation}
+    \sum_{p \neq 0} (\mathbb{E}_{W_t}|\gamma_{W_t}(p)|)^2 \leq \epsilon
+  \end{equation}
+  after $t \geq n\log1/\epsilon$
 
+and
+\begin{equation}
+  \sum_{p \neq 0} \mathbb{E}_{W_t}|\gamma_{W_t}(p)| \leq \epsilon
+\end{equation}
+after $t \geq n\log n/\epsilon$
+\end{lemma}
+
+Note that since we are considering 1-designs here, we index through only one $n$-string $p$. From subsection \ref{eigenanalysis}, recall that applying a unitary $U \sim \mathbb{U}(4)$ completely randomizes the qubit pair if at least one of them are non-zero i.e take basis operators $\sigma_1,\sigma_2,\sigma_3$ in the Pauli basis. This means that if sites $i,j$ are picked, then coefficients of basis states $\gamma(p)$ where $p_i \neq 0$ or $p_j \neq 0$ vanish under $U$. In this case, we say that sites $i,j$ have been \emph{hit}. For an unitary sampled over a universal distribution $U \sim \mu$, the coefficients shrink by a factor $1 - \Delta$ where $\Delta$ is deemed as a gap for distribution $\mu$. Hence, sites which have been hit $r$ times shrink by a factor $(1- \Delta)^r$. The case for Haar distribution follows the analysis of the standard coupon collectors problem (see \cite{raghavan} for an introduction). However, the case for any universal distribution follows from a similar line of thinking as demonstrated in the proof of Lemma \ref{onedesign}.
+
+\begin{proof}[(Proof of Lemma \label{onedesign})]
+  Let us first focus on the case for the coefficient of a specific basis state $\mathbb{E}_{W_t} |\gamma_{W_t}(p)|$. From the discussion above, the coefficient shrinks by a factor of $1 -\Delta$ if a pair with at least one non-zero site is picked. The probablity of this event occuring is easily calculated to be
+  $$ 1 - \frac{(n-d)(n-d-1)}{n(n-1)} \geq 1 - \frac{n-d}{n} = \frac{d}{n} $$
+  if $d$ denotes the number of non-zeros contained in $n$-string $p$. This gives us the recurrence inequality:
+  \begin{equation*}
+    \mathbb{E}_{W_t}|\gamma_{W_t}(p)| \leq ((1- \Delta)(d/n) + (1 - d/n))\cdot |\gamma_{W_{t-1}}(p)| = \left(2 - \frac{\Delta d}{n} \right)\cdot |\gamma_{W_{t-1}}(p)|
+  \end{equation*}
+%
+Iterating this $t$ times gives the inequality:
+%
+\begin{align*}
+  \mathbb{E}_{W_t}|\gamma_{W_t}(p)| \leq \left(2 - \frac{\Delta d}{n}\right)^t |\gamma_0(p)| = \left(2 - \frac{\Delta d}{n}\right)^{n \cdot \frac{t}{n}} |\gamma_0(p)| \leq e^{-\Delta d  t/ n} |\gamma_0(p)|
+\end{align*}
+Summing over all $p$ then yields the total inequality
+\begin{equation*}
+  \sum_{p \neq 0} \mathbb{E}_{W_t}|\gamma_{W_t}(p)| \leq \sum_{d = 1}^n e^{-\Delta d t/n} \sum_{d(p) = d} |\gamma_0(p)|
+\end{equation*}
+where $d(p)$ is the number of non-zeros in string $p$. With th-- obvious bound $|\gamma_0(p)| \leq 1$, we give the total bound:
+$$ \sum_{d(p) = d} |\gamma_0(p)| \leq {n \choose d} 3^d $$
+This is easily seen as the number of basis states with exactly $d$ non-zero states since each non-zero site would take values in $\{\sigma_1, \sigma_2, \sigma_3\}$. Substituting this bound into the inequality above:
+\begin{align*}
+   \sum_{d = 1}^n e^{-\Delta d t/n} \sum_{d(p) = d} |\gamma_0(p)| \leq {n \choose d} (3e^{-\Delta t/n} )^d \leq (1 + 3e^{-\Delta t/n})^n -1
+\end{align*}
+where the last inequality is an invocation of the Binomial theorem. Setting $t \geq \frac{n}{\Delta} \log\frac{3n}{\epsilon}$ yields
+%
+\begin{equation*}
+  \sum_{p \neq 0} \mathbb{E}_{W_t}|\gamma_{W_t}(p)| \leq \left(1 + \frac{\epsilon}{n} \right)^n - 1 = \mathcal{O}(\epsilon)
+\end{equation*}
+%
+The bound for the 2-norm is dervied in a similar fashion. See \cite{harrlow}, Lemma 4.1 for the corresponding 2-norm bound.
+\end{proof}
+%
+The proof for Lemma \ref{onedesign} can be repurposed to prove rapid vanishing of the non-diagonal terms $\sigma_{p_1} \otimes \sigma_{p_2}$ as presented in the lemma below:
+%
+\begin{lemma}
+  \begin{equation}
+     \sum_{p \neq q} \left( \mathbb{E}_{W_t} |\gamma_{W_t}(p,q)|\right)^2 \leq \epsilon
+  \end{equation}
+  for $t \geq n\log\frac{1}{\epsilon}$
+  and
+  \begin{equation}
+    \sum_{p \neq q}  \mathbb{E}_{W_t} |\gamma_{W_t}(p,q)| \leq \epsilon
+  \end{equation}
+\end{lemma}
+%
+\begin{proof}
+  From the analysis for the second moments given in Section \ref{eigenanalysis}, the cofficients decay by a factor of $1- \Delta$ if $\sigma_{p_{i}} \otimes \sigma_{p_{j}}$ is different from the state $\sigma_{q_{i}} \otimes \sigma_{q_{j}}$. Thus, picking at least one differing site will trigger a shrinking of the coefficient $\gamma(p,q)$. This motivates the setting of the parameter $d$ in the previous proof to be the number of \emph{non-differing sites}. This results in the same inequality
+  $$ \mathbb{E}_{W_t}|\gamma_{W_t}(p,q)| \leq \left(2 - \frac{\Delta d}{n} \right)\cdot |\gamma_{W_{t-1}}(p,q)|$$
+  which yields the identical inequality:
+  \begin{equation*}
+    \sum_{\substack{p \neq q \\ pq \neq 00}} \mathbb{E}_{W_t}|\gamma_{W_t}(p,q)| \leq \sum_{d = 1}^n e^{-\Delta d t/n} \sum_{d(p,q) = d} |\gamma_0(p,q)|
+  \end{equation*}
+  where $d(p,q)$ here would count the number of non-differing sites instead. We bound $\sum_{d(p,q) = d} |\gamma_0(p,q)| \leq {n \choose d} 4^d12^{n-d}$ to arrive at
+  \begin{align*}
+    \sum_{\substack{p \neq q \\ pq \neq 00}} \mathbb{E}_{W_t}|\gamma_{W_t}(p,q)| \leq \sum_{d = 1}^n e^{-\Delta d t/n} {n \choose d} 4^d12^{n-d} =  4^n \sum_{d = 1}^n{n \choose d} 3^{n-d} = 4^n(1 + 3e^{-\Delta t/n})^n -1)
+  \end{align*}
+  Set $t \geq \frac{n}{\Delta}(n\log{4} + \log{1/\epsilon})$ to finish the proof.
+\end{proof}
+%
+
+\begin{proof}[(Proof of Theorem \ref{maintheorem})]
+  We are now in the position to prove the main result in respect to the \emph{diamond norm}. The following string of inequalities hold:
+  \begin{align}
+    ||\mathcal{G}_W - \mathcal{G}_H ||_{\diamond}^2
+    & = \sup_d|| \mathcal{G}_W \otimes I_d - \mathcal{G}_W \otimes I_d||_{\infty} = \sup_{\rho} ||(\mathcal{G}_W \otimes I_n)(\rho) - (\mathcal{G}_H \otimes I_n)(\rho) ||_1^2 \\
+    & \leq (2^{2(2n)})\sup_{\rho} ||(\mathcal{G}_W \otimes I_n)(\rho) - (\mathcal{G}_H \otimes I_n)(\rho) ||_2^2\\
+    & = 2^{4n} \sup_{\rho} ||\sum_{p_1,p_2,p_3,p_4}\gamma_{\rho}(p_1,p_2,p_3,p_4) ( \mathcal{G}_W(\sigma_{p_1} \otimes \sigma_{p_2}) \otimes \sigma_{p_3} \otimes \sigma_{p_4} \\
+    & - \mathcal{G}_H(\sigma_{p_1} \otimes \sigma_{p_2}) \otimes \sigma_{p_3} \otimes \sigma_{p_4} ) ||_2^2
+  \end{align}
+  The first inequality is just the standard inequality $||\rho||_1 \leq d ||\rho||_2$ where $d$ is the dimension of the system $\rho \in \mathbb{C}^{d}$. The last equality arises from linearity. Recall that
+  $$ \mathcal{G}_{W_t}(\sigma_{p_1}\otimes \sigma_{p_2}) = \sum_{\substack{q_1,q_2 \\ q_1q_2 \neq 00}} g_t(p_1,p_2 ; q_1,q_2) \sigma_{q_1} \otimes \sigma_{q_2} $$
+  over all random circuits of length $t$. Here $g_t$ represents the evolution of the coefficients as described by the combination of the analyses for the diagonal coefficients $g_t(p,p;q,q)$ and the non-diagonal ones presented above, culminating in Corollary \ref{maincorollary}. This yields
+  \begin{align*}
+     2^{4n} & \sup_{\rho} ||\gamma_{\rho}(p_1,p_2,p_3,p_4) \left( \mathcal{G}_W(\sigma_{p_1} \otimes \sigma_{p_2}) \otimes \sigma_{p_3} \otimes \sigma_{p_4} - \mathcal{G}_H(\sigma_{p_1} \otimes \sigma_{p_2}) \otimes \sigma_{p_3} \otimes \sigma_{p_4} \right) ||_2^2  \\
+     & = 2^{4n} \sup_{\rho} || \sum_{p_3,p_4} \sum_{\substack{p_1,p_2,q_1,q_2 \\ q_1,q_2 \neq 00}}\gamma_{\rho}(p_1,p_2,p_3,p_4) \left( g_t(p_1,p_2;q_1,q_2) - \frac{\delta_{p_1,p_2}\delta_{q_1,q_2}}{2^n(2^n+1)} \right) \sigma_{q_1} \otimes \sigma_{q_2} \otimes \sigma_{p_3} \otimes \sigma_{p_4}   ||^2_2
+  \end{align*}
+  Taking the Hilbert-Schmidt norm and squaring the result kills the non-aligning terms to output
+  \begin{align*}
+  &   2^{4n} \sup_{\rho} \sum_{\substack{p_1,p_2,p_3,p_4,q_1,q_2 \\ q_1,q_2 \neq 0}} \gamma_{\rho}(p_1,p_2,p_3,p_4)^2 \left( g_t(p_1,p_2;q_1,q_2) - \frac{\delta_{p_1,p_2}\delta_{q_1,q_2}}{2^n(2^n+1)} \right)^2 \\
+    & \leq 2^{4n} \sup_{\rho} \sum_{\substack{p_1,p_2,p_3,p_4,q_1,q_2 \\ q_1,q_2 \neq 0}} \gamma_{\rho}(p_1,p_2,p_3,p_4)^2 \epsilon^2 \\
+    & \leq 2^{4n}\epsilon^2
+  \end{align*}
+  The last equality is from Lemma \ref{mainlemma}. This finally shows that
+  \begin{equation}
+    ||\mathcal{G}_W - \mathcal{G}_H ||_{\diamond} \leq 2^{2n}\epsilon
+  \end{equation}
+  when $t \geq Cn(n + \log{1/\epsilon})$. Take the final constant $C'$ to be sufficiently large such that $C'n(n + \log{1/\epsilon}) \geq Cn(n + \log{2^{2n}/\epsilon})$ to finish the proof.
+\end{proof}
 %Finally, we state the proof of Theorem \ref{maintheorem}. \newline
 %\begin{proof}[(Proof of Theorem \ref{maintheorem})]
 %\end{proof}
 
 
-
+\newpage
 \bibliographystyle{amsplain}
 \bibliography{biblio}
 
