@@ -1,0 +1,154 @@
+\documentclass{llncs}
+
+\usepackage{etex}
+\usepackage{llncsdoc}
+% \documentclass[preprint]{sig-alternate}
+\usepackage[usenames,dvipsnames]{pstricks}
+%\usepackage[usenames,dvipsnames]{color}
+\usepackage{epsfig}
+%\usepackage{pst-grad} % For gradients
+%\usepackage{pst-plot} % For axes
+%\usepackage{setspace}
+%\doublespacing
+\usepackage{palatino}
+% \setcopyright{none}
+% \setcopyright{rightsretained}
+\RequirePackage{ifthen}
+\usepackage{latexsym}
+\RequirePackage{amsmath}
+%\RequirePackage{amsthm}
+\RequirePackage{amssymb}
+\RequirePackage{xspace}
+\RequirePackage{graphics}
+\usepackage{xcolor}
+\usepackage{wrapfig}
+%\usepackage{fullpage}
+%\usepackage{schemabloc}
+%\RequirePackage{textcomp}
+\usepackage{keyval}
+%\usepackage{subfigure}
+%\usepackage{listings}
+\usepackage{xspace}
+\usepackage{mathrsfs}
+%\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{float}
+\usepackage{mathtools}
+\usepackage{longtable}
+
+\usepackage[font=footnotesize]{caption}
+\DeclareCaptionType{copyrightbox}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{arydshln}
+
+% \usepackage[font=bf]{caption}
+% \usepackage{subcaption}
+%\usepackage{caption}
+%\usepackage{subcaption}
+\usepackage{amsmath,amssymb,url,listings,mathrsfs}
+%\usepackage{pvs}
+%\usepackage{supertabular,alltt,latexsym}
+%\usepackage{multicol,multirow,epsfig}
+%\usepackage[dvips, usenames]{color}
+\usepackage{framed}
+\usepackage{lipsum}
+%\usepackage[dvipsnames]{color}
+
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{matrix}
+
+\definecolor{reddish}{rgb}{1,.8,0.8}
+\definecolor{blueish}{rgb}{0.8,.8,1}
+\definecolor{greenish}{rgb}{.8,1,0.8}
+\definecolor{yellowish}{rgb}{1,1,.20}
+
+\definecolor{webred}{rgb}{0.5,0,0}
+\definecolor{webblue}{rgb}{0,0,0.8}
+\usepackage[pdftex,colorlinks,citecolor=webblue,linkcolor=webred,]{hyperref}
+\newcommand{\trajmet}{discrepancy function \/}
+\newcommand{\TrajMet}{Trajectory Metric}
+\newcommand{\tool}{C2E2 \/}
+\newcommand{\fulltoolname}{\textbf{C}heck \textbf{E}xecute \textbf{C}ompare \textbf{E}ngine}
+\newcommand{\Nset}[1]{[[#1]]}
+\newcommand{\etime}{{\sf time}}
+\newcommand{\ub}{{\sf ub}}
+\newcommand{\lb}{{\sf lb}}
+\newcommand{\intervals}{\relax \ifmmode \mathbb{IR} \else $\mathbb{IR}$ \fi}
+\newcommand{\nnintervals}{\relax \ifmmode \mathbb{IR}^{+} \else $\mathbb{IR}^{+}$ \fi}
+\newcommand{\emode}{{\sf mode}}
+\newcommand{\erange}{{\sf range}}
+\newcommand{\transform}{{\sf transform}}
+\newcommand{\seman}[1]{\relax \ifmmode [\![#1]\!] \else $[\![#1]\!]$ \fi}
+\newcommand{\Proved}{{\bf \color{blue}P}}
+\newcommand{\Failed}{{\bf \color{red}F}}
+
+\newcommand{\tbundle}{\texttt{TransformBundle} }
+
+\include{prelude1}
+%\usepackage{algorithm,algorithmic}
+%\usepackage[commentsnumbered]{algorithm2e}
+%\usepackage[linesnumbered,boxed,lined,commentsnumbered]{algorithm2e}
+\usepackage[boxed,linesnumbered,lined,commentsnumbered]{algorithm2e}
+
+\title{Automatic Dynamic Parallelotope Bundles for Reachability Analysis of Nonlinear Systems}
+\author{Edward Kim\inst{1} \and Stanley Bak \inst{2} \and Parasara Sridhar Duggirala \inst{1}}
+\institute{University of North Carolina at Chapel Hill \and Stony Brook University}
+% \email{stanleybak@gmail.com, psd@uconn.edu}
+
+% \permission{
+% Permission to make digital or hard copies of part or all of this work for personal or
+% classroom use is granted without fee provided that copies are not made or distributed
+% for profit or commercial advantage and that copies bear this notice and the full
+% citation on the first page. Copyrights for third-party components of this work must
+% be honored. For all other uses, contact the Owner/Author.\\
+% }
+% \permission{
+% Permission to make digital or hard copies of part or all of this work for personal or
+% classroom use is granted without fee provided that copies are not made or distributed
+% for profit or commercial advantage and that copies bear this notice and the full
+% citation on the first page. Copyrights for third-party components of this work must
+% be honored. For all other uses, contact the Owner/Author.\\
+% Copyright is held by the owner/author(s).}
+% \conferenceinfo{}{}
+% \crdata{}
+% \doi{}
+% \isbn{}
+% \makeatletter
+% \def\@copyrightspace{\relax}
+% \makeatother
+
+\begin{document}
+
+
+
+\maketitle
+
+\begin{abstract}
+  \input{abstract}
+\end{abstract}
+
+
+\input{introduction}
+
+\input{prelims}
+
+\input{theory}
+
+\input{evaluation}
+
+% \input{related_work}
+
+% \input{conclusion}
+
+
+\nocite{*}
+\clearpage
+\bibliographystyle{abbrv}
+\bibliography{templates}
+
+%\input{figures}
+
+\end{document}

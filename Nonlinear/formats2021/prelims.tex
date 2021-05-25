@@ -1,0 +1,143 @@
+
+\section{Preliminaries}
+\label{sec:prelims}
+
+The state of a system, denoted as $x$, lies in a domain $D \subseteq \reals^n$.
+%
+A discrete-time nonlinear system is denoted as
+\begin{equation}
+  x^{+} = f(x)
+\label{eq:sys}
+\end{equation}
+%
+where $f: \reals^{n} \rightarrow \reals^{n}$ is a nonlinear function.
+%
+The trajectory of a system that evolves according to Equation~\ref{eq:sys}, denoted as $\xi(x_0)$ is a sequence $x_0, x_1, \ldots $ where $x_{i+1} = f(x_i)$.
+%
+The $k^{th}$ element in this sequence $x_k$ is denoted as $\xi(x_0,k)$.
+%
+Given an initial set $\Theta \subseteq \reals^n$, the \emph{reachable set} at step $k$, denoted as $\Theta_k$ is defined as
+\begin{equation}
+  \Theta_k = \{ \xi(x,k)\: | \: x \in \Theta\}
+\label{eq:reachset}
+\end{equation}
+
+
+A parallelotope $P$, denoted as a tuple $\tup{a, G}$ where $a \in \reals^n$ is called the \emph{anchor} and $G$ is a set of vectors $\{g_1, g_2, \ldots, g_n\}$, $\forall_{1 \leq i \leq n} ~ g_i \in \reals^n$ called \emph{generators}, represents a set
+\begin{equation}
+P = \{ x\:|\: \exists \alpha_1, \ldots, \alpha_n, \mbox{ such that }  0 \leq \alpha_i \leq 1, x = a + \sum_{i=1}^n \alpha_i g_i \}.
+\label{eq:ptope}
+\end{equation}
+
+We call this representation as the \emph{generator representation} of the parallelotope.
+%
+We refer to a generator of a specific parallelotope $P$ using dot notation, for example $P.g_1$.
+%
+For readers familiar with zonotopes~\cite{girard2005reachability,althoff2010computing}, a parallelotope is a special form of zonotope where the number of generators $n$ equals the dimensionality of the set.
+%
+One can also represent the parallelotope as a conjunction of half-space constraints. 
+%
+In half-space representation, a parallelotope is represented as a tuple $\tup{\T, c_{l}, c_{u}}$ where $\T \in \reals^{n \times n}$ are called \emph{template directions} and $c_{l}, c_{u} \in \reals^{n}$ such that $\forall_{1 \leq i \leq n} ~  c_{l}[i] \leq c_{u}[i]$ are called \emph{bounds}. The half-space representation defines the set of states
+%
+$$
+P = \{\: x\: | \: c_{l} \leq \T x \leq c_{u} \}.
+$$
+%
+% The rows in $\Lambda$ are called template directions in the parallelotope.
+%
+Intuitively, the $i^{th}$ constraint in the parallelotope corresponds to an upper and lower bound on the function $\T_{i} x$.
+%
+That is, $c_{l}[i] \leq \T_{i}x \leq c_{u}[i]$.
+%
+The half-plane representation of a parallelotope can be converted into the generator representation by computing $n+1$ vertices $v_1, v_2, \ldots, v_{n+1}$ of the parallelotope in the following way.
+%
+The vertex $v_1$ is obtained by solving the linear equation $\Lambda x = c_{l}$.
+%
+The $j+1$ vertex is obtained by solving the linear equation $\Lambda x = \mu_{j}$ where $\mu_{j}[i] = c_{l}[i]$ when $i \neq j$ and $\mu_{j}[j] = c_{u}[j]$.
+%
+The anchor $a$ of the parallelotope is the vertex $v_1$ and the generator $g_{i} = v_{i+1} - v_{1}$.
+
+\begin{example}
+  \label{ex:ptope}
+  Consider the xy-plane and the parallelotope $P$ given in half-plane representation as $0 \leq x-y \leq 1$, $0 \leq y \leq 1$.
+  %
+  This is a parallelotope with vertices at $(0,0)$, $(1,0)$, $(2,1)$, and $(1,1)$.
+  %
+  In the half-space representation, the template directions of the parallelotope $P$ are given by the directions $[1, -1]$ and $[0, 1]$.
+  %
+  The half-space representation in matrix form is given as follows:
+
+  \begin{equation}
+    \begin{bmatrix} 0 \\ 0 \end{bmatrix} \leq \begin{bmatrix}  1 & -1 \\ 0 &  1 \end{bmatrix}  \begin{bmatrix} x \\ y \end{bmatrix} \leq \begin{bmatrix} 1 \\ 1 \end{bmatrix}. \label{eq:ptopeexample}
+\end{equation}
+
+  To compute the generator representation of $P$, we need to compute the \emph{anchor} and the \emph{generators}.
+  %
+  The anchor is obtained by solving the linear equations $x-y = 0, y = 0$.
+  %
+  Therefore, the anchor $a$ is the vertex at origin $(0,0)$
+  %
+  To compute the two generator of the parallelotope, we compute two vertices of the parallelotope.
+  %
+  Vertex $v_1$ is obtained by solving the linear equations $x - y = 1, y = 0$.
+  %
+  Therefore, vertex $v_1$ is the vertex $(1,0)$.
+  %
+  Similarly, vertex $v_2$ is obtained by solving the linear equations $x-y = 0, y = 1$.
+  %
+  Therefore, $v_2$ is the vertex $(1,1)$.
+  %
+  The generator $g_1$ is the vector $v_1 - a$, that is $(1,0)- (0,0) = (1,0)$
+  %
+  The generator $g_2$ is the vector $v_2 - a$, that is $(1,1) - (0,0) = (1,1)$.
+  %
+  Therefore, all the points in the paralellotope can be written as $(x,y) = (0,0) + \alpha_1 (1,0) + \alpha_2(1,1)$, $0 \leq \alpha_1, \alpha_2 \leq 1$.
+  %
+  % We can also convert a generator representation of a parallelotope into the half-plane representation.
+  %
+\end{example}
+
+
+A parallelotope bundle $Q$ is a set of parallelotopes $\{P_1, \ldots, P_m\}$.
+%
+The set of states represented by a parallelotope bundle is given as the intersection
+\begin{equation}
+Q = \bigcap_{i=1}^m P_i.
+\end{equation}
+%
+Often, the various parallelotopes in a bundle share common template directions.
+%
+In such cases, the conjunction of all the parallelotope constraints in a bundle $Q$ is written as $c_{l}^Q \leq T^Q x \leq c_{u}^Q$.
+%
+Notice that the number of upper and lower bound half-space constraints in this bundle are stricly more than $n$, i.e., $T^Q \in R^{m \times n}$ where $m>n$.
+%
+Each parallelotope in such a bundle is represented as a subset of constraints in $c_{l}^Q \leq T^Q x \leq c_{u}^Q$.
+%
+These types of bundles are often considered in the literature.
+
+
+Alternatively, in this paper, we consider parallelotope bundles where the consisting parallelotopes do not share template directions.
+%
+We consider such bundles because our we generate template directions automatically.
+%
+We propose techniques to generate $n$ template directions at each instance.
+%
+% collectively generate one set of template directions.
+
+
+
+The basic building block in this work is a conservative overapproximation to a constrained nonlinear optimization problem with a box domain.
+%
+Consider a nonlinear function $h : \reals^n \rightarrow \reals$ and the optimization problem denoted as $\mathsf{optBox(h)}$ as
+
+\begin{eqnarray}
+  \max ~ h(x) \label{eq:maxsup}\\
+  s.t. ~~ x \in [0,1]^{n}.\nonumber
+\end{eqnarray}
+
+For computing the reachable set of a nonlinear system, we need an upper bound for the optimization problem.
+%
+Several techniques using interval arithmetic and Bernstein polynomials have been developed in the recent past~\cite{garloff2003bernstein,munoz2013formalization,kodiak,smith2009fast}.
+%
+
+

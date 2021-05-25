@@ -1,0 +1,41 @@
+Reachable set computation is an important technique for the verification of safety properties of dynamical systems.
+%
+% one method proposed for solving this problem, based on parallelotope bundle reachability for
+%
+In this paper, we investigate parallelotope bundle based reachable set computation for discrete nonlinear systems.
+%
+The algorithm relies on computing an upper bound on the supremum of a nonlinear function over a rectangular domain,
+traditionally done using Bernstein polynomials.
+%or nonlinear optimization tools.
+ We strive to remove the manual step of parallelotope template selection to make the method fully automatic.
+%
+Further, we show that changing templates dynamically during computations can improve accuracy.
+%
+% One of the simplest algorithms for computing reachable sets for discrete nonlinear systems uses parallelotope bundles and Bernstein polynomials.
+%
+%Our main hypothesis in this paper is that generating templates in a dynamic manner would improve the accuracy of the reachable set.
+%
+We investigate two techniques for generating the template directions.
+%
+The first technique approximates the dynamics as a linear transformation and generates templates using this linear transformation.
+%
+The second technique uses Principle Component Analysis (PCA) of sample trajectories for generating templates.
+%
+We have implemented our approach in a Python based tool called Kaa and improve its performance by two main enhancements.
+%
+% have implemented two main enhancements to it.
+%
+The tool is modular and use two types of global optimization solvers, the first using Bernstein polynomials and the second using NASA's Kodiak nonlinear optimization library.
+%
+Second, we leverage the natural parallelism of the reachability algorithm and parallelize the Kaa implementation.
+% thus leveraging the cloud computing resources.
+%
+We demonstrate the improved accuracy of our approach on several standard nonlinear benchmark systems.
+%
+% In this paper, we describe Kaa, a terse Python implementation of reachable set computation which leverages the widely used symbolic package \emph{sympy}.
+% %
+% Additionally, we simplify the user interface and provide easy-to-use plotting utilities.
+% %
+% %
+% We believe that our tool has pedagogical value given the simplicity of the implementation and its user-friendliness.
+%

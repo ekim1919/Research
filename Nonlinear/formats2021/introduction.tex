@@ -1,0 +1,99 @@
+
+\section{Introduction}
+\label{sec:intro}
+
+One of the widely used techniques for performing safety analysis of nonlinear dynamical systems is to perform reachable set computation.
+%
+Reachable set is an overapproximation of the set of states visited by all the trajectories of the system starting from an initial set.
+%
+Computing the reachable set for nonlinear systems is very challenging.
+%
+This is primarily because of two reasons:
+%
+First, the tools for performing nonlinear analysis are not very scalable.
+%
+Second, computing the reachable set using set representations involves wrapping error.
+%
+That is, the overapproximation acquired at a given step would increase the conservativeness of the reachable set for all future steps.
+
+One of the techniques for computing reachable set for discrete time nonlinear systems is to use Parallelotope bundles.
+%
+Here, the reachable set is represented as a parallelotope bundle, an intersection of several parallelotopes.
+%
+One of the advantages of this technique is that it uses a special form of nonlinear optimization problem to compute the reachable set.
+%
+The usage of a specific form of nonlinear optimization mitigates the drawback involved with the scalability of nonlinear analysis.
+
+However, wrapping error still remains to be a problem for reachability using parallelotope bundles.
+%
+The template directions for specifying these parallelotopes are provided as an input by the user.
+%
+Often, these template directions are selected to be either the cardinal axis directions or some directions from octahedral domains.
+%
+However, it is not clear that the axis directions and octagonal directions are optimal for computing reachable sets.
+%
+Also, even an expert user of reachable set computation tools might not be able to provide the most suitable set of template directions for computing the most accurate reachable set.
+%
+Picking an unsuitable template directions would only cause the wrapping error to increase, thus increasing the conservativeness of the safety analysis.
+
+In this paper, we investigate techniques for generating template directions automatically and dynamically.
+%
+That is, instead of providing the template directions to compute the parallelotope, the user just specifies the number of templates and the algorithm automatically generates the template directions.
+%
+We study two techniques for generating the template directions.
+%
+First, we compute a local linear approximation of the nonlinear dynamics and use the linear approximation to compute the templates.
+%
+Second, we generate a specific set of sample trajectories from the set and use principal component analysis (PCA) over these trajectories.
+%
+We observe that the accuracy of the reachable set can be drastically improved by using templates generated using these two techniques.
+%
+For standard nonlinear benchmark systems, we show that generating templates in a dynamic fashion improves the accuracy of the reachable set by two orders of magnitude.
+%
+We demonstrate that even when the size of the initial set increases, our template generation technique returns much more accurate reachable sets than both manually specified and random template directions.
+
+% [Introduction para]
+% \begin{itemize}
+% \item Reachable set computation.
+% \item Nonlinear dynamics is challenging.
+% \item Overapproximation, wrapping error.
+% \item Parallelotope bundle reachability.
+% \end{itemize}
+
+% [Templates for reachability]
+% \begin{itemize}
+% \item Often the templates are generated statically.
+% \item However, the most appropriate directions for templates that improve the accuracy is unknwon.
+% \item Challenges: Wrapping error, cannot predict.
+% \item Static template directions often aggrevate such errors.
+% \item Generating templates dynamically is a challenge.
+% \end{itemize}
+
+% [Template generation]
+% \begin{itemize}
+% \item Template based overapproximation are used extensively in verification.
+% \item More on this in the related work section.
+% \item Dynamic templates using PCA have been investigated already.
+% \item Not explicitly in the context of parallelotope bundles.
+% \item In this paper we propose two techniques for  generating templates dynamically.
+% \end{itemize}
+
+\section{Related Work}
+
+Reachable set computation of nonlinear systems using template polyhedra and Bernstein polynomials has been first proposed in~\cite{dang2009image}.
+%
+In~\cite{dang2009image}, Bernstein polynomial representation is used to compute an upper bound of a special type of nonlinear optimization problem~\cite{garloff2003bernstein}.
+%
+Several improvements to this algorithm were suggested in~\cite{dang2012reachability,sassi2021reachability} and~\cite{dang2014parameter} extends it for performing parameter synthesis.
+%
+The representation of parallelotope bundles for reachability was proposed in~\cite{dreossi2016parallelotope} and the effectiveness of using bundles for reachability was demonstrated in~\cite{dreossi2017sapo,dreossi2017reachability}.
+%
+However, all of these papers used static template directions for computing the reachable set.
+
+Using template directions for reachable set has been proposed in~\cite{sankaranarayanan2008symbolic} and later improved in~\cite{dang2011template}.
+%
+Leveraging the principle component analysis of sample trajectories for computing reachable set has been proposed in~\cite{stursberg2003efficient,chen2011choice,seladji2017finding}.
+%
+More recently, connections between optimal template directions for reachability of linear dynamical systems and bilinear programming have been highlighted in~\cite{gronski2019template}.
+%
+For static template directions, Octahedral domain directions~\cite{clariso2004octahedron} remain a popular choice.

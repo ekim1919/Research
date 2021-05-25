@@ -1,0 +1,189 @@
+\section{Reachability Algorithm}
+\label{sec:theory}
+
+In this work, we develop parallelotope reachability algorithms that are \textbf{automatic} with \textbf{dynamic} parallelotopes.
+%
+The state of the art, in contrast, is \textbf{manual}, where the user specifies a set of parallelotope directions at the start of the problem.
+%
+Further, the parallelotopes are \textbf{static}, and do not change during the course of the computation.
+%
+In our evaluation in the next section, we will demonstrate the benefits of these change on a series of nonlinear example systems.
+%
+In this section, we detail the modifications to the algorithm present correctness arguments.
+
+\subsection{Manual Static Algorithm}
+\label{sec:manualstatic}
+
+We first present the original algorithm where the user manually specifies the number of parallelotopes and a set of directions for each parallelotope that remain static throughout the computation.
+
+Recall the system is $n$-dimensional with dynamics function $f: \reals^{n} \rightarrow \reals^{n}$.
+%
+The parallelotope bundle $Q$ is specified as a collection of $m$ template directions $\T^{Q} \in \reals^{m \times n} (m > n)$ and the set of constraints that define each of the consisting parallelotope.
+%
+% consisting of $m$ parallelotopes , the user should manually provide $n$ generator directions for each parallelotope.
+%
+% We write the collective set of generator directions as $\mathcal{G}$, which is a set of sets, each of which contains $n$ direction vectors.
+%
+Another input to the algorithm is the initial set, given as a parallelotope $P_0$.
+%
+When the initial set is a box, $P_0$ consists has axis-aligned template directions.
+%
+The output of the algorithm is, for each step $k$, the set $\overline\Theta_k$, which is a conservative overapproximation of the reachable set at step $k$, $\Theta_k \subseteq \overline\Theta_k$.
+
+The high-level pseudo-code is written in Algorithm~\ref{alg:old}.
+%
+The algorithm simply calls \tbundle for each step, producing a new parallelotope bundle based on the parallelotope bundle from the previous step.
+%
+To compute the image of $Q$, the algorithm computes the upper and lower bounds of $f(x)$ with respect to each template direction.
+%
+Since computing the maximum value of $f(x)$ along each template direction on $Q$ is computationally very hard, the algorithm instead computes the maximum value over each of the consisting parallelotopes and uses the mimimum of all these maximum values.
+%
+The \tbundle operation works as follows.
+%
+Consider a parallelotope $P$ in the bundle $Q$.
+%
+From the definition, it follows that $Q \subseteq P$.
+%
+% and half-space representation as $\tup{\T, c_{l}, c_{u}$.
+Given a template direction $\T_i$, the maximum value of $\T_{i} f(x)$ for all $x \in Q$ is less than or equal to the maximum value of $\T_{i} f(x)$ for all $x \in P$.
+%
+Similar argument holds for the mimum value of $T_{i} f(x)$ for all $x \in Q$.
+%
+% We would like to compute the image of the parallelotope $P$ with respect to the nonlinear transformation $f(x)$.
+%
+% That is, we would like to compute $P'$ such that $\forall x \in P, f(x) \in P'$.
+%
+% Given that current techniques use static template directions, the parallelotope $P'$ also uses the template directions $\T^{P}$.
+%
+To compute the upper and lower bounds of each template direction $\T_{i} f(x)$, for all $x \in P$, we perform the following optimization.
+%
+\begin{eqnarray}
+  \max ~ \T_i^{P} \cdot f(x) \label{eq:maxf}\\
+  s.t. ~~ x \in P.\nonumber
+\end{eqnarray}
+
+Given $P$ is a parallelotope, all the states in $P$ can be expressed as a vector summation of anchor and scaled generators.
+%
+Let  $\tup{a, G}$ be the generator representation of $P$.
+%
+The optimization problem given in Equation~\ref{eq:maxf} would then transform as follows.
+
+\begin{eqnarray}
+  \max ~ \T_i \cdot f(a + \Sigma_{i=1}^{n} \alpha_i g_i) \label{eq:maxalpha}\\
+  s.t. ~~ \overline\alpha \in [0,1]^{n}.\nonumber
+\end{eqnarray}
+
+Equation~\ref{eq:maxalpha} is a form of $\mathsf{optBox(\T_{i} \cdot f)}$ over $[0,1]^n$.
+%
+For computing an upper-bound to the constrained nonlinear optimization by invoking one of the Bernstein polynomial or interval arithmetic based methods.
+%
+Similarly, we compute the lowerbound of $\T_{i}f(x)$ for all $x \in P$ by computing the upperbound of $-1 \times \T_{i}f(x)$.
+%
+
+We iterate this process (i.e., computing the upper and lower bound of $T_{i}f(x)$) for each parallelotope in the bundle $Q$.
+%
+% Observe that the role of the parallelotopes in the bundle is to compute an upper bound on the maximum value of $T_{i}f(x)$ by expanding the domain from $Q$ to the corresponding parallelotope $P$.
+%
+Therefore, the tightest upper bound on $T_{i}f(x)$ over $Q$ is the least of the upper bounds computed from each of the parallelotopes.
+%
+Similar argument holds for lower bounds of $T_{i}f(x)$ over $Q$.
+%
+Therefore, the image of the bundle $Q$ will be the bundle $Q'$ where the upper and lower bounds for templates directions are obtained by solving several constrained nonlinear optimization problems.
+
+\begin{lemma}
+\label{lem:correctness}
+The parallelotope bundle $Q'$ computed using \tbundle (Algorithm~\ref{alg:old}) is a sound overapproximation of the image of bundle $Q$ w.r.t the dynamics $x^{+} = f(x)$.
+\end{lemma}
+% \begin{proof}
+%   Suppose that parallelotope $P$ is part of the bundle $Q$ and is provided in generator representation as $\tup{a, G}$.
+%   %
+%   By definition, we know that $Q \subseteq P$.
+%   % in generator representation and as $\tup{\T, c_{l}, c_{u}}$ in half-space representation.
+%   %
+%   Consider an $x \in Q$ and $x' = f(x)$.
+%   %
+%   Given a template direction $\T_{i}$, we know that $\T_{i} x' \leq \mathsf{optBox(\T_{i} \cdot f)}$ (Equation~\ref{eq:maxalpha}) and $-1\times optBox(-1\times \T_{i} \cdot f) \leq \T_{i} x'$.
+%   %
+%   Therefore, for all $x \in Q$, $c_{l}'[i] \leq \T_{i} \cdot f(x) \leq c_{u}'[i]$.
+%   %
+%   Therefore, for all $x \in Q$, $f(x) \in Q'$.
+% \end{proof}
+
+
+% \textcolor{red}{\textbf{SRIDHAR: add this (as well as argument for correctness)}}
+
+\input{algorithm_old}
+\vspace{-1.5em}
+\subsection{Automatic Dynamic Algorithm}
+
+The proposed automatic dynamic algorithm does not require the user provide the set of template direction $\T$; instead it creates templates automatically at each step based.
+%
+We use two techniques to generate such template directions, first: computing local linear approximations of the dynamics and second, perform principle component analysis (PCA) over sample trajectories.
+%
+To do this, we first sample a set of points in the parallelotope bundle called \emph{support points}, and propagate them to the next step using the dynamics function $f$.
+%
+Support points are a subset of the vertices of the parallelotope that either maximize or minimize the template directions.
+
+Intuitively, linear approximations can provide good approximations when the dynamics function is a time-discretization of a continuous system.
+%
+In this case, for small time steps a nonlinear function can be approximated fairly accurately by a linear function.
+%
+We use the support points as a data-driven approach to find the best-fit linear function to use.
+%
+If the dynamics of a system is linear, i.e., $x^{+} = Ax$, the image of the parallelotope $c_{l} \leq \T x \leq c_{u}$, is the set $c_{l} \leq \T \cdot A^{-1} x \leq c_{u}$.
+%
+Therefore, given the template directions of the initial set as $\T_0$, we compute the local linear approximation of the nonlinear dynamics (from the support points) and change the template directions by multiplying it with the inverse of the approximate linear dynamics.
+%
+The second technique for generating template directions performs principle component analysis over the images of the support points.
+%
+Using PCA is a reasonable choice as it produces orthonormal directions that can construct a rotated box for bounding the points.
+%
+
+Observe that in general, the dynamics is nonlinear and therefore, the reachable set could non-convex.
+%
+However, a parallelotope bundle is always a convex set.
+%
+Therefore, one way to improve accuracy of this representation is to consider more template directions.
+%
+For this purpose, we use a notion of \emph{template lifespan}, where we use the linear approximation and/or PCA template directions not only from the current step, but also from the previous $L$ steps.
+%
+We will demonstrate the effectiveness and tune each of the options (PCA / linear approximation as well as lifespan option) in our evaluation.
+
+The new approach is given in Algorithm~\ref{alg:new}.
+%
+In this algorithm, instead of fixing the set of templates, we compute one set of templates (that is, a collection of $n$ template directions), using linear approximation of the dynamics and PCA.
+%
+The algorithm makes use of helper function \texttt{hstack}, which converts a bunch of column vectors into a matrix (as shown in Equation~\ref{eq:ptopeexample} provided in Example~\ref{ex:ptope}).
+%
+The notation $M_{*,i}$ is used to refer to the $i^{th}$ column of matrix $M$.
+%
+The \texttt{Maximize} function takes in a parallelotope bundle $Q$ and direction vector $v$ (one of the template directions), and returns the point $p \in Q$ that maximizes the dot product $v \cdot p$ (for computing support points).
+%
+This can be computed efficiently using linear programming.
+%
+The \texttt{ApproxLinearTrans} function computes the best approximation of a linear transformation given a list of points before and after the one-step transformation $f$.
+%
+More specifically, given a matrix $X$ of points before applying the transformation $f$, a matrix of points after the transformation $X'$, we perform a least-squares fit for the linear transition matrix $A$ such that $X' \approx AX$.
+%
+This can be computed by $A = X' X^\dagger$, where $X^\dagger$ is the Moore-Penrose pseudoinverse of $X$.
+%
+The \texttt{PCA} function returns a set of orthogonal directions using principal component analysis of a set of points.
+%
+Finally, \texttt{TransformBundle} is the same as in Algorithm~\ref{alg:old}.
+
+\input{algorithm_new}
+
+Algorithm~\ref{alg:new} computes the dynamic templates for each time step $k$.
+%
+Line~\ref{ln:linearapprox} computes the linear approximation of the nonlinear dynamics and this linear approximation is used to compute the new template directions according to this linear transformation in Line~\ref{ln:linapp}.
+%
+The PCA directions of the images of support points is computed in line~\ref{ln:pca}.
+%
+For the time step $k$, the linear and PCA templates are given as $\T_{k}^{lin}$ and $\T_{k}^{pca}$, respectively.
+%
+To improve the accuracy of the reachable set, we compute the reachable set with respect to not just the template directions at the current step, but with respect to other template directions for time steps that are within the lifespan $L$.
+%
+This is because, the nonlinear systems we deal with are often not chaotic in nature.
+%
+Therefore, the templates at time step $k-1$ are very similar to that of template directions at time step $k$.
+%
