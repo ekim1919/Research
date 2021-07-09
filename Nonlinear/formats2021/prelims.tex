@@ -23,7 +23,7 @@ Given an initial set $\Theta \subseteq \reals^n$, the \emph{reachable set} at st
 \end{equation}
 
 
-A parallelotope $P$, denoted as a tuple $\tup{a, G}$ where $a \in \reals^n$ is called the \emph{anchor} and $G$ is a set of vectors $\{g_1, g_2, \ldots, g_n\}$, $\forall_{1 \leq i \leq n} ~ g_i \in \reals^n$ called \emph{generators}, represents a set
+A parallelotope $P$, denoted as a tuple $\tup{a, G}$ where $a \in \reals^n$ is called the \emph{anchor} and $G$ is a set of vectors $\{g_1, g_2, \ldots, g_n\}$, $\forall_{1 \leq i \leq n} ~ g_i \in \reals^n$ called \emph{generators}, represents the set
 \begin{equation}
 P = \{ x\:|\: \exists \alpha_1, \ldots, \alpha_n, \mbox{ such that }  0 \leq \alpha_i \leq 1, x = a + \sum_{i=1}^n \alpha_i g_i \}.
 \label{eq:ptope}
@@ -35,7 +35,7 @@ We refer to a generator of a specific parallelotope $P$ using dot notation, for 
 %
 For readers familiar with zonotopes~\cite{girard2005reachability,althoff2010computing}, a parallelotope is a special form of zonotope where the number of generators $n$ equals the dimensionality of the set.
 %
-One can also represent the parallelotope as a conjunction of half-space constraints. 
+One can also represent the parallelotope as a conjunction of half-space constraints.
 %
 In half-space representation, a parallelotope is represented as a tuple $\tup{\T, c_{l}, c_{u}}$ where $\T \in \reals^{n \times n}$ are called \emph{template directions} and $c_{l}, c_{u} \in \reals^{n}$ such that $\forall_{1 \leq i \leq n} ~  c_{l}[i] \leq c_{u}[i]$ are called \emph{bounds}. The half-space representation defines the set of states
 %
@@ -77,7 +77,7 @@ The anchor $a$ of the parallelotope is the vertex $v_1$ and the generator $g_{i}
   %
   Therefore, the anchor $a$ is the vertex at origin $(0,0)$
   %
-  To compute the two generator of the parallelotope, we compute two vertices of the parallelotope.
+  To compute the two generators of the parallelotope, we compute two vertices of the parallelotope.
   %
   Vertex $v_1$ is obtained by solving the linear equations $x - y = 1, y = 0$.
   %
@@ -109,18 +109,16 @@ Often, the various parallelotopes in a bundle share common template directions.
 %
 In such cases, the conjunction of all the parallelotope constraints in a bundle $Q$ is written as $c_{l}^Q \leq T^Q x \leq c_{u}^Q$.
 %
-Notice that the number of upper and lower bound half-space constraints in this bundle are stricly more than $n$, i.e., $T^Q \in R^{m \times n}$ where $m>n$.
+Notice that the number of upper and lower bound half-space constraints in this bundle are stricly more than $n$ in these cases, i.e., $T^Q \in R^{m \times n}$ where $m>n$.
 %
 Each parallelotope in such a bundle is represented as a subset of constraints in $c_{l}^Q \leq T^Q x \leq c_{u}^Q$.
 %
-These types of bundles are often considered in the literature.
+These types of bundles are often considered in the literature. \cite{dang2009image,dang2012reachability,dreossi2017reachability}
 
 
-Alternatively, in this paper, we consider parallelotope bundles where the consisting parallelotopes do not share template directions.
+Alternatively, we consider parallelotope bundles where the consisting parallelotopes do not share template directions.
 %
-We consider such bundles because our we generate template directions automatically.
-%
-We propose techniques to generate $n$ template directions at each instance.
+We consider such bundles because we generate the $n$ template directions automatically at each step.
 %
 % collectively generate one set of template directions.
 
@@ -137,7 +135,5 @@ Consider a nonlinear function $h : \reals^n \rightarrow \reals$ and the optimiza
 
 For computing the reachable set of a nonlinear system, we need an upper bound for the optimization problem.
 %
-Several techniques using interval arithmetic and Bernstein polynomials have been developed in the recent past~\cite{garloff2003bernstein,munoz2013formalization,kodiak,smith2009fast}.
+Several techniques using interval arithmetic and Bernstein polynomials have been developed in the recent past \newline\cite{kodiak,garloff2003bernstein,munoz2013formalization,smith2009fast}.
 %
-
-

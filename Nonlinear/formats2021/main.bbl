@@ -18,7 +18,7 @@ S.~Ansumali, S.~Kaushal, A.~Kumar, M.~K. Prakash, and M.~Vidyasagar.
 
 \bibitem{bak2021reachability}
 S.~Bak, S.~Bogomolov, P.~S. Duggirala, A.~R. Gerlach, and K.~Potomkin.
-\newblock Reachability of black-box nonlinear systems after koopman operator
+\newblock Reachability of black-box nonlinear systems after {K}oopman operator
   linearization, 2021.
 
 \bibitem{chen2011choice}
@@ -50,15 +50,22 @@ T.~Dang and T.~M. Gawlitza.
 \bibitem{dang2009image}
 T.~Dang and D.~Salinas.
 \newblock Image computation for polynomial dynamical systems using the
-  bernstein expansion.
+  {B}ernstein expansion.
 \newblock In {\em International Conference on Computer Aided Verification},
   pages 219--232. Springer, 2009.
 
 \bibitem{dang2012reachability}
 T.~Dang and R.~Testylier.
 \newblock Reachability analysis for polynomial dynamical systems using the
-  bernstein expansion.
+  {B}ernstein expansion.
 \newblock {\em Reliable Computing}, 17(2):128--152, 2012.
+
+\bibitem{devonport2020pirk}
+A.~Devonport, M.~Khaled, M.~Arcak, and M.~Zamani.
+\newblock {PIRK}: Scalable interval reachability analysis for high-dimensional
+  nonlinear systems.
+\newblock In {\em International Conference on Computer Aided Verification},
+  pages 556--568. Springer, 2020.
 
 \bibitem{dreossi2017sapo}
 T.~Dreossi.
@@ -92,7 +99,7 @@ R.~FitzHugh.
 
 \bibitem{garloff2003bernstein}
 J.~Garloff.
-\newblock The bernstein expansion and its applications.
+\newblock The {B}ernstein expansion and its applications.
 \newblock {\em Journal of the American Romanian Academy}, 25:27, 2003.
 
 \bibitem{girard2005reachability}
@@ -114,27 +121,27 @@ C.~Huang, J.~Fan, W.~Li, X.~Chen, and Q.~Zhu.
 
 \bibitem{kim2020kaa}
 E.~Kim and P.~S. Duggirala.
-\newblock Kaa: A python implementation of reachable set computation using
-  bernstein polynomials.
+\newblock Kaa: A {P}ython implementation of reachable set computation using
+  {B}ernstein polynomials.
 \newblock {\em EPiC Series in Computing}, 74:184--196, 2020.
 
 \bibitem{munoz2013formalization}
 C.~Mu{\~n}oz and A.~Narkawicz.
-\newblock Formalization of bernstein polynomials and applications to global
+\newblock Formalization of {B}ernstein polynomials and applications to global
   optimization.
 \newblock {\em Journal of Automated Reasoning}, 51(2):151--196, 2013.
 
 \bibitem{nataraj2007new}
 P.~S. Nataraj and M.~Arounassalame.
-\newblock A new subdivision algorithm for the bernstein polynomial approach to
-  global optimization.
+\newblock A new subdivision algorithm for the {B}ernstein polynomial approach
+  to global optimization.
 \newblock {\em International journal of automation and computing},
   4(4):342--352, 2007.
 
 \bibitem{nataray2002algorithm}
 P.~Nataray and K.~Kotecha.
-\newblock An algorithm for global optimization using the taylor--bernstein form
-  as inclusion function.
+\newblock An algorithm for global optimization using the {T}aylor--{B}ernstein
+  form as inclusion function.
 \newblock {\em Journal of Global Optimization}, 24(4):417--436, 2002.
 
 \bibitem{indiansuper2020supermodel}

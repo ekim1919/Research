@@ -2,26 +2,25 @@ Reachable set computation is an important technique for the verification of safe
 %
 % one method proposed for solving this problem, based on parallelotope bundle reachability for
 %
-In this paper, we investigate parallelotope bundle based reachable set computation for discrete nonlinear systems.
+In this paper, we investigate reachable set computation for discrete nonlinear systems based on parallelotope bundles.
 %
-The algorithm relies on computing an upper bound on the supremum of a nonlinear function over a rectangular domain,
-traditionally done using Bernstein polynomials.
+The algorithm relies on computing an upper bound on the supremum of a nonlinear function over a rectangular domain, which has been traditionally done using Bernstein polynomials.
 %or nonlinear optimization tools.
  We strive to remove the manual step of parallelotope template selection to make the method fully automatic.
 %
-Further, we show that changing templates dynamically during computations can improve accuracy.
+Furthermore, we show that changing templates dynamically during computations cans improve accuracy.
 %
 % One of the simplest algorithms for computing reachable sets for discrete nonlinear systems uses parallelotope bundles and Bernstein polynomials.
 %
 %Our main hypothesis in this paper is that generating templates in a dynamic manner would improve the accuracy of the reachable set.
 %
-We investigate two techniques for generating the template directions.
+To this end, we investigate two techniques for generating the template directions.
 %
 The first technique approximates the dynamics as a linear transformation and generates templates using this linear transformation.
 %
-The second technique uses Principle Component Analysis (PCA) of sample trajectories for generating templates.
+The second technique uses Principal Component Analysis (PCA) of sample trajectories for generating templates.
 %
-We have implemented our approach in a Python based tool called Kaa and improve its performance by two main enhancements.
+We have implemented our approach in a Python-based tool called Kaa and improve its performance by two main enhancements.
 %
 % have implemented two main enhancements to it.
 %
