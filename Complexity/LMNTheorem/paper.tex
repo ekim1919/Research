@@ -220,8 +220,17 @@ The function $\hat{f}$ is deemed as the \emph{Fourier Transform of $f$}. By iter
 \end{remark}
 
 \begin{remark}{\emph{(Generalizations of Fourier Analysis)}}
-The above properties on characters can be shown through techniques in Representation Theory. For instance, we know representations of finite groups are group homomorphisms into the group of linear automorphisms of a suitable finite-dimensional complex vector space $\rho: G \rightarrow GL(\mathbb{C}^n)$. The \emph{characters} of $\rho$ are defined as $\chi(x) = Tr(\rho(x))$ where $Tr$ is the trace operator. It turns out that the representations of finite abelian groups are one-dimensional i.e isomorphic to $\mathbb{C}$. Thus, $\rho(x)$ will just be multiplying $\mathbb{C}$ by some scalar $\lambda_x \in \mathbb{C}^*$. In this case, we can show that indeed for any $a,b \in G$ and $\chi$ any character of $G$:
-$$ \chi(a+b) = Tr(\rho(a+b)) = Tr(\rho(a)\circ\rho(b)) = \lambda_a \lambda_b = Tr(\rho(a))Tr(\rho(b)) = \chi(a)\chi(b)$$ Note that this relation does not hold for arbitrary finite groups since the trace is generally not multiplicative. The genealizations of Fourier Analysis generally lie in \emph{Harmonic Analysis}. For more information on the Representation Theory of Finite Groups, see \cite{serre}, \cite{webb}.
+The above properties on characters can be shown through techniques in Representation Theory. For instance, we know representations of finite groups are group homomorphisms into the group of linear automorphisms of a suitable finite-dimensional complex vector space $\rho: G \rightarrow GL(V)$ where $GL(V)$ denotes the group of invertible linear operators on finite-dimensional complex vector space $V$. The \emph{characters} of $\rho$ are defined as $\chi_\rho(x) = Tr(\rho(x))$ where $Tr$ is the trace operator. It turns out that the representations of finite abelian groups are one-dimensional i.e isomorphic to $\mathbb{C}$. Thus, $\rho(x)$ will just be multiplying $\mathbb{C}$ by some scalar $\lambda_x \in \mathbb{C}^*$. In this case, we can show that indeed for any $a,b \in G$ and $\chi$ any character of $G$:
+$$ \chi(a+b) = Tr(\rho(a+b)) = Tr(\rho(a)\circ\rho(b)) = \lambda_a \lambda_b = Tr(\rho(a))Tr(\rho(b)) = \chi(a)\chi(b)$$ Note that this relation does not hold for arbitrary finite groups since the trace is generally not multiplicative. In addition, for arbitrary finite group $G$, there is an inner product defined on the vector space spanned by the characters of \emph{irreducible} representations i.e representations containing no subspace invariant under the action of $G$. This inner product is defined as:
+
+\[ \langle \chi_{\rho}, \chi_{\sigma} \rangle =
+\frac{1}{|G|}\sum_{g \in G} \chi_{\rho}(g)\overline{\chi_{\sigma}(g)}\]
+
+for irredudible representations $\rho: G \rightarrow GL(V_\rho)$ and $\sigma: G \rightarrow GL(V_\sigma)$. By an orthogonality argument similar to Theorem \ref{orthonormal}, we have that for irreducible representations $\rho, \sigma$, $ \langle \chi_{\rho}, \chi_{\sigma} \rangle = 1$ iff $\rho, \sigma$ denote the same representation else $\langle \chi_{\rho}, \chi_{\sigma} \rangle = 0$. For finite abelian group $G$, the one-dimensional representations above are irreducible.  Thus, for non-trivial character $\chi$,
+%
+ \[ |G|\langle \chi, \chi_0 \rangle = \sum_{g \in G} \chi(g)\chi_0(g) = \sum_{g \in G} \chi(g)  = 0 \]
+%
+where $\chi_0$ is the trivial character of $G$. This gives another proof of Lemma \ref{totalsum}. For more information on the Representation Theory of Finite Groups, see \cite{serre}, \cite{webb}.
 \end{remark}
 
 \section{Linial-Mansour-Nisan Theorem}
@@ -413,6 +422,7 @@ it lies in $\AC^0$.
     \end{equation}
   \end{theorem}
 \end{remark}
+\newpage
 %    Bibliographies can be prepared with BibTeX using amsplain,
 %    amsalpha, or (for "historical" overviews) natbib style.
 \bibliographystyle{amsplain}
