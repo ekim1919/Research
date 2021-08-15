@@ -94,20 +94,21 @@ Therefore, the image of the bundle $Q$ will be the bundle $Q'$ where the upper a
 \label{lem:correctness}
 The parallelotope bundle $Q'$ computed using \tbundle (Algorithm~\ref{alg:old}) is a sound overapproximation of the image of bundle $Q$ w.r.t the dynamics $x^{+} = f(x)$.
 \end{lemma}
-% \begin{proof}
-%   Suppose that parallelotope $P$ is part of the bundle $Q$ and is provided in generator representation as $\tup{a, G}$.
-%   %
-%   By definition, we know that $Q \subseteq P$.
-%   % in generator representation and as $\tup{\T, c_{l}, c_{u}}$ in half-space representation.
-%   %
-%   Consider an $x \in Q$ and $x' = f(x)$.
-%   %
-%   Given a template direction $\T_{i}$, we know that $\T_{i} x' \leq \mathsf{optBox(\T_{i} \cdot f)}$ (Equation~\ref{eq:maxalpha}) and $-1\times optBox(-1\times \T_{i} \cdot f) \leq \T_{i} x'$.
-%   %
-%   Therefore, for all $x \in Q$, $c_{l}'[i] \leq \T_{i} \cdot f(x) \leq c_{u}'[i]$.
-%   %
-%   Therefore, for all $x \in Q$, $f(x) \in Q'$.
-% \end{proof}
+\begin{proof}
+     Suppose that parallelotope $P$ is part of the bundle $Q$ and is provided in generator representation as $\tup{a, G}$.
+%
+By definition, we know that $Q \subseteq P$.
+%
+in generator representation and as $\tup{\T, c_{l}, c_{u}}$ in half-space representation.
+%
+Consider an $x \in Q$ and $x' = f(x)$.
+%
+Given a template direction $\T_{i}$, we know that $\T_{i} x' \leq \mathsf{optBox(\T_{i} \cdot f)}$ (Equation~\ref{eq:maxalpha}) and $-1\times optBox(-1\times \T_{i} \cdot f) \leq \T_{i} x'$.
+%
+Therefore, for all $x \in Q$, $c_{l}'[i] \leq \T_{i} \cdot f(x) \leq c_{u}'[i]$.
+%
+Therefore, for all $x \in Q$, $f(x) \in Q'$.
+\end{proof}
 
 
 % \textcolor{red}{\textbf{SRIDHAR: add this (as well as argument for correctness)}}
@@ -138,7 +139,6 @@ The second technique for generating template directions performs principal compo
 %
 Using PCA is a reasonable choice as it produces orthonormal directions that can construct a rotated box for bounding the points.
 %
-
 Observe that in general, the dynamics is nonlinear and therefore, the reachable set could be non-convex.
 %
 On the other hand, a parallelotope bundle is always a convex set.

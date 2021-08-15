@@ -11,7 +11,13 @@ The total volume estimate of the overapproximation will be the sum of all the bu
  %For two-dimensional models, note that there are only five non-trivial templates. The trivial template here refers to the initial box which is defined exactly the axis-aligned directions. Refer to the non-axis aligned templates. At each every time, pca. lin app directions to
 \vspace{-1em}
 \subsubsection{Model Dynamics}
-For benchmarking, we select six non-linear models with polynomial dynamics. Benchmarks against more general dynamics can be found in the appendix of the \href{https://arxiv.org/abs/2105.11796}{expanded verison}. Many of these models are also implemented in \emph{Sapo} \cite{dreossi2017sapo}, a previous tool exploring reachability with {\bf static} parallelotope bundles. In these cases, we directly compare the performance of our dynamic strategies with the Sapo's static parallelotopes. To provide meaningful comparisions, we set the number of dynamic parallelotopes to be equal to the number of static ones excluding the initial box. Here, {\bf diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other. By {\bf diagonal parallelotopes}, we refer to parallelotopes defined only by axis-aligned and diagonal directions. Similarly, {\bf diagonal parallelotope bundles} are parallelotope bundles solely consisting of diagonal parallelotopes. Sapo primarily utilizes {\bf static diagonal parallelotope bundles} to perform its reachability computation.
+For benchmarking, we select six non-linear models with polynomial dynamics. Benchmarks against more general dynamics can be found in the appendix of the \href{https://arxiv.org/abs/2105.11796}{expanded verison}.
+%
+Many of these models are also implemented in \emph{Sapo} \cite{dreossi2017sapo}, a previous tool exploring reachability with {\bf static} parallelotope bundles.
+%
+We choose benchmarks with polynomial dynamics to directly compare the performance of our dynamic strategies with the Sapo's static parallelotopes. To provide meaningful comparisions, we set the number of dynamic parallelotopes to be equal to the number of static ones excluding the initial box. Here, {\bf diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other.
+%
+By {\bf diagonal parallelotopes}, we refer to parallelotopes defined only by axis-aligned and diagonal directions. Similarly, {\bf diagonal parallelotope bundles} are parallelotope bundles solely consisting of diagonal parallelotopes. Sapo primarily utilizes {\bf static diagonal parallelotope bundles} to perform its reachability computation.
 Note that the initial box, which is defined only through the axis-aligned directions, is contained in every bundle.
 %
 For our experiments, we are concerned with the effects of additional static or dynamic parallelotopes added alongside the initial box. We refer to these parallelotopes as {\bf non-axis-aligned parallelotopes}.
@@ -21,13 +27,20 @@ For our experiments, we are concerned with the effects of additional static or d
 In two dimensions, $\mathbb{R}^2$, we have the two unit axis-aligned directions, $[1,0]^T, [0,1]^T$. The diagonal directions will then be
 \[ [1,1]^T, \; [1,-1]^T\]
 Consequently, the diagonal parallelotopes will precisely be defined by unique pairs of these directions, giving us a total ${4 \choose 2} = 6$ diagonal parallelotopes.
-% Similarly, in $\mathbb{R}^3$, we have three unit axis-aligned directions $[1,0,0]^T, [0,1,0]^T,[0,0,1]^T$. Calculating the diagonal directions yields the following directions:
-% \[ [1,1,0]^T, \; [1,-1,0]^T, \; [1,0,1]^T,\;  [1,0,-1]^T,\;  [0,1,1]^T, \; [0,1,-1]^T \]
-% Thus, there are ${9 \choose 3} = 84$ diagonal parallelotopes.
 %
-% Note that for both examples, we do not consider the directions' negative counterparts since we define parallelotopes use both the positive and negative counterparts of a its chosen directions.
+For two dimensions, the non-axis-aligned parallelotopes would be all parallelotopes excluding the one defined by directions $[0,1]^T, [1,0]^T$. \newline
+
+\noindent Similarly, in $\mathbb{R}^3$, we have three unit axis-aligned directions
 %
-% For two dimensions, the non-axis-aligned parallelotopes would be all parallelotopes excluding the one defined by directions $[0,1]^T, [1,0]^T$. In particular, there are 5 non-axis-aligned diagonal parallelotopes.
+\[ [1,0,0]^T, [0,1,0]^T,[0,0,1]^T \]
+%
+Calculating the diagonal directions yields the following directions:
+%
+\[ [1,1,0]^T, \; [1,-1,0]^T, \; [1,0,1]^T,\;  [1,0,-1]^T,\;  [0,1,1]^T, \; [0,1,-1]^T \]
+%
+Thus, there are ${9 \choose 3} = 84$ diagonal parallelotopes.
+%
+Note that for both examples, we do not consider the directions' negative counterparts since we define parallelotopes use both the positive and negative counterparts of a its chosen directions.
 \end{example}
 Table \ref{tab:modeldyns} summarizes five standard benchmarks used for experimentation. The last seven-dimensional COVID supermodel is explained in the subsequent subsection below.
 
@@ -57,7 +70,7 @@ COVID & 7 & $\beta=0.05$ \newline $\gamma=0.0$ \newline $\eta=0.02$ & 200 steps 
 \end{table}
 
 \vspace{-2em}
-\noindent \textbf{COVID Supermodel:}
+\noindent \textbf{COVID Supermodel}
 %
 We benchmark our dynamic strategies with the recently introduced COVID supermodel \cite{ansumali2020modelling}, \cite{indiansuper2020supermodel}. This model is a modified SIR model accounting for the possibility of \emph{asymptomatic} patients. These patients can infect susceptible members with a fixed probability. The dynamics account for this new group and its interactions with the traditional SIR groups.
 
@@ -132,11 +145,11 @@ In this paper, we investigated two techniques for generating templates dynamical
 %
 We demonstrated that these techniques improve the accuracy of reachable set by an order of magnitude when compared to static or random template directions.
 %
-We also observed that both these techniques improve the accuracy of the reachable sets for different benchamrks.
+We also observed that both these techniques improve the accuracy of the reachable sets for different benchmarks.
 %
 In future, we intend to investigate Koopman linearization techniques for computing alternative linear approximation template directions \cite{bak2021reachability}.
 %
-We also wish to investigate the use of a massively parallel implementation using HPC hardware such as GPUs for optimizing over an extremely large number of parallelotopes and their template directions. This is inspired by the approach behind the recent tool \emph{PIRK} \cite{devonport2020pirk}.
+We also wish to investigate the use of a massively-parallel implementation using HPC hardware such as GPUs for optimizing over an extremely large number of parallelotopes and their template directions. This is inspired by the approach behind the recent tool \emph{PIRK} \cite{devonport2020pirk}.
 
 \subsection{Acknowledgements}
 Parasara Sridhar Duggirala and Edward Kim acknowledge the support of the Air Force Office of Scientific Research under award number FA9550-19-1-0288 and FA9550-21-1-0121 and National Science Foundation (NSF) under grant numbers CNS 1935724 and CNS 2038960. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the United States Air Force or the National Science Foundation.
