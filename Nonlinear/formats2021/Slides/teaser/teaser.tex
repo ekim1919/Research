@@ -1,0 +1,79 @@
+\documentclass{beamer}
+\usepackage{pgfpages}
+\usepackage{algorithm2e}
+\usepackage{complexity}
+
+\usetheme{Pittsburgh}
+\useinnertheme{rectangles}
+\usefonttheme{serif}
+\newcommand{\T}{\mathcal{T}}
+
+\newcommand{\tup}[1]
+           {
+             \relax\ifmmode
+             \langle #1 \rangle
+             \else $\langle$ #1 $\rangle$ \fi
+           }
+
+\title{\textbf{Automatic Dynamic Parallelotope Bundles for Reachability Analysis of Nonlinear Systems}}
+\subtitle{
+  19th International Conference on Formal Modeling and Analysis of Timed Systems}
+
+
+\date{}
+
+\author{\textbf{Edward Kim}\inst{1} \newline
+        Stanley Bak\inst{2} \newline
+        Parasara Sridhar Duggirala\inst{1}}
+\institute{\inst{1}University of North Carolina at Chapel Hill \newline \inst{2}Stony Brook University}
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Background:} Reachability with Template Polyhedra}
+  \begin{enumerate}
+    \item Reachable set computation is an instrumental tool in performing safety analysis over non-linear systems.
+    \item One of many techniques in computing the overapproximation of the reachable sets for discrete non-linear systems is to use \textbf{template polyhedra} to bound the reachable set.
+    \item We are particularly interested in \emph{parallelotopes} as our template polyhedra.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Background:} Parallelotopes}
+  \begin{definition}
+    A \emph{parallelotope} in $\mathbb{R}^n$ is represented as a tuple $\langle \mathcal{T}, c_{l}, c_{u} \rangle$ where $\mathcal{T} \in \mathbb{R}^{n \times n}$ are called \emph{template directions} and $c_{l}, c_{u} \in \mathbb{R}^{n}$ such that $\forall_{1 \leq i \leq n} ~  c_{l}[i] \leq c_{u}[i]$ are called \emph{bounds}. The half-space representation defines the set of states
+    %
+    $$
+    P = \{\: x \in \mathbb{R}^n \: | \: c_{l}[i] \leq \mathcal{T}_{i}x \leq c_{u}[i], \; 1 \leq i \leq n \}.
+    $$
+   \end{definition}
+   \begin{definition}
+     A \emph{parallelotope bundle} $Q$ is a set of parallelotopes $\{P_1, \ldots, P_m\}$. The set of states represented by a parallelotope bundle is given as the intersection
+   \[ Q = \bigcap_{i=1}^m P_i \]
+   \end{definition}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\textbf{Background:} Drawbacks}
+  \begin{enumerate}
+    \item Hitherto only \emph{static} parallelotopes have been considered. In other words, the template directions specifying the parallelotopes are to be given as user input at the beginning of the reachable set computation.
+    \item The template directions chosen are generally the axis-aligned, diagonal directions. However, it's not clear that these directions necessary yield good overapproximations.
+    \item Since the template directions are set at the beginning, they cannot adapt to the behavior of the dynamics. This could yield overapproximations which are too conservative for any practical use.
+  \end{enumerate}
+  %Static, diagonal templates are used.
+  %Bad for wrapping error as initial sets increase.
+\end{frame}
+
+\begin{frame}
+  \frametitle{Contributions}
+  \begin{enumerate}
+    \item We present a method which is both \emph{dynamic} and \emph{automatic}. Our method utilizes the Principal Component Analysis (PCA) and Local Linear Approximations.
+    \item  We extend our tool \emph{Kaa} to leverage NASA's \emph{Kodiak} to perform the optimization procedure.
+    \item We parallelize our implementation to scale with an increasing number of parallelotopes in our bundles.
+  \end{enumerate}
+\end{frame}
+
+\end{document}

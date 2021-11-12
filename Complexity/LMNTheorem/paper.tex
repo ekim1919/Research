@@ -36,9 +36,10 @@
 
 \section{Fourier Analysis of Boolean Functions}
 
-\subsection{Characters}
+
 We introduce some stepping stones defining the tools used in the Fourier Analysis of boolean functions. Many of these tools can be defined using techniques from Representation Theory of Finite Groups, but for the sake of briefity, we will not delve into those concepts here in detail. Instead, we will provide remarks and snippets on relevant topics along with references to some literature at the end of the section. Our presentation follows that of \cite{hatami}. \newline
 
+\subsection{Characters}
 Let us first define some general concepts for any finite abelian group $G$. A group homomorphism from $\chi: G \rightarrow \mathbb{C}^*$ is called a \emph{character} of $G$ where $\mathbb{C}^* = \mathbb{C}/\{0\}$ is the multiplicative group of the complex numbers. We call the homomorphism $\chi_0:G \rightarrow \mathbb{C}^*, \; \chi_0 = 1$ the \emph{trivial character} of $G$. By definition, for $a,b \in G$,
 \begin{equation} \label{homo}
 \chi(a + b) = \chi(a)\chi(b)
@@ -222,10 +223,10 @@ The function $\hat{f}$ is deemed as the \emph{Fourier Transform of $f$}. By iter
 \begin{remark}{\emph{(Generalizations of Fourier Analysis)}}
 The above properties on characters can be shown through techniques in Representation Theory. For instance, we know representations of finite groups are group homomorphisms into the group of linear automorphisms of a suitable finite-dimensional complex vector space $\rho: G \rightarrow GL(V)$ where $GL(V)$ denotes the group of invertible linear operators on finite-dimensional complex vector space $V$. The \emph{characters} of $\rho$ are defined as $\chi_\rho(x) = Tr(\rho(x))$ where $Tr$ is the trace operator. It turns out that the representations of finite abelian groups are one-dimensional i.e isomorphic to $\mathbb{C}$. Thus, $\rho(x)$ will just be multiplying $\mathbb{C}$ by some scalar $\lambda_x \in \mathbb{C}^*$. In this case, we can show that indeed for any $a,b \in G$ and $\chi$ any character of $G$:
 $$ \chi(a+b) = Tr(\rho(a+b)) = Tr(\rho(a)\circ\rho(b)) = \lambda_a \lambda_b = Tr(\rho(a))Tr(\rho(b)) = \chi(a)\chi(b)$$ Note that this relation does not hold for arbitrary finite groups since the trace is generally not multiplicative. In addition, for arbitrary finite group $G$, there is an inner product defined on the vector space spanned by the characters of \emph{irreducible} representations i.e representations containing no subspace invariant under the action of $G$. This inner product is defined as:
-
+%
 \[ \langle \chi_{\rho}, \chi_{\sigma} \rangle =
 \frac{1}{|G|}\sum_{g \in G} \chi_{\rho}(g)\overline{\chi_{\sigma}(g)}\]
-
+%
 for irredudible representations $\rho: G \rightarrow GL(V_\rho)$ and $\sigma: G \rightarrow GL(V_\sigma)$. By an orthogonality argument similar to Theorem \ref{orthonormal}, we have that for irreducible representations $\rho, \sigma$, $ \langle \chi_{\rho}, \chi_{\sigma} \rangle = 1$ iff $\rho, \sigma$ denote the same representation else $\langle \chi_{\rho}, \chi_{\sigma} \rangle = 0$. For finite abelian group $G$, the one-dimensional representations above are irreducible.  Thus, for non-trivial character $\chi$,
 %
  \[ |G|\langle \chi, \chi_0 \rangle = \sum_{g \in G} \chi(g)\chi_0(g) = \sum_{g \in G} \chi(g)  = 0 \]
@@ -396,7 +397,7 @@ LMN also shows that functions in $\AC^0$ have low average sensitivity i.e its ou
 \noindent Lemma (\ref{influence}) shows that functions in $\AC^0$  are not suitable for constructing universal hash functions (\cite{mansour}) and pseudorandom function generators (\cite{lmn}). We give a rough definition and sketch based on the treatment found in (\cite{lmn}.
 
 \begin{definition}
-  A function $f:\{0,1\}^m \times \{0,1\}^n \rightarrow \{0,1\}$ is called a \emph{pseudorandom function generator} if there exists no polynomial-time oracle Turing machine which can distinguish between the outputs from a true random oracle versus $f(s,_)$ for some random seed $s \in \{0,1\}^m$.
+  A function $f:\{0,1\}^m \times \{0,1\}^n \rightarrow \{0,1\}$ is called a \emph{pseudorandom function generator} if there exists no polynomial-time oracle Turing machine which can distinguish between the outputs from a true random oracle versus $f(s,-)$ for some random seed $s \in \{0,1\}^m$.
 \end{definition}
 
 \begin{lemma}
