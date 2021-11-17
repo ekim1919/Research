@@ -1,0 +1,31 @@
+\section{Unique Games}
+\subsection{Definitions}
+The PCP Theorem culminated in a proof of the $\NP$-hardness of Label Cover by H\aa stad. Although these results gave proofs of the $\NP$-hardness of $\mathsf{Gap}_{\frac{7}{8} + \epsilon, 1- \epsilon}$-$\mathsf{Max3SAT}$ and $\mathsf{Gap}_{\frac{1}{2} + \epsilon, 1- \epsilon}$-$\mathsf{MaxE3Lin}$, similar hardness proofs for other canonical problems such as $\mathsf{MaxCut}$ didn't seem to follow from these ideas. In his seminal paper, Khot proposed a relaxation of the Label Cover Problem \cite{khot2002power}. The instances of this relaxed version are called \emph{Unique Games}:
+
+\begin{definition}
+  A \emph{Unique Label Cover Problem} with $m$ labels (UniqueLC($m$)) instance $\mathcal{U}$ is defined by a bipartite graph $(A \sqcup B,E)$, finite alphabet $\Sigma_A = \Sigma_B = \Sigma$ such that $|\Sigma| = m$, and a set of \emph{permutations} $\pi_e:[m] \rightarrow [m]$ for every edge $e \in E$. Define an \emph{assignment} as consisting of a map $\sigma: A \sqcup B \rightarrow [m]$. An edge $e = (a,b) \in E$ is said to be satisfied by this assignment if the assignment is compatible with projection $\pi_e$:
+
+  \begin{equation}
+    \pi_e(\sigma(a)) = \sigma(b)
+  \end{equation}
+
+  The value of this game will be
+
+  \begin{equation} \label{optvalLC}
+    \mathsf{Opt}(\mathcal{G}) = \max_{\sigma} \mathbb{E}_{e \sim E}[e \text{ satisfied}]
+  \end{equation}
+  In other words, the value will be the largest fraction of edges satisfied by any assignment to the vertices. The corresponding gap problem for Label Cover, $\mathsf{Gap}_{\alpha,\beta}\mathsf{UniqueLC}(m)$, is defined as the promise problem:
+  %
+  \begin{align*}
+      \mathsf{YES} & = \{\mathcal{G} \mid \mathsf{Opt}(\mathcal{U}) \geq \beta\} \\
+      \mathsf{NO} & = \{\mathcal{G} \mid \mathsf{Opt}(\mathcal{U}) < \alpha \}
+  \end{align*}
+
+  In the case of perfect completeness, we abbreviate $\mathsf{Gap}_{\alpha,1}\mathsf{UniqueLC}(m)$ as simply $\mathsf{Gap}_{\alpha}\mathsf{UniqueLC}(m)$.
+\end{definition}
+
+\begin{theorem} (Unique Games Conjecture \cite{khot2002power})
+  For any constant $\delta > 0$, there exists sufficiently large $m \in \mathbb{N}$ such that $\mathsf{Gap}_{\delta,1-\delta}\mathsf{UniqueLC}(m)$ is $\NP$-hard.
+\end{theorem}
+
+%Polynomial time algorithm for guaranteed solutions.

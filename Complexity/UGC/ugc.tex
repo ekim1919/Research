@@ -1,5 +1,6 @@
 \documentclass{amsart}
 \usepackage{complexity}
+\setlength{\parindent}{0pt}
 
 \setlength{\textwidth}{\paperwidth}
 \addtolength{\textwidth}{-2in}
@@ -12,15 +13,25 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{xca}[theorem]{Exercise}
 
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\MaxCNF}{\mathsf{Max3CNF}}
+\newcommand{\ELin}{\mathsf{MaxE3Lin}}
+\newcommand{\MaxCSP}{\mathsf{MaxCSP}(\Psi)}
+\newcommand{\GapMaxCSP}[2]{\mathsf{Gap_{#1,#2}}\MaxCSP}
 \theoremstyle{remark}
-\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
 \numberwithin{equation}{section}
 
 \theoremstyle{remark}
 \newtheorem{notation}[theorem]{Notation}
 \begin{document}
+
+\renewcommand{\phi}{\varphi}
+%\newcommand{\Max3CNF}{\mathsf{Max3CNF}}
 
 \title{Notes on PCPs and Unique Games}
 
@@ -28,42 +39,30 @@
 \email{ehkim@cs.unc.edu}
 
 \begin{abstract}
-We expound on the basic theory of approximating $\NP$ problems. Starting with the PCP Theorem, we introduce background for the Unique Games Conjecture (UGC) and the optimality of the Goeman-Williams Algorithm for MAXCUT assuming the conjecture is true. Finally, we make some connections to Quantum Information Theory, especially Quantum PCPs (qPCPs).
+We expound on the basic theory of approximating $\NP$-hard problems. Starting with the PCP Theorem, we introduce background for the Unique Games Conjecture (UGC) and the optimality of the Goemans-Williams Algorithm for MAXCUT assuming the conjecture is true.
+%Finally, we make some connections to Quantum Information Theory, especially Quantum PCPs (qPCPs).
 \end{abstract}
 
 \maketitle
 
-%\section{Approximation Algorithms}
-%3.2 Limits of Approximation – Introduction (TIFR)
-%\subsection{Definitions and Examples}
-%\subsection{Gap Problems}
+\input{intro}
+\input{approx}
+\input{pcp}
+\input{labelcover}
+\input{uniquegames}
+%\input{ugcmaxcut}
 
-%\section{PCP Theorem}
-%2 The PCP Theorem: An Introduction (DIMACS)
-%\subsection{Examples of PCPs}
-%\subsection{Equivalence of PCP Theorems}
-%\subsection{First step PCP for NP}
-
-%\section{Label-Cover and CSPs}
-%\subsection{Constraint Satisfaction Problems}
-%\subsection{Raz's Parallel Repetition Theorem}
-%Arora, Barak
-%\subsection{NP-hardness of Label-Cover}
 
 %\section{Hastads 3-bit PCP}
 %Arora, Barak
 %\subsection{Dictatorship Testing}
 %\subsection{Long Code}
 
-%\section{Unique Games}
-%\subsection{Definitions}
 
-%\section{UG-hardness of MAXCUT}
-%\subsection{Intuitions}
-%\subsection{Goemans-Williams Algorithm for MAXCUT}
 
 %\section{Semi-definite Programming and Integrality Gaps}
 
-
+\bibliographystyle{amsplain}
+\bibliography{biblio}
 
 \end{document}

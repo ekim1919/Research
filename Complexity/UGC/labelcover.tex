@@ -1,0 +1,50 @@
+\section{Label-Cover and Projection Games}
+%Definition of Label-Cover
+We now introduce a problem which manages to provide a natural paradigm for capturing the essence of CSPs and proving inapproximability results. These ``projection games" were introduced by Bellare, Goldreich, and Sudan \cite{bellare1998free}. The $NP$-hardness of the gap problem version of Label Cover was used by H\aa stad to show tight inapproximability results for $\mathsf{Max3SAT}$ and $\ELin$ \cite{haastad2001some}.
+
+\begin{definition}
+A \emph{Label Cover (LC) Problem} instance $\mathcal{G}$ is defined by a bipartite graph $(A \sqcup B,E)$, finite alphabets $\Sigma_A, \Sigma_B$, and a set of projections $\pi_e:\Sigma_A \rightarrow \Sigma_B$ for every edge $e \in E$. Define an \emph{assignment} as consisting of two maps $\mathfrak{A}: A \rightarrow \Sigma_A$, $\mathfrak{B}: B \rightarrow \Sigma_B$. An edge $e = (a,b) \in E$ is said to be satisfied by this assignment if the assignment is compatible with projection $\pi_e$:
+
+\begin{equation}
+  \pi_e(\mathfrak{A}(a)) = \mathfrak{B}(b)
+\end{equation}
+
+The value of this game will be
+
+\begin{equation} \label{optvalLC}
+  \mathsf{Opt}(\mathcal{G}) = \max_{(\mathfrak{A},\mathfrak{B})} \mathbb{E}_{e \sim E}[e \text{ satisfied}]
+\end{equation}
+In other words, the value will be the largest fraction of edges satisfied by any assignment to the vertices. The corresponding gap problem for Label Cover, $\mathsf{Gap}_{\alpha,\beta}\mathsf{LC}$, is defined as the promise problem:
+%
+\begin{align*}
+    \mathsf{YES} & = \{\mathcal{G} \mid \mathsf{Opt}(\mathcal{G}) \geq \beta\} \\
+    \mathsf{NO} & = \{\mathcal{G} \mid \mathsf{Opt}(\mathcal{G}) < \alpha \}
+\end{align*}
+
+In the case of perfect completeness, we abbreviate $\mathsf{Gap}_{\alpha,1}\mathsf{LC}$ as simply $\mathsf{Gap}_{\alpha}\mathsf{LC}$.
+\end{definition}
+
+There are a few observations worthy of mentioning here. The first regards a type of equivalence between CSP instances and Label Cover instances. Specifically, let $\I$ be an instance of a given CSP $\Psi$ over domain $\Omega$. We can translate this CSP instance into a Label Cover instance as follows: Let the left-hand partition $A$ of our bipartite graph be indexed by the set of constraint tuples $(S,\psi)$ and the right-hand partition $B$ be indexed by the variables of the CSP $V$. Draw an edge from a constraint tuple $(S,\psi)$ to a variable $v$ if that variable appears in $S$. Set $\Sigma_A = \Omega^r, \Sigma_B = \Omega$ where $r$ is the arity of the CSP, and for every edge $e = ((v_1,\cdots,v_r), \psi), v)$ define the projection $\pi_e:\Sigma_A \rightarrow \Sigma_B$ to be
+
+\[ \pi_e(\omega_1, \cdots, \omega_r) =  \omega_i \text{ if } v_i = v\]\newline
+
+%Finish this.
+
+On the other hand, every Label Cover instance can be seen as a $2$CSP over a sufficiently large domain: the predicates of the CSP would be all $2$-ary predicates $\pi:\Sigma_A \times \Sigma_B \rightarrow \{0,1\}$ representing every possible map from $\Sigma_A \rightarrow \Sigma_B$. Thus, the domain of our CSP can be defined as $\Omega = \Sigma_A \cup \Sigma_B$. The corresponding instance of this CSP would be $(S,\pi_e)$ where $\pi_e$ represents the predicate corresponding to the edge $e$'s projection map $\pi_e$ and $S = (a,b)$ would be the vertices of $e$ between $A$ and $B$ respectively.
+
+\begin{theorem} (Weak Projection Games Theorem)
+Label Cover is $\NP$-hard to approximate within some constant.
+\end{theorem}
+
+%alphabet size.
+%examples.
+%trivial NP hardness proof.
+
+%\subsection{}
+%Arora, Barak
+\subsection{Raz's Parallel Repetition Theorem}
+To be written...
+
+\begin{theorem} (Projection Games Theorem)
+  For every $\epsilon > 0$, there exist alphabets $\Sigma_A, \Sigma_B$ where $|\Sigma_A|,|\Sigma_B| \leq \mathsf{poly}(\frac{1}{\epsilon})$ such that $\mathsf{Gap}_\epsilon\mathsf{LC}$ is $\NP$-hard.
+\end{theorem}
