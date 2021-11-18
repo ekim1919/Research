@@ -1,25 +1,70 @@
-\newcommand{\GapMaxCut}{\mathsf{Gap}_{\GWConstant + \epsilon, \frac{1-\rho}{2} - \epsilon}\mathsf{MaxCut}}
-\newcommand{\ULC}{\mathsf{UniqueLC}(m)}
-\newcommand{\GapULC}{\mathsf{GapUniqueLC}(m)}
-\newcommand{\GapDeltaULC}{\mathsf{Gap}_{\delta, 1-\delta}\ULC}
-
 \section{UG-hardness of MAXCUT}
 \subsection{Intuitions}
 Recall that the keen insight behind H\aa stad's 3-bit PCP for $\NP$ is the embedding of a dictatorship test within a Label Cover instance. In a similar spirit, the proof for the optimality of the Goemans-Williamson algorithm will hinge on crafting a clever dictatorship test embedded within a $\MaxCut$ instance. By composing this test with
 
-\subsection{Goemans-Williamson Algorithm for $\MaxCut$}
-Recall that Example \ref{maxcutexample} presented an LP-based approximation algorithm for $\MaxCut$. Goemans and Williamson \cite{goemans1995improved} designed an SDP to give an $\alpha_{GW}$-approximation algorithm for $\MaxCut$ where:
+\subsection{Goemans-Williamson Algorithm for $\MaxCut$} \label{goemans}
+ Example \ref{maxcutexample} presented an LP-based approximation algorithm for $\MaxCut$. Goemans and Williamson \cite{goemans1995improved} designed an SDP to give an $\alpha_{GW}$-approximation algorithm for $\MaxCut$ where:
 
 \begin{equation}
   \alpha_{GW} = \min_{-1 \leq \rho \leq 1} \frac{2}{\pi}\frac{\cos^{-1}(\rho)}{1 - \rho} \approx 0.87856
 \end{equation}
 
+To begin, a semi-definite program is a generalization of a linear program where instead of optimizing over a vector of variables $\vec{x}$, the program considers a positive semi-definite matrix of variables i.e a matrix whose eigenvalues are non-negative. An equivalent formulation considers inner products between pairs of vectors:
 
+\begin{align*}
+     \max & \sum_{i,j} c_{ij}\langle v_i, v_j \rangle \\
+     \text{ under constraints }& a_{ij}^k\langle v_i, v_j \rangle \leq b_{ij}^k \\
+     v_1, \cdots v_n \in \mathbb{R}, \quad & k \in [C] \text{ constraints }
+\end{align*}
+
+Note that this form also subsumes quadratic programming by setting $c_{ij} = a_{ij}^k = b_{ij}^k = 0$ for all $i \neq j$ and $k \in [C]$. The Goemans-Williamson algorithm concerns the solution to the semi-definite program given some graph $G = (V,E)$: \newline
+%
+\begin{align}
+  & \max \sum_{i,j} \frac{1 - \langle v_i, v_j \rangle}{2} \\
+  & \langle v_i, v_i \rangle = 1 \text{ for all } i \in V
+\end{align}
+
+Let us first show that indeed the program is a relaxation of the integer program crafted in Example \ref{maxcutexample}. Indeed, if we set any unit vector $\vec{u}$ such that for a cut defined by $(S,\bar{S})$:
+%
+\begin{align*}
+  \vec{v_i} = \begin{cases}
+                u \text{ if } i \in S \\
+                -u \text{ if } i \not\in S
+              \end{cases}
+\end{align*}
+
+A direct calculation yields that the term $\frac{1 - \langle v_i, v_j \rangle}{2} = 0$ if $v_i = v_j = u$ else it is equal to 1. Thus, by applying this observation to the maximum cut,
+%
+ \[\mathsf{Opt}_{GW}(G) \geq \MaxCut(G)\]
+
+So far the semi-definite program seems to be rather simple. The insight made by Goemans and Williamson lies in the rounding procedure of the solution outputted by the program. The procedure proceeds by first drawing a random hyperplane passing through the origin and taking the two partitions of the cut $S_+, S_-$ to be the solution $v_i$ which lie on positive and negative sides of the hyperplane respectively. We can calculate the expected size of the cut:
+%
+\begin{align*}
+\mathbb{E}[|E(S_+,S_-)|] = \sum_{(i,j) \in E} \mathbb{P}[v_i,v_j \text{ lie on different sides of the hyperplane}]
+\end{align*}
+
+Now if $\theta_{ij}$ denotes the angle between $v_i,v_j$, a simple geometric argument shows that:
+
+\[\mathbb{P}[v_i,v_j \text{ lie on different sides of the hyperplane}] = \frac{\theta_{ij}}{\pi} \]
+
+By definition of the dot product:
+
+\[\frac{1 - \langle v_i, v_j \rangle}{2} =  \frac{1 - \cos(\theta_{ij})}{2} \]
+
+and the magical inequality:
+
+\[ \frac{\theta_{ij}}{\pi} \geq \alpha_{GW} \cdot \frac{1 - \cos(\theta_{ij})}{2}\]
+
+the two can be combined to finally yield that:
+
+\begin{equation}
+  \frac{\mathbb{E}[|E(S_+,S_-)|]}{\mathsf{Opt}_{GW}(f)} \approx \alpha_{GW}
+\end{equation}
 
 \subsection{$\MaxCut$ is $\UG$-hard}
 After introducing the basic background, we are finally ready to show a non-trivial inapproximability result assuming the UGC:
 
-\begin{theorem} \label{maxcutughard} ($\MaxCut$ is $\UG$-hard) The problem $\GapMaxCut$ is $\UG$-hard]
+\begin{theorem} \label{maxcutughard} ($\MaxCut$ is $\UG$-hard) The problem $\GapMaxCut$ is $\UG$-hard
 \end{theorem}
 Note that an immediate corollary of Theorem and the UGC is that the Goemans-Williamson algorithm is tight:
 

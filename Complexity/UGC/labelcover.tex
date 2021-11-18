@@ -1,6 +1,6 @@
 \section{Label-Cover and Projection Games}
 %Definition of Label-Cover
-We now introduce a problem which manages to provide a natural paradigm for capturing the essence of CSPs and proving inapproximability results. These ``projection games" were introduced by Bellare, Goldreich, and Sudan \cite{bellare1998free}. The $NP$-hardness of the gap problem version of Label Cover was used by H\aa stad to show tight inapproximability results for $\mathsf{Max3SAT}$ and $\ELin$ \cite{haastad2001some}.
+We now introduce a problem which manages to provide a natural paradigm for capturing the essence of CSPs and proving inapproximability results. These ``projection games" were introduced by Bellare, Goldreich, and Sudan \cite{bellare1998free}. The $\NP$-hardness of the gap problem version of Label Cover was used by H\aa stad to show tight inapproximability results for $\mathsf{Max3SAT}$ and $\ELin$ \cite{haastad2001some}.
 
 \begin{definition}
 A \emph{Label Cover (LC) Problem} instance $\mathcal{G}$ is defined by a bipartite graph $(A \sqcup B,E)$, finite alphabets $\Sigma_A, \Sigma_B$, and a set of projections $\pi_e:\Sigma_A \rightarrow \Sigma_B$ for every edge $e \in E$. Define an \emph{assignment} as consisting of two maps $\mathfrak{A}: A \rightarrow \Sigma_A$, $\mathfrak{B}: B \rightarrow \Sigma_B$. An edge $e = (a,b) \in E$ is said to be satisfied by this assignment if the assignment is compatible with projection $\pi_e$:
@@ -42,8 +42,10 @@ Label Cover is $\NP$-hard to approximate within some constant.
 
 %\subsection{}
 %Arora, Barak
+\subsection{Some Structural Results of PCPs}
+
+
 \subsection{Raz's Parallel Repetition Theorem}
-To be written...
 
 \begin{theorem} (Projection Games Theorem)
   For every $\epsilon > 0$, there exist alphabets $\Sigma_A, \Sigma_B$ where $|\Sigma_A|,|\Sigma_B| \leq \mathsf{poly}(\frac{1}{\epsilon})$ such that $\mathsf{Gap}_\epsilon\mathsf{LC}$ is $\NP$-hard.

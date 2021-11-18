@@ -31,7 +31,7 @@ In addition, Khot formulated the \emph{Unique Games Conjecture} and utilized it 
 \end{conjecture}
 
 \begin{remark}
-  The $1-\delta$ constant is crucial to the validity of the conjecture. For an instance of $\mathsf{UniqueLC}(m)$ for any $m$ with a guaranteed solution, there exists a polynomial-time algorithm finding an assignment which satisfies all projection constraints: Start with a vertex and set it to a label. If it's a part of an edge, follow the edge to the other side and find a label which satisfies as many edges as possible. Repeat in a breadth-first search fashion. In virtue of the projection maps being permutations, this amounts to searching for the guaranteed solution in time $O(mn^2)$.
+  The $1-\delta$ constant is crucial to the validity of the conjecture. For an instance of $\mathsf{UniqueLC}(m)$ for any $m$ with a guaranteed solution, there exists a polynomial-time algorithm finding an assignment which satisfies all projection constraints: Start with a vertex and set it to a label. If it is an endpoint of an edge $e$, follow $e$ to the other side and find a label which satisfies as many neighbors as possible. Repeat in a breadth-first search fashion. In virtue of the projection maps being permutations, this amounts to searching for the guaranteed solution in time $O(mn^2)$.
 \end{remark}
 
 \begin{example}
@@ -53,7 +53,7 @@ In addition, Khot formulated the \emph{Unique Games Conjecture} and utilized it 
 \end{example}
 
 \begin{definition}
-  A problem is said to be \emph{$\UG$-hard}
+  A problem $P$ is said to be \emph{$\UG$-hard} if there is some constant $\delta > 0$ such that for all $m \in \mathbb{N}$, there exists a polynomial-time reduction from $\GapDeltaULC$ to $P$.
 \end{definition}
 
 %\subsection{Is the Unique Games Conjecture True?}
