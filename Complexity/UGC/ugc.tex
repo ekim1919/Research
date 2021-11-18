@@ -14,13 +14,19 @@
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
 \newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
 \newtheorem{xca}[theorem]{Exercise}
 
 \newcommand{\I}{\mathcal{I}}
 \newcommand{\MaxCNF}{\mathsf{Max3CNF}}
 \newcommand{\ELin}{\mathsf{MaxE3Lin}}
 \newcommand{\MaxCSP}{\mathsf{MaxCSP}(\Psi)}
+\newcommand{\MaxCut}{\mathsf{MaxCut}}
 \newcommand{\GapMaxCSP}[2]{\mathsf{Gap_{#1,#2}}\MaxCSP}
+\newcommand{\GWConstant}{\frac{\cos^{-1}(\rho)}{\pi}}
+\newcommand{\UG}{\mathsf{UG}}
+
+
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
 \newtheorem*{note}{Note}
@@ -39,7 +45,7 @@
 \email{ehkim@cs.unc.edu}
 
 \begin{abstract}
-We expound on the basic theory of approximating $\NP$-hard problems. Starting with the PCP Theorem, we introduce background for the Unique Games Conjecture (UGC) and the optimality of the Goemans-Williams Algorithm for MAXCUT assuming the conjecture is true.
+We expound on the basic theory of approximating $\NP$-hard problems. Starting with the PCP Theorem, we introduce background for the Unique Games Conjecture (UGC) and the optimality of the Goemans-Williamson Algorithm for MAXCUT assuming the conjecture is true.
 %Finally, we make some connections to Quantum Information Theory, especially Quantum PCPs (qPCPs).
 \end{abstract}
 
@@ -49,18 +55,15 @@ We expound on the basic theory of approximating $\NP$-hard problems. Starting wi
 \input{approx}
 \input{pcp}
 \input{labelcover}
+\input{hastad}
 \input{uniquegames}
-%\input{ugcmaxcut}
-
-
-%\section{Hastads 3-bit PCP}
-%Arora, Barak
-%\subsection{Dictatorship Testing}
-%\subsection{Long Code}
+\input{ugcmaxcut}
 
 
 
 %\section{Semi-definite Programming and Integrality Gaps}
+%\section{Quantum Information Theory}
+%\section{Other Connections}
 
 \bibliographystyle{amsplain}
 \bibliography{biblio}

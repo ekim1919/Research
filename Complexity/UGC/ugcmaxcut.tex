@@ -1,3 +1,233 @@
+\newcommand{\GapMaxCut}{\mathsf{Gap}_{\GWConstant + \epsilon, \frac{1-\rho}{2} - \epsilon}\mathsf{MaxCut}}
+\newcommand{\ULC}{\mathsf{UniqueLC}(m)}
+\newcommand{\GapULC}{\mathsf{GapUniqueLC}(m)}
+\newcommand{\GapDeltaULC}{\mathsf{Gap}_{\delta, 1-\delta}\ULC}
+
 \section{UG-hardness of MAXCUT}
 \subsection{Intuitions}
-\subsection{Goemans-Williams Algorithm for MAXCUT}
+Recall that the keen insight behind H\aa stad's 3-bit PCP for $\NP$ is the embedding of a dictatorship test within a Label Cover instance. In a similar spirit, the proof for the optimality of the Goemans-Williamson algorithm will hinge on crafting a clever dictatorship test embedded within a $\MaxCut$ instance. By composing this test with
+
+\subsection{Goemans-Williamson Algorithm for $\MaxCut$}
+Recall that Example \ref{maxcutexample} presented an LP-based approximation algorithm for $\MaxCut$. Goemans and Williamson \cite{goemans1995improved} designed an SDP to give an $\alpha_{GW}$-approximation algorithm for $\MaxCut$ where:
+
+\begin{equation}
+  \alpha_{GW} = \min_{-1 \leq \rho \leq 1} \frac{2}{\pi}\frac{\cos^{-1}(\rho)}{1 - \rho} \approx 0.87856
+\end{equation}
+
+
+
+\subsection{$\MaxCut$ is $\UG$-hard}
+After introducing the basic background, we are finally ready to show a non-trivial inapproximability result assuming the UGC:
+
+\begin{theorem} \label{maxcutughard} ($\MaxCut$ is $\UG$-hard) The problem $\GapMaxCut$ is $\UG$-hard]
+\end{theorem}
+Note that an immediate corollary of Theorem and the UGC is that the Goemans-Williamson algorithm is tight:
+
+\begin{corollary}
+Assuming the UGC, if an $\alpha_{GW}$-approximation algorithm for $\MaxCut$ exists, then $\P = \NP$.
+\end{corollary}
+%
+\begin{proof}
+Using Theorem \ref{GapCSPtoAlgHard}, we see that for small $\epsilon$:
+\[ \frac{\GWConstant + \epsilon}{\frac{1-\rho}{2} - \epsilon} \approx \frac{2}{\pi}\frac{\cos^{-1}(\rho)}{1 - \rho} \]
+Setting $\rho \approx -0.6934$ yields the desired result.
+\end{proof}
+
+Onwards to the proof of Theorem \ref{maxcutughard}. We first reason about the relationship between $\ULC$ instances and $\MaxCut$ instances. In particular, we wish to demonstrate that proving $\UG$-hardness for $\MaxCut$ is equivalent to constructing a $2$-query PCP for $\GapULC$ for all $m$.
+
+\begin{theorem}
+  $\mathsf{Gap}_{\alpha,\beta}\mathsf{MaxCut}$ is $\UG$-hard iff there exists a constant $\delta > 0$ such that for all $m$ there exists a 2-query PCP for $\mathsf{Gap}_{\delta, 1-\delta}\ULC$ with completeness $\beta$ and soundness $\alpha$.
+\end{theorem}
+%
+\begin{proof}
+  First assume that for some $\delta > 0$ and all $m$, there exists a polynomial-time reduction from $\GapDeltaULC$ to $\mathsf{Gap}_{\alpha,\beta}\mathsf{MaxCut}$. Let $G=(V,E), \mathcal{C}$ be the graph outputted by reduction and the cut outputted by the cut approximation algorithm. Construct a PCP samples two vertices from $v_1, v_2 \sim V$ by querying the proof tape encoding $G,\mathcal{C}$ and outputs ``accept" if $(v_1,v_2) \in \mathcal{C}$. The completeness and soundness parameters immediately follow from definition of $\mathsf{Gap}_{\alpha,\beta}\mathsf{MaxCut}$. Conversely, assume the existance of a 2-query PCP for $\GapDeltaULC$ with the above properties. We will calculate the acceptance probabilities of this PCP given a proof string and an input instance by finding the max cut. Let the vertices be the proof locations of the input proof string $\pi$. It suffcies to draw an edge between two vertices weighted by the probability their corresponding proof locations are queried by the verifier.
+\end{proof}
+
+Thus, we can proceed by constructing a 2-query PCP for $\GapDeltaULC$ with the completeness $\frac{1-\rho}{2} - \epsilon$ and soundness $\GWConstant + \epsilon$. As with H\aa stad's 3-bit PCP, we aim to construct a dictatorship test which generates the parameters needed. Once again, a proof string $\pi$ containing an assignment of labels to the vertices of a $\ULC$ instance would be encoded into a truth table of a dictator i.e into a \emph{long code}. \newline
+
+%
+%
+%
+\subsection{Majority is the Stablest (MIS)}
+%
+Before we craft our dictator test, we require a tool bounding the noise sensitivity of a boolean function with small low-degree influence. This is captured by the ``Majority is the Stablest" theorem:
+
+\begin{theorem} (``Majority is the Stablest" (MIS) \cite{mossel2005noise})
+For every $\epsilon > 0$, $\rho \in (-1,0)$, there exists $\tau > 0$ such that if for all $i \in [n]$, $\mathsf{Inf}_i(f) < \tau$ for function $f:\{-1,1\}^n \rightarrow [-1,1]$, then
+
+\begin{equation}
+  \mathsf{NS}_{\rho}(f) < \GWConstant + \epsilon
+\end{equation}
+\end{theorem}
+
+Recall that the noise sensitivity of a boolean function $f:\{-1,1\}^n \rightarrow \{-1,1\}$ is defined as:
+
+\begin{equation} \label{NSdef}
+  \mathsf{NS}_\rho(f)  = \mathbb{P}_{y \sim N_{\rho}(x), x} [f(x) \neq f(y)]
+\end{equation}
+
+where $y \sim N_\rho(x)$ refers to sampling a string $y$ under the procedure:
+
+\begin{equation*}
+  y_i = \begin{cases}
+        x_i \quad \text{with probabilty} \frac{1 + \rho}{2} \\
+        -x_i \quad \text{with probabilty} \frac{1 - \rho}{2}
+        \end{cases}
+\end{equation*}
+\newline
+
+Now equation \ref{NSdef} can be re-expressed in terms of the noise stability of $f$:
+
+\begin{equation}
+  \mathsf{NS}_\rho(f) = \frac{1}{2} - \frac{1}{2}\mathsf{Stab}_\rho(f)
+\end{equation}
+where
+
+\begin{equation*}
+  \mathsf{Stab}_\rho(f) = \mathbb{E}_{y \sim N_{\rho}(x), x}[f(x)f(y)]
+\end{equation*}
+Through Fourier-analytic techniques, we derive that:
+
+\begin{equation}
+  \mathsf{NS}_\rho(f) = \frac{1}{2} - \frac{1}{2}\sum_{S\subseteq [n]}\hat{f}(S)^2\rho^{|S|}
+\end{equation}
+
+A generalization of the MIS theorem will serve our purposes:
+
+\begin{theorem} \label{generalMIS} (Generalized MIS \cite{khot2007optimal},\cite{mossel2005noise})
+  For all $\epsilon > 0$, $\rho \in (0,1)$, there exists some $\tau > 0$ and finite $d$ such that if $f:\{-1,1\}^n \rightarrow [-1,1]$ and for all $i \in [n]$, $\mathsf{Inf}^{\leq d}_i(f) \leq \tau$:
+  \begin{equation}
+    \frac{1}{2} - \frac{1}{2}\sum_{S\subseteq [n]}\hat{f}(S)^2\rho^{|S|} < \GWConstant + \epsilon
+  \end{equation}
+\end{theorem}
+
+%
+%
+%
+\subsection{The 2-query PCP}
+With the MIS theorem, we can begin our analysis of the promised 2-query PCP. Before the procedure, define $(x \circ \pi)_i = x_{\pi(i)}$ for $x \in \{-1,1\}^n, \; i \in [n], \; \pi \in S_n$.  \newline
+
+\begin{enumerate}
+  \item Sample a vertex $a \in A$ uniformly.
+  \itemsep1em
+  \item Sample two of its neighbors $b,b' \in B$ uniformly. Let $\pi_{b,a}$ and $\pi_{b',a}$ denote the \emph{inverses} of the constraints associated to $(a,b), (a,b')$ respectively.
+  \item Sample $x \sim \{-1,1\}^m$ and $y \sim N_\rho(x)$
+  \item Accept if $f_b(x \circ \pi_{b,a}) \neq f_b'(y \circ \pi_{b',a})$
+\end{enumerate}
+
+For the proof of Theorem \ref{maxcutughard}, invoke Theorem \ref{generalMIS} for $\frac{\epsilon}{2}$ and $\rho$ assumed. This will yield a $\tau$ and a degree upper bound $d$. Set parameter $$ \delta = \frac{\epsilon \tau^2}{8d} $$
+
+
+\subsubsection{Completeness}
+%
+Suppose we have a $\ULC$ instance $\mathcal{U}$ such that $\mathsf{Opt}(\mathcal{U}) \geq 1 - \delta$. Through a simple union bound argument, the probability that both $\pi_{b,a},\pi_{b',a}$ are satisfied by the assignment is at least $1- 2\delta$. Now if both are indeed satisfied and the test accepts, it must be true that:
+%
+\begin{align*}
+    f_b(x \circ \pi_{b,a}) \neq f_b'(y \circ \pi_{b',a}) & \iff
+    (x \circ \pi_{b,a})_{\sigma(b)} \neq (x \circ \pi_{b',a})_{\sigma(b')} \\
+    & \iff x_ {\pi_{b,a}(\sigma(b))} \neq x_ {\pi_{b',a}(\sigma(b'))} \\
+    & \iff x_{\sigma(a)} \neq y_{\sigma(a)}
+\end{align*}
+where for the last equivalence, we invoked the assumption that $\sigma$ satisfies both $\pi_{b,a},\pi_{b',a}$. Recall that $\sigma$ is the assignment of labels to the vertices of the biparitite graph. The last expression occurs with probabilty $\frac{1 - \rho}{2}$ by step three of the verification algorithm. Hence,
+\[ \mathbb{P}[\text{Test accepts}] \geq \frac{(1-2\delta)(1 - \rho)}{2}\]
+
+By observing that $\delta < \frac{\epsilon}{2}$, the inequality above reduces to:
+
+\begin{equation}
+  \mathbb{P}[\text{Test accepts}] \geq \frac{(1-\epsilon)(1 - \rho)}{2} \geq \frac{1 - \rho}{2} - \epsilon
+\end{equation}
+as desired.
+
+\subsubsection{Soundness}
+To show soundness, we prove the contrapositive, namely if
+$$ \mathbb{P}[\text{Test accepts}] \geq \frac{\cos^{-1}(\rho)}{\pi} + \epsilon $$
+then there exists a labeling which satisfies more than a $\delta$ fraction of constraints.
+%
+\begin{proof}
+First:
+\begin{align} \label{step1}
+  \mathbb{P}[\text{Test accepts}] = \mathbb{E}_{a,b,b'}\left[
+  \mathbb{E}_{x,y\sim N_{\rho}(x)}\left[
+  \frac{1}{2} - \frac{1}{2}f_b(x \circ \pi_{b,a})f_{b'}(y \circ \pi_{b',a})\right]\right] \geq \frac{\cos^{-1}(\rho)}{\pi} + \epsilon
+\end{align}
+An averaging argument on the vertex $a \in A$ tells us that, since the test passes with at least $\GWConstant + \epsilon$ probability, there must exist at least $\epsilon/2$ fraction of the vertices in $A$ such that the test conditioned on picking $a$ from this fraction passes with probability at least $\GWConstant + \epsilon/2$. Otherwise, if there existed fewer than a $\epsilon/2$ fraction such that the test passed with at least this probability, then the total probability of the test passing is \emph{at most} $(\epsilon/2)\cdot 1 + (1 - \epsilon/2)(\GWConstant + \epsilon/2) < \GWConstant + \epsilon$, which is a contradiction. Let us label the vertices picked from this $\epsilon/2$ fraction as \emph{good} vertices. \newline
+
+So say we picked one of these good vertices say $a$. Let us define the below function:
+
+\begin{definition}
+  Define $g_a: \{-1,1\}^m \rightarrow [-1,1]$ as
+  \begin{equation}
+    g_a(x) = \mathbb{E}_{b}\left[f_b(x \circ \pi_{b,a}) \right]
+  \end{equation}
+  where the expectation is drawn uniformly over the neighbors $b$ of $a$.
+\end{definition}
+%
+This allows us to re-express the inequality \ref{step1}:
+
+\begin{align}
+  & \mathbb{E}_{b,b'}\left[
+  \mathbb{E}_{x,y\sim N_{\rho}(x)}\left[
+  \frac{1}{2} - \frac{1}{2}f_b(x \circ \pi_{b,a})f_{b'}(y \circ \pi_{b',a})\right]\right] \\
+  =  & \mathbb{E}_{x,y\sim N_{\rho}(x)}\left[
+    \frac{1}{2} - \frac{1}{2}\mathbb{E}_{b}\left[f_b(x \circ \pi_{b,a})\right]\mathbb{E}_{b'}\left[f_{b'}(y \circ \pi_{b',a})\right]\right] \\
+     = &  \frac{1}{2} - \frac{1}{2}\mathbb{E}_{x,y\sim N_{\rho}(x)}\left[g_a(x)g_a(y)\right]\\
+     = & \frac{1}{2} - \frac{1}{2}\mathsf{Stab}_{\rho}(g_a) \\
+   \geq & \frac{\cos^{-1}(\rho)}{\pi} + \epsilon/2
+\end{align}
+By invoking the contrapositive of the generalized MIS theorem (Theorem \ref{generalMIS}) on $g_a$, we deduce that there must exist some index $i_a \in [m]$ such that:
+%
+\begin{equation} \label{contra}
+\mathsf{Inf}_{i_a}^{\leq d}(g_a) \geq \tau
+\end{equation}
+%
+Fortunately, there is a method to equate the Fourier coefficients $g_a$ with those of $f_b$:
+
+\begin{align*}
+  g_a(x) & = \mathbb{E}_{b}\left[ f_b(x \circ \pi_{b,a})\right] \\
+         & = \mathbb{E}_{b}\left[ \sum_{S \subseteq [n]} \hat{f_b}(S)\chi_S(x \circ \pi_{b,a})\right] \\
+         & = \mathbb{E}_{b}\left[\sum_{S \subseteq [n]} \hat{f_b}(S)\chi_{\pi_{b,a}(S)}(x) \right] \\
+         & =  \mathbb{E}_{b}\left[\sum_{S \subseteq [n]} \hat{f_b}(S)\chi_{\pi_{b,a}(S)}(x) \right] \\
+         & = \sum_{S \subseteq [n]}\mathbb{E}_{b}\left[ \hat{f_b}(\pi_{b,a}^{-1}(S))\right]\chi_{S}(x)
+\end{align*}
+where the last equality follows from reparameterizing the sum. By expanding $g_a$ on the left-hand side of the equality into its Fourier expansion, from the orthogonality of characters:
+%
+\begin{equation}
+  \hat{g_a}(S) = \mathbb{E}_{b}\left[ \hat{f_b}(\pi_{b,a}^{-1}(S))\right]
+\end{equation}
+Starting from inequality \ref{contra},
+%
+\begin{align*}
+  \tau \leq \mathsf{Inf}_{i_a}^{\leq d}(g_a)
+  & = \sum_{\overset{S \subseteq [n], i_a \in S}{|S| \leq d}}  \hat{g_a}^2(S) \\
+  & = \sum_{\overset{S \subseteq [n], i_a \in S}{|S| \leq d}}  \left(\mathbb{E}_{b}\left[ \hat{f_b}(\pi_{b,a}^{-1}(S))\right] \right)^2 \\
+ & \leq \sum_{\overset{S \subseteq [n], i_a \in S}{|S| \leq d}}  \mathbb{E}_{b}\left[ \hat{f_b}^2(\pi_{b,a}^{-1}(S))\right] \\
+ & \mathbb{E}_{b}\left[ \sum_{\overset{S \subseteq [n], i_a \in   S}{|S| \leq d}}  \hat{f_b}^2(\pi_{b,a}^{-1}(S))\right] \\
+ & = \mathbb{E}_{b}\left[ \mathsf{Inf}^{\leq d}_{\pi_{b,a}^{-1}(i_a)}(f_b) \right]
+\end{align*}
+The inequality uses Cauchy-Schwarz.
+We use another averaging argument to see that there must exist at least a $\tau/2$ fraction of $a$'s neighbors $b$ such that $$\mathsf{Inf}^{\leq d}_{\pi_{b,a}^{-1}(i_a)}(f_b) \geq \tau/2$$
+otherwise the total influence term would be at most $\tau/2 \cdot 1 + (1 -\tau/2)(\tau/2) < \tau$.
+For each $b$ in that $\tau/2$ fraction, we pick a label uniformly at random from the set:
+
+\[ S_b = \{\ell \mid \mathsf{Inf}^{\leq d}_{\ell}(f_b) \geq \tau/2 \} \]
+which must be \emph{non-empty} by the averaging argument made above. Notice that the label picked will satisfy $\pi_{b,a}$ by construction. We can thus lower bound the probability of constraint $\pi_{b,a}$ being satisfied:
+%
+\begin{equation} \label{probbound}
+\mathbb{P}[\pi_{(b,a)} \text{ is satisfied}] \geq \frac{\epsilon}{2}\frac{\tau}{2}\frac{1}{|S_b|}
+\end{equation}
+
+Through a Fourier-analytic argument, we can upper-bound $|S_b|$:
+\begin{align*}
+  \frac{|S_b|\tau}{2} \leq \sum_{i = 1}^{|S_b|} \mathsf{Inf}_i^{\leq d}(f_b) \leq \sum_{i = 1}^m \mathsf{Inf}_i^{\leq d}(f_b) = \sum_{\overset{S \subseteq [m]}{|S| \leq d}} |S| \hat{f}^2(S) \leq d \sum_{S \subseteq [m]}  \hat{f}^2(S) = d
+\end{align*}
+This yields that $|S_b| \leq \frac{2d}{\tau}$. So the probability bound of \ref{probbound} would become:
+%
+\begin{equation}
+  \mathbb{P}[\pi_{(b,a)} \text{ is satisfied}] \geq \frac{\epsilon}{2}\frac{\tau}{2}\frac{\tau}{2d} = \frac{\epsilon\tau^2}{8d} = \delta
+\end{equation}
+as desired. This completes the proof of Theorem \ref{maxcutughard}.
+
+\end{proof}
+
+
+%add a big picture composing both parts.
