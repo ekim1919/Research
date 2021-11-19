@@ -1,6 +1,94 @@
 \section{H\aa stad's 3-bit PCP}
 %Arora, Barak
+\subsection{Inapproximability Results for $\ELin$ and $\mathsf{Max3Sat}$}
+The significance of H\aa stad's PCP for $\NP$ is its use in showing tight inapproximability results for $\ELin$ and hence $\mathsf{Max3Sat}$. The theorem is first stated below:
+
+\begin{theorem}(H\aa stad's 3-bit PCP, \cite{haastad2001some})
+For every $\delta > 0$ and $L \in \NP$, there exists a PCP verifier for $L$ over the boolean alphabet such that for every
+\begin{itemize}
+  \item The verifier $V$ queries 3 bits of the proof $x_{q_1},x_{q_2}, x_{q_3} \in \pi$ such that verification predicate is a three variable linear equation over $\mathbb{F}_2$ depending on the queried bits $x_{q_1},x_{q_2}, x_{q_3}$.
+  \item If $x \in L$, then there exists a proof $\pi$:
+        \begin{equation}
+          \mathbb{P}[V(x,\pi) = 1] \geq 1 - \delta
+        \end{equation}
+  \item If $x \not\in L$, then for all proofs $\pi$:
+        \begin{equation}
+          \mathbb{P}[V(x,\pi) = 1] \geq \frac{1}{2} + \delta
+        \end{equation}
+\end{itemize}
+
+\end{theorem}
+
+\subsection{The Long Code}
+To be written...
+
 \subsection{Aside on Dictatorship Testing}
-To be written...
-\subsection{Long Code}
-To be written...
+The first step towards testing if an input boolean function $f:\{-1,1\}^n \rightarrow \{-1.1\}$ is a dictator arises from the Blum-Luby-Rubinfeld Test (BLR) which we restate below: \newline
+
+\begin{enumerate}
+  \item Sample $x,y \sim_R \{-1,1\}^n$
+  \item Accept iff $f(x)f(y) = f(xy)$
+\end{enumerate}
+
+\begin{theorem}
+  Suppose the BLR test accepts $f:\{-1,1\}^n \rightarrow \{-1,1\}$ with probability $1 - \epsilon$, then $f$ is $\epsilon$-close to a linear function $\chi_{S*}$ for some $S^* \subseteq [n]$.
+\end{theorem}
+%
+Certainly the dictators $\chi_i, \; i \in [n]$ are linear functions. Hence, if $f = \chi_i$ for some $i$, then the BLR test accepts with probability one. However, we have the rest of the parity functions $\chi_{S}, |S| \geq 2$ which the BLR Test cannot distinguish. We need to amend the test to ensure that parity functions of higher weight are rejected with high probability. H\aa stad proposed modifiying the vanilla BLR test to add noise to the sampled product $xy$. Although this sacrifices perfect completeness, it penalizes large parity functions: \newline
+%
+\begin{enumerate}
+  \item Sample $x,y \sim \{-1,1\}^n$
+  \item Sample $z \sim N_{1-2\epsilon}(xy)$
+  \item Accept iff $f(x)f(y)=f(z)$
+\end{enumerate}
+%
+
+\begin{lemma} (Completeness of the Noisy BLR Test)
+ If $f = \chi_{i}$ is a dictator for some $i$, then
+  \[ \mathbb{P}[\text{ Noisy BLR test accepts }] \geq 1 - \epsilon \]
+\end{lemma}
+\begin{proof}
+  Note that if $z \sim N_{1-2\epsilon}(xy)$ for some $x \in \{-1,1\}^n$, then $y$ can be expressed as below:
+  \begin{equation}
+    z_i = \begin{cases}
+             \phantom{-} x_iy_i \text{ with probability } 1- \epsilon \\
+             - x_iy_i \text{ with probability } \epsilon
+          \end{cases}
+  \end{equation}
+  By the acceptance criterion,
+  \[ f(z) = f(x)f(y) \implies z_i = x_iy_i \]
+  This occurs with probability $1- \epsilon$ by the observation above, yielding completeness as claimed.
+\end{proof}
+%
+%
+\begin{lemma} Suppose that for some constant $\nu > 0$:
+\begin{equation*}
+  \mathbb{P}[\text{ Noisy BLR test accepts }] \geq \frac{1}{2} + \nu
+\end{equation*} then
+\begin{equation}
+  2\nu \leq \sum_{S \subseteq [n]} \hat{f}(S)^3(1-2\epsilon)^{|S|}
+\end{equation}
+\end{lemma}
+%
+\begin{proof}
+  The proof begins by noticing the accepting probability can be expressed as:
+  \[ \mathbb{P}[\text{ Noisy BLR test accepts }] = \frac{1}{2} + \frac{1}{2}\mathbb{E}_{x,y,z} \left[f(x)f(y)f(z) \right] \]
+  By our assumption, we prove that:
+  \begin{align*}
+    \frac{1}{2} + \nu & \leq \frac{1}{2} + \frac{1}{2}\mathbb{E}_{x,y,z} \left[f(x)f(y)f(z) \right] \implies \\[0.7ex]
+    2\nu & \leq \mathbb{E}_{x,y,z} \left[f(x)f(y)f(z) \right] \implies \\[0.7ex]
+    2\nu & \leq\mathbb{E}_{x,y,z} \left[f(x)f(y) \mathbb{E}_{z \sim N_{1 - 2\epsilon}(xy)} \left[f(z)\right]\right] \implies \\[0.7ex]
+    2\nu & \leq \mathbb{E}_{x}\left[ f(x)\mathbb{E}_{y}\left[ f(y)\mathcal{T}_{1-2\epsilon}f(xy)\right]\right] \\[0.7ex]
+    2\nu & \leq \mathbb{E}_{x}\left[ f(x) (f * \mathcal{T}_{1-2\epsilon}f)(x)\right] \implies\\[0.7ex]
+    2\nu & \leq \sum_{S \subseteq} \widehat{f}(S)\widehat{f}(S)\widehat{\mathcal{T}_{1-2\epsilon}f}(S) \implies \\[0.7ex]
+    2\nu & \leq  \sum_{S \subseteq} \widehat{f}(S)^3 (1-2\epsilon)^{|S|}
+  \end{align*}
+  as claimed.
+\end{proof}
+%
+\begin{corollary}
+  (Soundness of the Noisy BLR Test) There exists some $S^* \subseteq [n]$ such that
+  \begin{equation}
+    |\widehat{f}(S^*)| \geq 2\nu \quad |S^*| \leq O\left(\frac{1}{\epsilon}\log{\frac{1}{\nu}}\right)
+  \end{equation}
+\end{corollary}
