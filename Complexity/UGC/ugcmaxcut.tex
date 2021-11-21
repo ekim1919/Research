@@ -37,7 +37,7 @@ A direct calculation yields that the term $\frac{1 - \langle v_i, v_j \rangle}{2
 %
  \[\mathsf{Opt}_{GW}(G) \geq \MaxCut(G)\]
 
-So far the semi-definite program seems to be rather simple. The insight made by Goemans and Williamson lies in the rounding procedure of the solution outputted by the program. The procedure proceeds by first drawing a random hyperplane passing through the origin and taking the two partitions of the cut $S_+, S_-$ to be the solution $v_i$ which lie on positive and negative sides of the hyperplane respectively. We can calculate the expected size of the cut:
+So far the semi-definite program appears to be rather simple. The insight made by Goemans and Williamson lies in the rounding procedure of the solution outputted by the program. The procedure proceeds by first drawing a random hyperplane passing through the origin and taking the two partitions of the cut $S_+, S_-$ to be the solution $v_i$ which lie on positive and negative sides of the hyperplane respectively. We can calculate the expected size of the cut:
 %
 \begin{align*}
 \mathbb{E}[|E(S_+,S_-)|] = \sum_{(i,j) \in E} \mathbb{P}[v_i,v_j \text{ lie on different sides of the hyperplane}]
@@ -55,10 +55,16 @@ and the magical inequality:
 
 \[ \frac{\theta_{ij}}{\pi} \geq \alpha_{GW} \cdot \frac{1 - \cos(\theta_{ij})}{2}\]
 
-the two can be combined to finally yield that:
+the two can be combined to yield that:
 
 \begin{equation}
-  \frac{\mathbb{E}[|E(S_+,S_-)|]}{\mathsf{Opt}_{GW}(f)} \approx \alpha_{GW}
+  \frac{\mathbb{E}[|E(S_+,S_-)|]}{\mathsf{Opt}_{GW}(f)} \geq \alpha_{GW}
+\end{equation}
+
+Furthermore, the first inequality above implies that the Goemans-Williamson algorithm is indeed an $\alpha_{GW}$ approximation algorithm:
+
+\begin{equation}
+  \frac{\mathbb{E}[|E(S_+,S_-)|]}{\MaxCut(G)} \geq \alpha_{GW}
 \end{equation}
 
 \subsection{$\MaxCut$ is $\UG$-hard}
