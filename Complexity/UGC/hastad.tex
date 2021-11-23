@@ -126,14 +126,35 @@ The operator $\mathcal{T}_{\rho}$ is the \emph{noise operator} which, given bool
     |\widehat{f}(S^*)| \geq 2\nu \quad |S^*| \leq O\left(\frac{1}{\epsilon}\log{\frac{1}{\nu}}\right)
   \end{equation}
 \end{corollary}
+%
+\begin{proof}
+  From Theorem \ref{noisyblrsoundness}, we deduce that:
+  \begin{align*}
+      2\nu \leq  \sum_{S \subseteq [n]} \widehat{f}(S)^3 (1-2\epsilon)^{|S|} & \leq \max_{S}{\widehat{f}(S)}(1-2\epsilon)^{|S|} \sum_{S \subseteq [n]} \widehat{f}(S)^2 \\
+      & = \max_{S}{\widehat{f}(S)}(1-2\epsilon)^{|S|}
+  \end{align*}
+  By taking the maximum attained as $S^*$,
+  \[2\nu \leq \widehat{f}(S^*)(1-2\epsilon)^{|S^*|} \]
+  Since both $\widehat{f}(S^*) \geq 2\nu$ and $(1-2\epsilon)^{|S^*|} \geq 2\nu$ (as $f$ is boolean):
+
+  \[e^{-2\epsilon|S^*|} \geq 2\nu \]
+  which shows that $|S^*| \leq O\left(\frac{1}{\epsilon}\log{\frac{1}{\nu}}\right)$.
+\end{proof}
 
 \subsection{The Code Consistency Test}
-The consistency test will compose the dictatorship test formulated above with checking the validity of an alleged long code as well as satisfiablity of the labels encoded. More formally, the input will be a $\LC$ instance $((A\sqcup B,E),\Sigma_A,\Sigma_B,\{\pi_e\}_{e \in E})$ and the proof will be the long codes encoding the assignments to the vertices, $\mathfrak{A}: A \rightarrow \Sigma_A$, $\mathfrak{B}: B \rightarrow \Sigma_B$. The consistency check will check validity of the long code as well as checking the labels encoded by the long codes satisfy the projection constraints $\{\pi_e\}_{e \in E}$: First some notation is in order. Let $(x \circ \pi)_i = x_{\pi(i)}, \; \forall i \in \Sigma_A$ for $x \in \{-1,1\}^{|\Sigma_B|}$. It worth keeping in mind that $x \circ \pi \in \{-1,1\}^{|\Sigma_A|}$.
+The consistency test will compose the dictatorship test formulated above with checking the validity of an alleged long code as well as satisfiablity of the labels encoded. More formally, the input will be a $\LC$ instance $((A\sqcup B,E),\Sigma_A,\Sigma_B,\{\pi_e\}_{e \in E})$ and the proof will be the long codes encoding the assignments to the vertices, $\mathfrak{A}: A \rightarrow \Sigma_A$, $\mathfrak{B}: B \rightarrow \Sigma_B$. The consistency check will aim to perform two tasks simultaneously given an edge $(a,b)$ and its associated projection constraint $\pi$: Let $f_a:\{-1,1\}^{|\Sigma_A|} \rightarrow \{-1,1\}, \; f_b:\{-1,1\}^{|\Sigma_B|} \rightarrow \{-1,1\}$ be the functions claimed to be long codes for the labels assigned to vertices $a,b$: $\mathfrak{A}(a),\mathfrak{B}(b)$. Recall these will be encoded as truth table strings on the proof string $\pi$.
+
+\begin{description}
+  \item[Validity Check] Check that the functions $f_a,f_b$ are indeed valid long codes for some labels $\mathfrak{A}(a),\mathfrak{B}(b)$.
+  \item[Consistency Check] Verify that the assigned labels satisfy $\pi$
+  \[ \pi(\mathfrak{A}(a)) =  \mathfrak{B}(b)\]
+\end{description}
+
+Before presenting the test, some notation is in order. Let $(x \circ \pi)_i = x_{\pi(i)}, \; \forall i \in \Sigma_A$ for $x \in \{-1,1\}^{|\Sigma_B|}$. It worth keeping in mind that $x \circ \pi \in \{-1,1\}^{|\Sigma_A|}$.
 
 \begin{enumerate}
   \item Sample an edge $e = (a,b) \in E$. Let $\pi$ be the associated projection constraint.
 
-  \noindent Let $f_a:\{-1,1\}^{|\Sigma_A|} \rightarrow \{-1,1\}, \; f_b:\{-1,1\}^{|\Sigma_B|} \rightarrow \{-1,1\}$ be the functions claimed to be long codes for the labels assigned to vertices $a,b$: $\mathfrak{A}(a),\mathfrak{B}(b)$. Recall these will be encoded as truth table strings on the proof string $\pi$.
   \item Sample $x \sim \{-1,1\}^{|\Sigma_B|}, \; y \sim \{-1,1\}^{|\Sigma_A|}$
   \item Sample $z \sim N_{1 - 2\delta}((x \circ \pi)y)$
   \item Accept iff $f_a(z) = f_b(x)f_a(y)$
