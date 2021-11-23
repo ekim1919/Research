@@ -75,18 +75,18 @@ The problem $\mathsf{Gap}_{\alpha,1}\mathsf{Max3SAT}$ is $\NP$-hard. In other wo
 
 \begin{align*}
   x \in L & \implies \mathsf{Opt}(f(x)) = 1 \\
-  x \not\in L & \implies \mathsf{Opt}(f(x)) < \alpha
+  x \not\in L & \implies \mathsf{Opt}(f(x)) \leq \frac{1}{2}
 \end{align*}
 \end{theorem}
 
 An immediate consequence of Theorem \ref{pcpgapsat} and Theorem \ref{GapCSPtoAlgHard} is that if there exists an $\alpha$-approximation algorithm for $\mathsf{Max3SAT}$, then $\P = \NP$. With this, we have the first steps towards an inapproximability result: if $\P \neq \NP$, there exists no efficient $\mathsf{Max3SAT}$ algorithm which can approximate better than an $\alpha$ factor. Note that we haven't actually found a concrete value for $\alpha$ yet. This will be addressed once we prove H\aa stad's 3-bit PCP for $\NP$ in a future section.
 
 
-\begin{theorem} ($\PCP$-Theorem: $\mathsf{GapMaxCSP}$- hardness) For some constants $q \in \mathbb{N}, \alpha \in (0,1)$, the problem $\mathsf{Gap}_{\alpha,1}\mathsf{Max}$-$\mathsf{qCSP}$ is $\NP$-hard. To elaborate, for every $\NP$ language $L$, there exists a polynomial time reduction mapping an $L$ to a instance $f(x)$ of some CSP $\Psi$ where $\Psi$ consists of $q$-ary predicates, such that
+\begin{theorem} \label{pcptheoremgapcsp}  ($\PCP$-Theorem: $\mathsf{GapMaxCSP}$- hardness) For some constants $q \in \mathbb{N}$, the problem $\mathsf{Gap}_{\alpha,1}\mathsf{Max}$-$\mathsf{qCSP}$ is $\NP$-hard. To elaborate, for every $\NP$ language $L$, there exists a polynomial time reduction mapping an $L$ to a instance $f(x)$ of some CSP $\Psi$ where $\Psi$ consists of $q$-ary predicates, such that
 
 \begin{align*}
   x \in L & \implies \mathsf{Opt}(f(x)) = 1 \\
-  x \not\in L & \implies \mathsf{Opt}(f(x)) < \alpha
+  x \not\in L & \implies \mathsf{Opt}(f(x)) \leq \frac{1}{2}
 \end{align*}
 \end{theorem}
 
@@ -97,14 +97,24 @@ An immediate consequence of Theorem \ref{pcpgapsat} and Theorem \ref{GapCSPtoAlg
 Before we embark on the proof, let us establish an equivalence between PCPs and CSPs:
 
 \begin{lemma} (Equivalence between PCPs and CSPs)
-
+  Theorem \ref{pcptheorem} and  Theorem \ref{pcptheoremgapcsp} are equivalent.
 \end{lemma}
 
 \begin{proof}
-  To be written...
+First, assume $\NP = \PCP_{1,\frac{1}{2}}(O(\log{n}), O(1))$. We will outline a procedure to convert the verifier $V$ into an instance $\I$ for a $q$-ary CSP $\Psi$ for some constant $q$. For some input string $x \in \{0,1\}^n$ and proof string $\pi$, let $r \in \{0,1\}^{c \cdot \log{n}}$ be the coin flips made by $V$ and $V_{x,r}$ be the deterministic procedure which is executed on input $x$ and coin flip $r$ such that $V_{x,r} = 1$ iff $V$ accepts proof $\pi$ on input $x$ and coin flip $r$. We can define the domain of our constructed CSP $\Psi$ to be $\Omega=\{0,1\}$ and the predicates to be $\{V_{x,r}\}_{r}$. Now our instance $\I$ of $\Psi$ is casted as the tuples $(S, V_{x,r})$ where $S$ will be at most a $q$-sized tuple indicating which indices of the proof $\pi$ are queried when conditioned on $r$. This yields a polynomially-sized $\mathsf{qCSP}$ instance $\I$. Furthermore, since the verifier $V$ runs in polynomial time, it's execution can be simulated on all $r$ to output the instance $\I$ in polynomial-time. Thus, we have given a polynomial-time reduction from an input $x$ to its corresponding CSP instance $\I$, so Theorem \ref{pcptheoremgapcsp}. \newline
+
+Conversely, suppose we had a reduction from $\NP$ to $\mathsf{Gap}_{\alpha,1}\mathsf{Max}$-$\mathsf{qCSP}$ as stated in Theorem \ref{pcptheoremgapcsp}. We devise polynomial-time reduction taking an instance $\mathsf{Max}$-$\mathsf{qCSP}$ to a polynomial-time PCP verifier $V$ using logarithmic number of random bits and a constant number of queries to the supplied proof $\pi$. For an input $x \in \{0,1\}^n$, the proof will be expected to be an assignment to its respective instance $f(x)$ in the notation utilized in Theorem \ref{pcptheoremgapcsp}. Verifier $V$ makes coin flips $r \in \{0,1\}^{c\log{n}}$ to choose one constraint tuple $(S,\psi)$ where $\psi$ is some $q$-ary predicate. Only a logarithmic number of random bits are required to query any constraint in instance $f(x)$ as the polynomial-time $\NP$ reduction can only generate a polynomial number of such constraints.  The PCP only has to make $q$-queries to the proof $\pi$ to find the assignments to the variables listed in $S = (v_1,\cdots,v_q)$. By the properties listed in Theorem \ref{pcptheoremgapcsp}, the PCP verifier $V$ must have completeness $1$ and soundness $\leq \frac{1}{2}$ as claimed.
+\end{proof}
+
+\begin{lemma} (Equivalence between $\mathsf{Gap}$-$\mathsf{3SAT}$ and $\mathsf{Max}$-$\mathsf{qCSP}$). Theorem \ref{pcpgapsat} and Theorem \ref{pcptheoremgapcsp} are equivalent.
+\end{lemma}
+%
+\begin{proof}
+To be written...
 \end{proof}
 
 %2 The PCP Theorem: An Introduction (DIMACS)
+
 %\subsection{Examples of PCPs}
 
 
