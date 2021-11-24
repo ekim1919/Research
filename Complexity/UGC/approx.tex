@@ -3,13 +3,13 @@
 %AB - Chapter 11
 %Explain intuition.
 \subsection{Definitions and Examples}
-The theory of approximating $\NP$-hard problems roots itself in the following question: ``Is it possible to efficiently approximate $\NP$-complete problem to some arbitrary degree of accuracy?" Since Cook-Levin result demonstrated that the $\SAT$ decision problem is $\NP$-complete, the question could be rephrased as ``Can we find an efficient algorithhm for $\SAT$ which outputs an assignment which satisfies a $1-\delta$ fraction of the clauses for any constant $\delta >  0$?" To this end, let us first introduce a few motivating examples which will find utility in our analysis. \newline
+The theory of approximating $\NP$-hard problems roots itself in the following question: ``Is it possible to efficiently approximate $\NP$-complete problem to some arbitrary degree of accuracy?" Since Cook-Levin result demonstrated that the $\SAT$ decision problem is $\NP$-complete, the question could be rephrased as ``Can we find an efficient algorithhm for $\SAT$ which outputs an assignment which satisfies a $1-\delta$ fraction of the clauses for any constant $\delta >  0$?" To this end, let us first introduce a few motivating examples which will find utility in our forthcoming analysis. \newline
 
 Consider $\mathsf{Max3CNF}$, the problem of, given a 3CNF formula $\phi$ as input, outputting an assignment which maximizes the number of clauses satisfied in $\phi$. Given any assignment $x$ to the variables, say as an $n$-bit string while viewing $\phi:\{0,1\}^n \rightarrow \{0,1\}$, there is some $0 \leq \rho_{\phi,x} \leq 1$ representing the fraction of clauses satisfied in $\phi$. Take $\mathsf{Opt}(\phi)$ to be the maximum such value over all such assignments:
 
 \[ \mathsf{Opt}(\phi) = \max_{x \in \{0,1\}^n}\rho_{\phi,x} \]
 
-Naturally, $\mathsf{Max3CNF}$ is $\NP$-hard since its corresponding decision problem $\mathsf{3CNF}$ is $\NP$-complete i.e $\phi$ is satisfiable iff $\mathsf{Opt}(\phi) = 1$.
+An polynomial-time algorithm which solves $\MaxCNF$ is one which takes a 3CNF $\phi$ as input and outputs $\Opt(\phi)$. Naturally, $\mathsf{Max3CNF}$ is $\NP$-hard since its corresponding decision problem $\mathsf{3CNF}$ is $\NP$-complete i.e $\phi$ is satisfiable iff $\mathsf{Opt}(\phi) = 1$.
 %
 However, we can ask if there exists an algorithm $A$ which outputs an assignment which satisfies at least some $\beta\cdot\mathsf{Opt}(\phi)$ fraction of the clauses of $\phi$ for some $\beta \leq 1$. To formalize this: \newline
 %
@@ -49,13 +49,13 @@ A comment regarding this problem. Firstly, if the given E3Lin instance has a gua
 The problem $\MaxCut$ will be casted as follows: given an undirected graph $G=(V,E)$, find the largest cut of $G$. There is a straightforward LP formulation for this problem:
 
 \begin{align}
-  &  \min \sum_{(u,v) \in E} e_{u,v} \\
-  & e_{u,v} \geq
-  \max \begin{cases}
+  &  \max \sum_{(u,v) \in E} e_{u,v} \\
+  & e_{u,v} \leq
+  \min \begin{cases}
       x_1 + x_2 \\
       2 - (x_1 + x_2)
   \end{cases} \\
-  & e_{u,v} \in [1,2] \\
+  & e_{u,v} \in [0,1] \\
   & x_v \in [0,1]
 \end{align}
 %
@@ -64,7 +64,7 @@ where the $e_{u,v}$ variables represent the edges $e \in E$ of the input graph a
 \begin{align}
   e_{u,v} = \begin{cases}
               1 \text{ if } e_{u,v} \in \mathcal{C} \\
-              2 \text{ otherwise }
+              0 \text{ otherwise }
             \end{cases}
   x_v = \begin{cases}
               0 \text{ if } v \text{ is in partition } S \\
@@ -136,7 +136,14 @@ The $\NP$-hardness theory frequently relies on Karp reductions from decision pro
       \I \in \mathsf{YES} & \iff \mathsf{Opt}(\I) \geq \beta \\
         \I \in \mathsf{NO} & \iff \mathsf{Opt}(\I) < \alpha
   \end{align}
+  Furthermore, an algorithm $A$ decides $\MaxCSP$ if for input instance $\I$ it accepts iff $\I \in \mathsf{Yes}$ and rejects iff $\I \in \mathsf{No}$. If $\I$ is in neither $\mathsf{Yes}, \mathsf{No}$, we do not care what the algorithm outputs.
 \end{definition}
+
+In particular, we deem a $\GapMaxCSP{\alpha}{\beta}$ problem as $\NP$-hard if for every language $L \in \NP$, there exists a polynomial-time reduction $f$ taking $x$ to CSP $\Psi$ instances such that:
+\begin{align*}
+  x \in L \implies \mathsf{Opt}(f(x)) & \geq \beta \\
+  x \not\in L \implies \mathsf{Opt}(f(x))&  < \alpha
+\end{align*}
 
 The $\NP$-hardness of approximation algorithms reduces to that of gap problems as shown in the below observation:
 

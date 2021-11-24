@@ -53,7 +53,11 @@ In addition, Khot formulated the \emph{Unique Games Conjecture} and utilized it 
 \end{example}
 
 \begin{definition}
-  A problem $P$ is said to be \emph{$\UG$-hard} if there is some constant $\delta > 0$ such that for all $m \in \mathbb{N}$, there exists a polynomial-time reduction from $\GapDeltaULC$ to $P$.
+  A promise problem $P$ is said to be \emph{$\UG$-hard} if there is some constant $\delta > 0$ such that for all $m \in \mathbb{N}$, there exists a polynomial-time reduction $f$ from $\GapDeltaULC$ to $P$, in the sense that for a $\GapDeltaULC$ instance $\I$:
+  \begin{align*}
+    \mathsf{Opt}(\I)  \geq 1 - \delta & \implies f(x) \in \mathsf{Yes} \\
+    \mathsf{Opt}(\I)  < \delta & \implies f(x) \in \mathsf{No}
+  \end{align*}
 \end{definition}
 
 %\subsection{Is the Unique Games Conjecture True?}
