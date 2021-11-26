@@ -91,7 +91,7 @@ Onwards to the proof of Theorem \ref{maxcutughard}. We first reason about the re
 \end{theorem}
 %
 \begin{proof}
-  First assume that for some $\delta > 0$ and all $m$, there exists a polynomial-time reduction from $\GapDeltaULC$ to $\mathsf{Gap}_{\alpha,\beta}\mathsf{MaxCut}$. Let $G=(V,E), \mathcal{C}$ be the graph outputted by reduction and the cut outputted by the cut approximation algorithm. Construct a PCP samples two vertices from $v_1, v_2 \sim V$ by querying the proof tape encoding $G,\mathcal{C}$ and outputs ``accept" if $(v_1,v_2) \in \mathcal{C}$. The completeness and soundness parameters immediately follow from definition of $\mathsf{Gap}_{\alpha,\beta}\mathsf{MaxCut}$. Conversely, assume the existance of a 2-query PCP for $\GapDeltaULC$ with the above properties. We will calculate the acceptance probabilities of this PCP given a proof string and an input instance by finding the max cut. Let the vertices be the proof locations of the input proof string $\pi$. It suffcies to draw an edge between two vertices weighted by the probability their corresponding proof locations are queried by the verifier.
+  First assume that for some $\delta > 0$ and all $m$, there exists a polynomial-time reduction from $\GapDeltaULC$ to $\mathsf{Gap}_{\alpha,\beta}\mathsf{MaxCut}$. Let $G=(V,E), \mathcal{C}$ be the graph outputted by reduction and the cut outputted by the cut approximation algorithm. Construct a PCP samples two vertices from $v_1, v_2 \sim V$ by querying the proof tape encoding $G,\mathcal{C}$ and outputs ``accept" if $(v_1,v_2) \in \mathcal{C}$. The completeness and soundness parameters immediately follow from definition of $\mathsf{Gap}_{\alpha,\beta}\mathsf{MaxCut}$. Conversely, assume the existence of a 2-query PCP for $\GapDeltaULC$ with the above properties. We will calculate the acceptance probabilities of this PCP given a proof string and an input instance by finding the max cut. Let the vertices be the proof locations of the input proof string $\pi$. It suffices to draw an edge between two vertices weighted by the probability their corresponding proof locations are queried and accepted by the verifier.
 \end{proof}
 
 Thus, we can proceed by constructing a 2-query PCP for $\GapDeltaULC$ with the completeness $\frac{1-\rho}{2} - \epsilon$ and soundness $\GWConstant + \epsilon$. As with H\aa stad's 3-bit PCP, we aim to construct a dictatorship test which generates the parameters needed. Once again, a proof string $\pi$ containing an assignment of labels to the vertices of a $\ULC$ instance would be encoded into a truth table of a dictator i.e into a \emph{long code}. \newline
@@ -99,15 +99,16 @@ Thus, we can proceed by constructing a 2-query PCP for $\GapDeltaULC$ with the c
 %
 %
 %
-\subsection{Dictatorship Testing Redux}
-A key difference between dictatorship test crafted in H\aa stad's 3-bit PCP for $\NP$ and the one will aim to utilize here is the number of queries the PCP can make. Namely, the reduction here can only use \emph{two queries} to the proof.
+\subsection{Dictatorship Testing and Majority is the Stablest (MIS)}
+A key difference between dictatorship test crafted in H\aa stad's 3-bit PCP for $\NP$ and the one will aim to utilize here is the number of queries the PCP can make. Namely, the reduction here can only use \emph{two} queries to the proof rather than the three queries afforded to H\aa satd's verifier. The dictatorship test we will focus on for this reduction utilizes only two queries to the functions: given input boolean function $f:\{-1,1\}^n \rightarrow \{-1,1\}$ and $\rho \in (-1,0)$:
 
+\begin{enumerate}
+  \item Sample $x \sim \{-1,1\}^n$
+  \item Sample $y \sim N_{\rho}(x)$
+  \item Accept iff $f(x) \neq f(y)$
+\end{enumerate}
 %
-%
-%
-\subsection{Majority is the Stablest (MIS)}
-%
-Before we craft our dictator test, we require a tool bounding the noise sensitivity of a boolean function with small low-degree influence. This is captured by the ``Majority is the Stablest" theorem:
+Before we analyze the acceptance probability of our dictatorship test, we require a tool bounding the noise sensitivity of a boolean function with small low-degree influence. This is captured by the ``Majority is the Stablest" theorem:
 
 \begin{theorem} (``Majority is the Stablest" (MIS) \cite{mossel2005noise})
 For every $\epsilon > 0$, $\rho \in (-1,0)$, there exists $\tau > 0$ such that if for all $i \in [n]$, $\mathsf{Inf}_i(f) < \tau$ for function $f:\{-1,1\}^n \rightarrow [-1,1]$, then
@@ -149,7 +150,25 @@ Through Fourier-analytic techniques, we derive that:
   \mathsf{NS}_\rho(f) = \frac{1}{2} - \frac{1}{2}\sum_{S\subseteq [n]}\hat{f}(S)^2\rho^{|S|}
 \end{equation}
 
-A generalization of the MIS theorem will serve our purposes:
+To see the significance of the MIS Theorem, we compute the acceptance rate of the dictatorship test above:
+
+\begin{align*}
+\mathbb{P}\left[ \text{ Test Accepts }\right] & = \mathbb{E}_{x,y}\left[\frac{1}{2} - \frac{1}{2}f(x)f(y) \right] \\
+& = \frac{1}{2} - \frac{1}{2}\mathbb{E}_{x,y}\left[f(x)f(y) \right] \\
+& = \frac{1}{2} - \frac{1}{2}\mathsf{Stab}_\rho(f)
+\end{align*}
+
+We can now reason about acceptance probability in the context of several classes of functions:
+
+\begin{itemize}
+  \item Dictators pass the test with probabilty $\frac{1 - \rho}{2}$
+  \item The parity functions $\chi_S,\; S \subseteq [n]$ pass with probability $\frac{1 - \rho^{|S|}}{2}$. As $|S|$ grows, the acceptance probability tends to $\frac{1}{2}$.
+  \item Majority functions passes the test with probability approaching in the limit $\frac{\cos^{-1}(\rho)}{\pi}$.
+\end{itemize}
+
+What the MIS Theorem roughly tells us is that functions with no ``notable" coordinates, i.e all coordinates have small influence, can pass the test with probability at most $\frac{\cos^{-1}(\rho)}{\pi}$. The proof of the soundness of our verifier will exploit the observation that functions with a sufficiently large $i^{th }$ influence for some coordinate $i$ will be ``close enough" to a dictator. This property will be used to extract a labeling to the $\mathsf{UniqueLC}(m)$ instance satisfying a large fraction of constraints.
+
+For the analysis of constructed PCP verifier, a generalization of the MIS theorem will serve our purposes:
 
 \begin{theorem} \label{generalMIS} (Generalized MIS \cite{khot2007optimal},\cite{mossel2005noise})
   For all $\epsilon > 0$, $\rho \in (0,1)$, there exists some $\tau > 0$ and finite $d$ such that if $f:\{-1,1\}^n \rightarrow [-1,1]$ and for all $i \in [n]$, $\mathsf{Inf}^{\leq d}_i(f) \leq \tau$:
@@ -158,6 +177,14 @@ A generalization of the MIS theorem will serve our purposes:
   \end{equation}
 \end{theorem}
 
+where $\mathsf{Inf}^{\leq d}_i(f)$ refers to the $i^{th}$ influence of $f$ restricted to degrees of at most $d$:
+
+\begin{equation}
+  \mathsf{Inf}^{\leq d}_i(f) = \sum_{\substack{S \subseteq [n], \; i \in S \\ |S| \leq d}} |S|
+  \cdot\widehat{f}(S)^2
+\end{equation}
+
+Note that the image of our function $f$ is the contained in the closed interval $[-1,1]$ rather than the finite set $\{-1, 1\}$ as stated in the ordinary MIS theorem.
 %
 %
 %

@@ -160,7 +160,11 @@ Before presenting the test, some notation is in order. Let $(x \circ \pi)_i = x_
   \item Accept iff $f_a(z) = f_b(x)f_a(y)$
 \end{enumerate}
 
-Note that if the labels assigned $a,b$ satisfied $\pi$ and $f_a,f_b$ are valid long codes: $f_a(x \circ \pi) = f_b(x )$ for all $x \in \{-1,1\}^{|\Sigma_B|}$.
+First, note that if the labels assigned $a,b$ satisfied $\pi$ and $f_a,f_b$ are valid long codes: $f_a(x \circ \pi) = f_b(x )$ for all $x \in \{-1,1\}^{|\Sigma_B|}$. Second, Step 4 of the verfier can be expressed as a three variable linear equation:
+
+\begin{equation} \label{hastadpred}
+ f_a(z) f_b(x)f_a(y) = 1
+\end{equation}
 
 \begin{proposition} (Completeness)
   If $\mathsf{Gap}_\delta\mathsf{LC}$ instance $((A\sqcup B,E),\Sigma_A,\Sigma_B,\{\pi_e\}_{e \in E})$ satisfies all constraints, then there exists code words $f_a, f_b$ such that
@@ -184,6 +188,13 @@ Note that if the labels assigned $a,b$ satisfied $\pi$ and $f_a,f_b$ are valid l
 %
 
 \subsection{Folded Functions}
+A technical detail requires that functions queried $f_a,f_b$ be \emph{folded} in the sense that:
+%
+\begin{definition}
+A boolean function $f:\{-1,1\}^n \rightarrow \{-1,1\}$ is said to be folded if for every $x \in \{-1,1\}$, $f(-x) = -f(x)$.
+\end{definition}
+
+These functions are also said to \emph{odd}. It can be shown that \emph{folded} functions have their Fourier weights concentrated on subsets of odd cardinality. In particular, for boolean function $f$ folded: $\widehat{f}(\emptyset) = 0$. Why would we need this property? One issue that arises with the predicates shown in Equation \ref{hastadpred} is when all functions are simply the constant function $f_a = f_b = 1$. This passes the test with probability one. This can be avoided by restricting the functions to be folded. Of course, dictator functions are folded. Furthermore, we do not need to increase the number of queries to enforce this requirement: for any two pair of queries $(x,-x)$ and a queried function $f$, if the test queries $f(x)$, the value $f(-x)$ can be subsequently computed as $-f(x)$.   
 
 \subsection{Soundness and Decoding a Labeling}
 

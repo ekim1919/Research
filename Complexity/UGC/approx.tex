@@ -25,7 +25,7 @@ A canonical example of a simple approximation algorithm for $\mathsf{Max3CNF}$ i
 %
 \[ \mathbb{E}_{x \in \{0,1\}^n}[\text{\# satisfied clauses of $\phi(x)$}] = \frac{7m}{8} \]
 %
-where $m$ is the number of satisfiable clauses of $\phi$. This gives us a $\frac{7}{8}$-approximation algorithm for $\mathsf{Max3CNF}$. Here's another example:
+where $m$ is the number of satisfiable clauses of $\phi$, showing that there must exist an assignment which satisfies at least $\frac{7}{8}$ of $\phi$'s clauses. This gives us a $\frac{7}{8}$-approximation algorithm for $\mathsf{Max3CNF}$. Here's another example:
 %
 \begin{example} \label{e3linexample}
   Let $\mathsf{MaxE3Lin}$ define the problem of the following form: let $\xi$ be defined as a system of linear equations over the field $\mathbb{F}_2$ where every equation contains \emph{exactly} $3$ variables from $n$ variables $x_1,\cdots,x_n$. Find an assignment to the variables which maximizes the number of satisified linear equations in $\xi$. An example is the following system over variables $x_1,x_2,x_3,x_4$:
