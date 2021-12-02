@@ -24,19 +24,31 @@ In other words, the value will be the largest fraction of edges satisfied by any
 In the case of perfect completeness, we abbreviate $\mathsf{Gap}_{\alpha,1}\mathsf{LC}$ as simply $\mathsf{Gap}_{\alpha}\mathsf{LC}$.
 \end{definition}
 
-There are a few observations worthy of mentioning here. The first regards a type of equivalence between CSP instances and Label Cover instances. Specifically, let $\I$ be an instance of a given CSP $\Psi$ over domain $\Omega$. We can translate this CSP instance into a Label Cover instance as follows: Let the left-hand partition $A$ of our bipartite graph be indexed by the set of constraint tuples $(S,\psi)$ and the right-hand partition $B$ be indexed by the variables of the CSP $V$. Draw an edge from a constraint tuple $(S,\psi)$ to a variable $v$ if that variable appears in $S$. Set $\Sigma_A = \Omega^r, \Sigma_B = \Omega$ where $r$ is the arity of the CSP, and for every edge $e = ((v_1,\cdots,v_r), \psi), v)$ define the projection $\pi_e:\Sigma_A \rightarrow \Sigma_B$ to be
+There are a few observations worthy of mentioning here. The first regards a type of equivalence between CSP instances and Label Cover instances.
+%
+Specifically, let $\I$ be an instance of a given $r$-ary CSP $\Psi$ over domain $\Omega$. We can translate this CSP instance into a Label Cover instance as follows:
+%
+Let the left-hand partition $A$ of our bipartite graph be indexed by the set of constraints $(S,\psi)$ and the right-hand partition $B$ be indexed by the variables of the CSP $V$.
+%
+Draw an edge from a constraint tuple $(S,\psi)$ to a variable $v$ if that variable appears in $S$.
+%
+Set $\Sigma_A = \{(q_1,\cdots,q_r) \in \Omega^r \mid \exists \psi \in \Psi, \; \psi(q_1,\cdots,q_r) = 1 \}$
+%
+and $\Sigma_B = \Omega$, and for every edge $e = ((v_1,\cdots,v_r), \psi), v)$ define the projection $\pi_e:\Sigma_A \rightarrow \Sigma_B$ to be
 
-\[ \pi_e(\omega_1, \cdots, \omega_r) =  \omega_i \text{ if } v_i = v\]\newline
+\[ \pi_e(\omega_1, \cdots, \omega_r) =  \omega_i \text{ if } v_i = v\] \newline
 
 %Finish this.
 
-On the other hand, every Label Cover instance can be seen as a $2$CSP over a sufficiently large domain: the predicates of the CSP would be all $2$-ary predicates $\pi:\Sigma_A \times \Sigma_B \rightarrow \{0,1\}$ representing every possible map from $\Sigma_A \rightarrow \Sigma_B$. Thus, the domain of our CSP can be defined as $\Omega = \Sigma_A \cup \Sigma_B$. The corresponding instance of this CSP would be $(S,\pi_e)$ where $\pi_e$ represents the predicate corresponding to the edge $e$'s projection map $\pi_e$ and $S = (a,b)$ would be the vertices of $e$ between $A$ and $B$ respectively.
+On the other hand, every Label Cover instance can be seen as a $2$CSP over a sufficiently large domain: the predicates of the CSP would be all $2$-ary predicates $\pi:\Sigma_A \times \Sigma_B \rightarrow \{0,1\}$ representing every possible map from $\Sigma_A \rightarrow \Sigma_B$. Thus, the domain of our CSP can be defined as $\Omega = \Sigma_A \cup \Sigma_B$. The corresponding instance of this CSP would be $(S,\pi_e)$ where $\pi_e$ represents the predicate corresponding to the edge $e$'s projection map $\pi_e$ and $S = (a,b)$ would be the vertices of $e$ between $A$ and $B$ respectively. \newline
+
+By Theorem \ref{equipcpcsp} and the observations made above, there is a method of converting the PCP for $\NP$ given by the PCP Theorem to a CSP, then converting that CSP into a Label Cover instance. This shows that $\mathsf{Gap}_\alpha\mathsf{LC}$ for some $\alpha > 0$ must be $\NP$-hard:
 
 \begin{theorem} (Weak Projection Games Theorem)
-Label Cover is $\NP$-hard to approximate within some constant.
+ $\mathsf{Gap}_\alpha\mathsf{LC}$ for some $\alpha > 0$ is $\NP$-hard.
 \end{theorem}
 
-%alphabet size.
+The primary drawback of this theorem is that it does give us an $\NP$-hardness result for \emph{every} constant $\alpha > 0$. This will be addressed by Raz's Parallel Repetition Theorem.
 %examples.
 %trivial NP hardness proof.
 
@@ -46,9 +58,9 @@ Label Cover is $\NP$-hard to approximate within some constant.
 \subsection{Raz's Parallel Repetition Theorem}
 In this section, we give a cursory outline of Raz's Parallel Repetition Theorem and its consequences. First, we can extend Definition \ref{pcpdef} to include proof strings over non-boolean alphabets.
 %
-To accomdate such verifiers, we can extend the definition to $\PCP^\Sigma_{\beta, \alpha}(r(n),q(n))$, the class of languages with polynomial-time verifiers taking proof strings $\pi$ over non-boolean alphabet $\Sigma$ and uses $r(n)$ random bits and at most $q(n)$ queries to $\pi$.
+To accomodate such verifiers, we can extend the definition to $\PCP^\Sigma_{\beta, \alpha}(r(n),q(n))$, the class of languages with polynomial-time verifiers taking proof strings $\pi$ over non-boolean alphabet $\Sigma$ and uses $r(n)$ random bits and at most $q(n)$ queries to $\pi$.
 %
-The following theorem shows that one can reduce the number of queries to two at the expense of a weaker soundness constant:
+The following theorem shows that one can reduce the number of queries to two at the expense of a weaker soundness constant and a larger alphabet:
 %
 \begin{theorem} \label{2queryinclusion}
   $\PCP^\Sigma_{1 - \alpha, 1}(r(n),q(n)) \subseteq \PCP^{\Sigma^q}_{1 - \frac{\alpha}{q},1}(r(n) + \log{q(n)}, 2)$
@@ -77,13 +89,13 @@ We extend this to a modified verfier $V'$ to accomodate the concatenation of two
 
 For completeness, if there exists a proof $\pi$ which the original verifier $V$ accepts with probability one, then setting $\pi_1(i_1, \cdots, i_q) = (\pi_{i_1},\cdots,\pi_{i_q})$ and $\pi_2 = \pi$ will induce $V'$ to accept with probability one by construction.
 %
-As for soundness, suppose  at least $\alpha$ fraction of the predicates $V_{x,R}$ reject in respect to some proof string $\pi$. Each one of the predicates contained in this fraction must fail the check at Step $4$ if $\pi' = \pi_1(i_1, \cdots, i_q) = (\pi_{i_1},\cdots,\pi_{i_q})$. However, $\pi_1$ does not have to respect this rule for any $q$-tuple of queries $(i_1, \cdots, i_q)$ given as input. If so, there must exist at least one index $\ell$ such that $\pi'_\ell \neq \pi_2(i_\ell) = \pi_\ell$. Since such an index is chosen with probability $\frac{1}{q}$, we have that $V'$ must reject with probability at least $\frac{\alpha}{q}$. This completes the proof. 
+As for soundness, suppose  at least $\alpha$ fraction of the predicates $V_{x,R}$ reject in respect to some proof string $\pi$. Each one of the predicates contained in this fraction must fail the check at Step $4$ if $\pi' = \pi_1(i_1, \cdots, i_q) = (\pi_{i_1},\cdots,\pi_{i_q})$. However, $\pi_1$ does not have to respect this rule for any $q$-tuple of queries $(i_1, \cdots, i_q)$ given as input. If so, there must exist at least one index $\ell$ such that $\pi'_\ell \neq \pi_2(i_\ell) = \pi_\ell$. Since such an index is chosen with probability $\frac{1}{q}$, we have that $V'$ must reject with probability at least $\frac{\alpha}{q}$. This completes the proof.
 \end{proof}
 
 
 %
 Raz's Parallel Repetition Theorem constructed a verifier which allowed the soundness constant to drop exponentially with the cost of bloating the alphabet size:
-\begin{theorem} (Raz's Parallel Repetition Theorem \ref{raz1998parallel}) \label{razparallelrep}
+\begin{theorem} (Raz's Parallel Repetition Theorem \cite{raz1998parallel}) \label{razparallelrep}
   For all $s \in (0,1)$, there exists $c_s \in (0,s)$ such that:
     \[ \PCP^{\Sigma}_{s,1}(r,2) \subseteq \PCP^{\Sigma^t}_{c_s^t,1}(rt,2)  \]
 \end{theorem}

@@ -1,6 +1,6 @@
 \section{UG-hardness of MAXCUT}
 \subsection{Intuitions}
-Recall that the keen insight behind H\aa stad's 3-bit PCP for $\NP$ is the embedding of a dictatorship test within a Label Cover instance. In a similar spirit, the proof for the optimality of the Goemans-Williamson algorithm will hinge on crafting a clever dictatorship test embedded within a $\MaxCut$ instance. By composing this test with
+Recall that the keen insight behind H\aa stad's 3-bit PCP for $\NP$ is the embedding of a dictatorship test within a Label Cover instance. In a similar spirit, the proof for the optimality of the Goemans-Williamson algorithm will hinge on crafting a clever dictatorship test embedded within a $\MaxCut$ instance. For the sake of posterity, we first introduce the Goemans-Williamson algorithm.
 
 \subsection{Goemans-Williamson Algorithm for $\MaxCut$} \label{goemans}
  Example \ref{maxcutexample} presented an LP-based approximation algorithm for $\MaxCut$. Goemans and Williamson \cite{goemans1995improved} designed an SDP to give an $\alpha_{GW}$-approximation algorithm for $\MaxCut$ where:
@@ -9,22 +9,39 @@ Recall that the keen insight behind H\aa stad's 3-bit PCP for $\NP$ is the embed
   \alpha_{GW} = \min_{-1 \leq \rho \leq 1} \frac{2}{\pi}\frac{\cos^{-1}(\rho)}{1 - \rho} \approx 0.87856
 \end{equation}
 
-To begin, a semi-definite program is a generalization of a linear program where instead of optimizing over a vector of variables $\vec{x}$, the program considers a positive semi-definite matrix of variables i.e a matrix whose eigenvalues are non-negative. An equivalent formulation considers inner products between pairs of vectors:
+To begin, a semi-definite program is a generalization of a linear program where instead of optimizing over a vector of variables $\vec{x}$, the program considers a positive semi-definite matrix of variables i.e a matrix whose eigenvalues are non-negative.
+%
+\begin{definition}
+  A \emph{semi-definite program} is an optimization problem of the following form: let $C, A^{(1)}, \cdots, A^{(m)} \in \mathbb{R}^{n \times n}$ be $n \times n$ real-valued matrices and $b^{(1)}, \cdots, b^{(m)} \in \mathbb{R}$ be scalars. The objective is to find a positive semi-definite matrix $X \in \mathbb{R}^{n \times n}$ such that:
+  %
+  \begin{align*}
+     \max & \; C \odot X \\
+    \text{ under constraints } & A^{(k)} \odot X \leq b_k \\
+      & \forall k \in [m]
+  \end{align*}
+where $\odot$ denotes the Schur product or entry-wise product:
 
+\[ A \odot B = \sum_{1 \leq i,j \leq n} A_{ij}B_{ij} \quad A,B \in \mathbb{R}^{n\times n} \]
+\end{definition}
+%
+An equivalent formulation considers inner products between pairs of real-valued vectors:
+%
 \begin{align*}
-     \max & \sum_{i,j} c_{ij}\langle v_i, v_j \rangle \\
-     \text{ under constraints }& a_{ij}^k\langle v_i, v_j \rangle \leq b_{ij}^k \\
-     v_1, \cdots v_n \in \mathbb{R}, \quad & k \in [C] \text{ constraints }
+     \max  & \sum_{i,j} c_{ij}\langle v_i, v_j \rangle \\
+     \text{ under constraints }& a_{ij}^{(k)}\langle v_i, v_j \rangle \leq b^{(k)} \\
+     v_1, \cdots v_n \in \mathbb{R}^n, \quad & \forall k \in [m]
 \end{align*}
 
-Note that this form also subsumes quadratic programming by setting $c_{ij} = a_{ij}^k = b_{ij}^k = 0$ for all $i \neq j$ and $k \in [C]$. The Goemans-Williamson algorithm concerns the solution to the semi-definite program given some graph $G = (V,E)$: \newline
+Note that this form also subsumes quadratic programming by setting $c_{ij} = a_{ij}^k = b_{ij}^k = 0$ for all $i \neq j$ and $k \in [m]$. \newline
+
+The Goemans-Williamson algorithm concerns the solution to the semi-definite program given some undirected graph $G = (V,E)$: \newline
 %
-\begin{align}
+\begin{align*}
   & \max \sum_{i,j} \frac{1 - \langle v_i, v_j \rangle}{2} \\
   & \langle v_i, v_i \rangle = 1 \text{ for all } i \in V
-\end{align}
+\end{align*}
 
-Let us first show that indeed the program is a relaxation of the integer program crafted in Example \ref{maxcutexample}. Indeed, if we set any unit vector $\vec{u}$ such that for a cut defined by $(S,\bar{S})$:
+Let us first show that the program is a relaxation of the integer program crafted in Example \ref{maxcutexample}. Indeed, if we set any unit vector $\vec{u}$ such that for a cut defined by $(S,\bar{S})$:
 %
 \begin{align*}
   \vec{v_i} = \begin{cases}
@@ -37,7 +54,7 @@ A direct calculation yields that the term $\frac{1 - \langle v_i, v_j \rangle}{2
 %
  \[\mathsf{Opt}_{GW}(G) \geq \MaxCut(G)\]
 
-So far the semi-definite program appears to be rather simple. The insight made by Goemans and Williamson lies in the rounding procedure of the solution outputted by the program. The procedure proceeds by first drawing a random hyperplane passing through the origin and taking the two partitions of the cut $S_+, S_-$ to be the solution $v_i$ which lie on positive and negative sides of the hyperplane respectively. We can calculate the expected size of the cut:
+So far the semi-definite program appears to be rather simple. The insight made by Goemans and Williamson lies in the rounding procedure of the solution outputted by the program. The procedure proceeds by first drawing a random hyperplane passing through the origin and then taking the partitions of the cut $S_+, S_-$ to be the solutions $v_i$ which lie on positive and negative sides of the hyperplane respectively. We can express the expected size of the cut:
 %
 \begin{align*}
 \mathbb{E}[|E(S_+,S_-)|] = \sum_{(i,j) \in E} \mathbb{P}[v_i,v_j \text{ lie on different sides of the hyperplane}]
@@ -51,11 +68,11 @@ By definition of the dot product:
 
 \[\frac{1 - \langle v_i, v_j \rangle}{2} =  \frac{1 - \cos(\theta_{ij})}{2} \]
 
-and the magical inequality:
+and by virtue of the magical inequality:
 
 \[ \frac{\theta_{ij}}{\pi} \geq \alpha_{GW} \cdot \frac{1 - \cos(\theta_{ij})}{2}\]
 
-the two can be combined to yield that:
+by taking the sum over all edges over both sides, the two can be combined to yield that:
 
 \begin{equation}
   \frac{\mathbb{E}[|E(S_+,S_-)|]}{\mathsf{Opt}_{GW}(f)} \geq \alpha_{GW}
@@ -94,13 +111,13 @@ Onwards to the proof of Theorem \ref{maxcutughard}. We first reason about the re
   First assume that for some $\delta > 0$ and all $m$, there exists a polynomial-time reduction from $\GapDeltaULC$ to $\mathsf{Gap}_{\alpha,\beta}\mathsf{MaxCut}$. Let $G=(V,E), \mathcal{C}$ be the graph outputted by reduction and the cut outputted by the cut approximation algorithm. Construct a PCP samples two vertices from $v_1, v_2 \sim V$ by querying the proof tape encoding $G,\mathcal{C}$ and outputs ``accept" if $(v_1,v_2) \in \mathcal{C}$. The completeness and soundness parameters immediately follow from definition of $\mathsf{Gap}_{\alpha,\beta}\mathsf{MaxCut}$. Conversely, assume the existence of a 2-query PCP for $\GapDeltaULC$ with the above properties. We will calculate the acceptance probabilities of this PCP given a proof string and an input instance by finding the max cut. Let the vertices be the proof locations of the input proof string $\pi$. It suffices to draw an edge between two vertices weighted by the probability their corresponding proof locations are queried and accepted by the verifier.
 \end{proof}
 
-Thus, we can proceed by constructing a 2-query PCP for $\GapDeltaULC$ with the completeness $\frac{1-\rho}{2} - \epsilon$ and soundness $\GWConstant + \epsilon$. As with H\aa stad's 3-bit PCP, we aim to construct a dictatorship test which generates the parameters needed. Once again, a proof string $\pi$ containing an assignment of labels to the vertices of a $\ULC$ instance would be encoded into a truth table of a dictator i.e into a \emph{long code}. \newline
+Thus, we can proceed by constructing a 2-query PCP for $\GapDeltaULC$ with the completeness $\frac{1-\rho}{2} - \epsilon$ and soundness $\GWConstant + \epsilon$. As with H\aa stad's 3-bit PCP, we aim to construct a dictatorship test which generates the parameters needed. Once again, an assignment of labels to the vertices of a $\ULC$ instance would be encoded into a truth table of a dictator i.e into a \emph{long code}. \newline
 
 %
 %
 %
 \subsection{Dictatorship Testing and Majority is the Stablest (MIS)}
-A key difference between dictatorship test crafted in H\aa stad's 3-bit PCP for $\NP$ and the one will aim to utilize here is the number of queries the PCP can make. Namely, the reduction here can only use \emph{two} queries to the proof rather than the three queries afforded to H\aa satd's verifier. The dictatorship test we will focus on for this reduction utilizes only two queries to the functions: given input boolean function $f:\{-1,1\}^n \rightarrow \{-1,1\}$ and $\rho \in (-1,0)$:
+A key difference between the dictatorship test crafted in H\aa stad's 3-bit PCP for $\NP$ and the one we aim to devise here is the number of queries the verifier can make. The verifier here can only use \emph{two} queries to the proof rather than the three queries afforded to H\aa satd's verifier. The dictatorship test we will focus on for this reduction utilizes only two queries to the functions: given input boolean function $f:\{-1,1\}^n \rightarrow \{-1,1\}$ and $\rho \in (-1,0)$:
 
 \begin{enumerate}
   \item Sample $x \sim \{-1,1\}^n$
@@ -166,7 +183,7 @@ We can now reason about acceptance probability in the context of several classes
   \item Majority functions passes the test with probability approaching in the limit $\frac{\cos^{-1}(\rho)}{\pi}$.
 \end{itemize}
 
-What the MIS Theorem roughly tells us is that functions with no ``notable" coordinates, i.e all coordinates have small influence, can pass the test with probability at most $\frac{\cos^{-1}(\rho)}{\pi}$. The proof of the soundness of our verifier will exploit the observation that functions with a sufficiently large $i^{th }$ influence for some coordinate $i$ will be ``close enough" to a dictator. This property will be used to extract a labeling to the $\mathsf{UniqueLC}(m)$ instance satisfying a large fraction of constraints.
+What the MIS Theorem roughly tells us is that functions with no ``notable" coordinates, i.e all coordinates have small influence, can pass the test with probability at most $\frac{\cos^{-1}(\rho)}{\pi}$. The proof of the soundness of our verifier will exploit the observation that functions with a sufficiently large $i^{th }$ influence for some coordinate $i$ will be ``close enough" to a dictator. This property will be used to extract a labeling to the $\mathsf{UniqueLC}(m)$ instance satisfying a large fraction of constraints. \newline
 
 For the analysis of constructed PCP verifier, a generalization of the MIS theorem will serve our purposes:
 

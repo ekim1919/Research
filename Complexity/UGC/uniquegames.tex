@@ -31,11 +31,11 @@ In addition, Khot formulated the \emph{Unique Games Conjecture} and utilized it 
 \end{conjecture}
 
 \begin{remark}
-  The $1-\delta$ constant is crucial to the validity of the conjecture. For an instance of $\mathsf{UniqueLC}(m)$ for any $m$ with a guaranteed solution, there exists a polynomial-time algorithm finding an assignment which satisfies all projection constraints: Start with a vertex and set it to a label. If it is an endpoint of an edge $e$, follow $e$ to the other side and find a label which satisfies as many neighbors as possible. Repeat in a breadth-first search fashion. In virtue of the projection maps being permutations, this amounts to searching for the guaranteed solution in time $O(mn^2)$.
+  The $1-\delta$ constant is crucial to the validity of the conjecture. For an instance of $\mathsf{UniqueLC}(m)$ for any $m$ with a \emph{guaranteed} solution, there exists a polynomial-time algorithm finding an assignment which satisfies all projection constraints: First, start with a vertex and set it to a label. If the vertex is an endpoint of an edge $e$, follow $e$ to the other side and find a label which satisfies as many neighbors as possible. Repeat in a breadth-first search fashion. In virtue of the projection maps being permutations, this amounts to searching for the guaranteed solution in time $O(mn^2)$.
 \end{remark}
 
 \begin{example}
-  The $\mathsf{MaxCut}$ problem for an input graph $G = (V,E)$ can be cast as a $\mathsf{UniqueLC}(|V|)$ instance. The two partitions of the bipartite graph $A,B$ will be indexed by the vertices $V$. Draw an edge between two vertices $v_1,v_2$ if $(v_1,v_2) \in E$. Set the alphabet to be $\Sigma =\{-1,1\}$ and the projection maps simply be the ``swap" map $-1 \mapsto 1, 1 \mapsto -1$.
+  The $\mathsf{MaxCut}$ problem for an input graph $G = (V,E)$ can be cast as a $\mathsf{UniqueLC}(|V|)$ instance. The two partitions of the bipartite graph $A,B$ will be indexed by the vertices $V$. Draw an edge between two vertices $v_1,v_2$ if $(v_1,v_2) \in E$. Set the alphabet to be $\Sigma =\{-1,1\}$ and the projection maps to be the ``swap" map $-1 \mapsto 1, 1 \mapsto -1$.
 \end{example}
 
 \begin{example}
@@ -49,14 +49,14 @@ In addition, Khot formulated the \emph{Unique Games Conjecture} and utilized it 
     \end{alignedat}
   \end{equation*}
 
-  An instance of this problem can also be translated as an instance of $\mathsf{UniqueLC}(m)$.
+  An instance of this problem can also be translated as an instance of $\mathsf{UniqueLC}(p)$.
 \end{example}
 
 \begin{definition}
-  A promise problem $P$ is said to be \emph{$\UG$-hard} if there is some constant $\delta > 0$ such that for all $m \in \mathbb{N}$, there exists a polynomial-time reduction $f$ from $\GapDeltaULC$ to $P$, in the sense that for a $\GapDeltaULC$ instance $\I$:
+  A promise problem $P$ is said to be \emph{$\UG$-hard} if there is some constant $\delta > 0$ such that for all $m \in \mathbb{N}$, there exists a polynomial-time reduction $f$ from $\GapDeltaULC$ to $P$, in the sense that for a $\GapDeltaULC$ instance $\mathcal{U}$:
   \begin{align*}
-    \mathsf{Opt}(\I)  \geq 1 - \delta & \implies f(x) \in \mathsf{Yes} \\
-    \mathsf{Opt}(\I)  < \delta & \implies f(x) \in \mathsf{No}
+    \mathsf{Opt}(\mathcal{U})  \geq 1 - \delta & \implies f(\mathcal{U}) \in \mathsf{Yes} \\
+    \mathsf{Opt}(\mathcal{U})  < \delta & \implies f(\mathcal{U}) \in \mathsf{No}
   \end{align*}
 \end{definition}
 
