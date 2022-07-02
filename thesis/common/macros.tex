@@ -152,7 +152,7 @@
 
 % RW lock implementations
 \mkkw{\pft}{PF-T}   % simple PF RW lock
-\mkkw{\pfc}{PF-C}   % compact PF RW lock 
+\mkkw{\pfc}{PF-C}   % compact PF RW lock
 \mkkw{\pfq}{PF-Q}  % queue PF RW lock
 \mkkw{\rwlin}{LX-RW}
 \mkkw{\tft}{TF-T}
@@ -240,7 +240,12 @@
 
 \newcommand{\pacc}[0]{\var{pacc}}
 \newcommand{\wratio}[0]{\var{wratio}}
+\newcommand{\boldi}{{\bf i}}
+\newcommand{\boldj}{{\bf j}}
+\newcommand{\boldd}{{\bf d}}
+\newcommand{\boldx}{{\bf x}}
 
+\newcommand{\tbundle}{\texttt{TransformBundle}}
 % special footnotes
 
 % from http://help-csli.stanford.edu/tex/latex-footnotes.shtml
@@ -249,13 +254,13 @@
 
 % Theorems, etc.
 
-\newtheoremstyle{mylemthm}% hnamei 
-        {6pt}% hSpace abovei 
-        {3pt}% hSpace belowi 
-        {\slshape}% hBody fonti 
+\newtheoremstyle{mylemthm}% hnamei
+        {6pt}% hSpace abovei
+        {3pt}% hSpace belowi
+        {\slshape}% hBody fonti
         {}% hIndent amounti1
-        {\bfseries}% hTheorem head fonti 
-        {.}% hPunctuation after theorem headi 
+        {\bfseries}% hTheorem head fonti
+        {.}% hPunctuation after theorem headi
         {.5em}% hSpace after theorem headi2
         {}% hTheorem head spec (can be left empty, meaning `normal')i
 
@@ -266,13 +271,13 @@
 
 %\theoremstyle{definition}
 
-\newtheoremstyle{mydef}% hnamei 
-        {3pt}% hSpace abovei 
-        {3pt}% hSpace belowi 
-        {\normalfont}% hBody fonti 
+\newtheoremstyle{mydef}% hnamei
+        {3pt}% hSpace abovei
+        {3pt}% hSpace belowi
+        {\normalfont}% hBody fonti
         {}% hIndent amounti1
-        {\bfseries}% hTheorem head fonti 
-        {.}% hPunctuation after theorem headi 
+        {\bfseries}% hTheorem head fonti
+        {.}% hPunctuation after theorem headi
         {.5em}% hSpace after theorem headi2
         {\thmname{#1} \thmnumber{#2}\thmnote{#3}}% hTheorem head spec (can be left empty, meaning `normal')i
 

@@ -1,0 +1,77 @@
+\subsection{The Static Algorithm}
+\label{sec:static}
+
+We will end with an outline of the static algorithm first investigated in works \cite{dang2012reachability, dreossi2016parallelotope}. As mentioned in the previous section, the building block of the reachability algorithm relies on approximate solutions to a non-linear optimization problem over the unitbox domain. Consider a nonlinear function $h : \reals^n \rightarrow \reals$. The most general form of this optimization problem can be expressed as:
+%
+\begin{eqnarray}
+  \max ~ h(x) \label{eq:maxsup}\\
+  s.t. ~~ x \in [0,1]^{n}.\nonumber
+\end{eqnarray}
+
+In the static algorithm, the user manually specifies the number of parallelotopes and a set of static directions for each parallelotope. In other words, the user must specify the template matrix $\Lambda$ and its corresponding offset vector $c$ for each parallelotope $P = \langle \Lambda, c\rangle$ contained in the bundle \emph{before} the computation begins.
+
+We now proceed to formally describe the static algorithm. First, the parallelotope bundle $Q$ is specified as a collection of $m$ template directions $\Lambda^{Q} \in \reals^{m \times n} \; (m > n)$ and the set of constraints that define each of the member parallelotope.
+
+Another input to the algorithm is the initial set, given as a parallelotope $P_0$. When the initial set is a box, $P_0$ consists has axis-aligned template directions.
+
+The output of the algorithm is, for each step $k$, the set $\overline\Theta_k$, which is an overapproximation of the reachable set at step $k$, $\Theta_k \subseteq \overline\Theta_k$.
+
+The high-level pseudo-code is written in Algorithm~\ref{alg:old}.
+%
+The algorithm simply calls \tbundle for each step, producing a new parallelotope bundle computed from the previous step's bundle.
+%
+To compute the image of $Q$, the algorithm computes the upper and lower bounds of $f(x)$ with respect to each template direction.
+%
+Since computing the maximum value of $f(x)$ along each template direction on $Q$ is computationally difficult, the algorithm instead computes the maximum value over each of the constituent parallelotopes and uses the minimum of all these maximum values.
+%
+The \tbundle operation works as follows.
+%
+Consider a parallelotope $P$ in the bundle $Q$.
+%
+From the definition, it follows that $Q \subseteq P$.
+%
+% and half-space representation as $\tup{\T, c_{l}, c_{u}$.
+Given a template direction $\Lambda_i$, the maximum value of $\Lambda_{i} f(x)$ for all $x \in Q$ is less than or equal to the maximum value of $\Lambda_{i} f(x)$ for all $x \in P$.
+%
+Similar argument holds for the minimum value of $T_{i} f(x)$ for all $x \in Q$.
+%
+% We would like to compute the image of the parallelotope $P$ with respect to the nonlinear transformation $f(x)$.
+%
+% That is, we would like to compute $P'$ such that $\forall x \in P, f(x) \in P'$.
+%
+% Given that current techniques use static template directions, the parallelotope $P'$ also uses the template directions $\T^{P}$.
+%
+To compute the upper and lower bounds of each template direction $\Lambda_{i} f(x)$, for all $x \in P$, we perform the following optimization.
+%
+\begin{eqnarray}
+  \max ~ \Lambda_i^{P} \cdot f(x) \label{eq:maxf}\\
+  s.t. ~~ x \in P.\nonumber
+\end{eqnarray}
+
+Given that $P$ is a parallelotope, all the states in $P$ can be expressed as a vector summation of anchor and scaled generators.
+%
+Let  $\langle v, g_1, \cdots, g_n \rangle$ be the generator representation of $P$.
+%
+The optimization problem given in Equation~\ref{eq:maxf} would then transform as follows.
+
+\begin{eqnarray}
+  \max ~ \Lambda_i \cdot f(a + \Sigma_{i=1}^{n} \alpha_i g_i) \label{eq:maxalpha}\\
+  s.t. ~~ \overline\alpha \in [0,1]^{n}.\nonumber
+\end{eqnarray}
+
+Equation~\ref{eq:maxalpha} is a form of $\mathsf{optBox(\Lambda_{i} \cdot f)}$ over $[0,1]^n$.
+%
+One can compute an upper-bound to the constrained nonlinear optimization by invoking one of the Bernstein polynomial or interval-arithmetic-based methods.
+%
+Similarly, we compute the lowerbound of $\Lambda_{i}f(x)$ for all $x \in P$ by computing the upperbound of $-1 \times \Lambda_{i}f(x)$.
+%
+
+We iterate this process (i.e., computing the upper and lower bound of $T_{i}f(x)$) for each parallelotope in the bundle $Q$.
+%
+% Observe that the role of the parallelotopes in the bundle is to compute an upper bound on the maximum value of $T_{i}f(x)$ by expanding the domain from $Q$ to the corresponding parallelotope $P$.
+%
+Therefore, the tightest upper bound on $T_{i}f(x)$ over $Q$ is the least of the upper bounds computed from each of the parallelotopes.
+%
+A similar argument holds for lower bounds of $T_{i}f(x)$ over $Q$.
+%
+Therefore, the image of the bundle $Q$ will be the bundle $Q'$ where the upper and lower bounds for templates directions are obtained by solving several constrained nonlinear optimization problems.
