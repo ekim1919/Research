@@ -1,0 +1,68 @@
+\documentclass[11pt,letterpaper,twoside]{report}
+
+% Layout
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage[subfigure]{tocloft}
+
+% Citation style
+\usepackage{natbib}
+\usepackage{apalike}
+
+% include citations inline
+\usepackage{bibentry}
+\nobibliography*
+
+% Figures
+\usepackage{subfigure}
+\usepackage{epsfig}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{listings}
+
+% Math
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Typography
+\usepackage{times}
+\usepackage{microtype}
+\usepackage{textcomp}
+
+% Macro support
+\usepackage{xspace}
+
+\usepackage[boxed,linesnumbered,lined,commentsnumbered]{algorithm2e}
+\usepackage{tikz}
+
+% PDF links
+\usepackage[hidelinks]{hyperref} % backref=page
+
+\newcommand{\thesistitle}{Automatic Dynamic Parallelotope Bundles for Reachability of Nonlinear Dynamical Systems}
+
+\newcommand{\Real}{{\operatorname{\texttt{Real}}}}
+\newcommand{\Bool}{{\operatorname{\texttt{Bool}}}}
+\newcommand{\Char}{{\operatorname{\texttt{Char}}}}
+\newcommand{\ioaInt}{{\operatorname{\texttt{Int}}}}
+\newcommand{\ioaNat}{{\operatorname{\texttt{Nat}}}}
+\newcommand{\ioaAugR}{{\operatorname{\texttt{AugmentedReal}}}}
+\newcommand{\ioaString}{{\operatorname{\texttt{String}}}}
+\newcommand{\Discrete}{{\operatorname{\texttt{Discrete}}}}
+
+\newcommand{\reals}{{\mathbb{R}}}                    %reals
+\newcommand{\nnreals}{{\nnnum R}}                    %nonnegative reals
+\newcommand{\realsinfty}{{\num R} \cup \{\infty, -\infty\}}                    %nonnegative reals
+\newcommand{\plreals}{{\plnum R}}                    %positive reals
+\newcommand{\naturals}{{\num N}}                      %natural numbers
+\newcommand{\integers}{{\num Z}}                      %integers
+\newcommand{\rationals}{{\num Q}}                      %rationals
+\newcommand{\nnrationals}{{\nnnum Q}}                   % nonnegative rationals
+\newcommand{\Time}{{\num T}}
+\newcommand{\bools}{{\num B}}
+\newcommand{\plintegers}{{\plnum Z}}                      %integers
+
+\input{common/layout}
+
+\input{common/macros}

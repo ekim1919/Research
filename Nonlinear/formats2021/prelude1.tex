@@ -24,22 +24,22 @@
 \newcommand{\Variables}{{\sf V}}                %variables
 
 \newcommand{\num}[1]{\relax\ifmmode \mathbb #1\else $\mathbb #1$\fi}
-\newcommand{\nnnum}[1]{\relax\ifmmode 
+\newcommand{\nnnum}[1]{\relax\ifmmode
   {\mathbb #1}_{\geq 0} \else ${\mathbb #1}_{\geq 0}$
   \fi}
-\newcommand{\npnum}[1]{\relax\ifmmode 
+\newcommand{\npnum}[1]{\relax\ifmmode
   {\mathbb #1}_{\leq 0} \else ${\mathbb #1}_{\leq 0}$
   \fi}
-\newcommand{\pnum}[1]{\relax\ifmmode 
+\newcommand{\pnum}[1]{\relax\ifmmode
   {\mathbb #1}_{> 0} \else ${\mathbb #1}_{> 0}$
   \fi}
-\newcommand{\nnum}[1]{\relax\ifmmode 
+\newcommand{\nnum}[1]{\relax\ifmmode
   {\mathbb #1}_{< 0} \else ${\mathbb #1}_{< 0}$
   \fi}
-\newcommand{\plnum}[1]{\relax\ifmmode 
+\newcommand{\plnum}[1]{\relax\ifmmode
   {\mathbb #1}_{+} \else ${\mathbb #1}_{+}$
   \fi}
-\newcommand{\nenum}[1]{\relax\ifmmode 
+\newcommand{\nenum}[1]{\relax\ifmmode
   {\mathbb #1}_{-} \else ${\mathbb #1}_{-}$
   \fi}
 
@@ -51,34 +51,34 @@
 \newcommand{\integers}{{\num Z}}                      %integers
 \newcommand{\rationals}{{\num Q}}                      %rationals
 \newcommand{\nnrationals}{{\nnnum Q}}                   % nonnegative rationals
-\newcommand{\Time}{{\num T}}  
-\newcommand{\bools}{{\num B}}  
+\newcommand{\Time}{{\num T}}
+\newcommand{\bools}{{\num B}}
 \newcommand{\plintegers}{{\plnum Z}}                      %integers
 
 % EXECUTIONS TRACES and FRAGS
-\newcommand{\extb}[1]{\relax\ifmmode {\sf ExtBeh}_{#1} \else ${\sf ExtBeh}_{#1}$\fi} 
-\newcommand{\tdists}[1]{\relax\ifmmode {\sf Tdists}_{#1} \else ${\sf Tdists}_{#1}$\fi} 
+\newcommand{\extb}[1]{\relax\ifmmode {\sf ExtBeh}_{#1} \else ${\sf ExtBeh}_{#1}$\fi}
+\newcommand{\tdists}[1]{\relax\ifmmode {\sf Tdists}_{#1} \else ${\sf Tdists}_{#1}$\fi}
 
-\newcommand{\exec}[1]{\relax\ifmmode {\sf Execs}_{#1} \else ${\sf Exec}_{#1}$\fi} 
-\newcommand{\execf}[1]{\relax\ifmmode {\sf Execs}^*_{#1} \else ${\sf Exec}^*_{#1}$\fi} 
-\newcommand{\execi}[1]{\relax\ifmmode {\sf Execs}^\omega_{#1} \else ${\sf Exec}^\omega_{#1}$\fi} 
+\newcommand{\exec}[1]{\relax\ifmmode {\sf Execs}_{#1} \else ${\sf Exec}_{#1}$\fi}
+\newcommand{\execf}[1]{\relax\ifmmode {\sf Execs}^*_{#1} \else ${\sf Exec}^*_{#1}$\fi}
+\newcommand{\execi}[1]{\relax\ifmmode {\sf Execs}^\omega_{#1} \else ${\sf Exec}^\omega_{#1}$\fi}
 
-\newcommand{\ctrace}[1]{\relax\ifmmode {\sf Ctraces}_{#1} \else ${\sf Ctraces}_{#1}$\fi} 
+\newcommand{\ctrace}[1]{\relax\ifmmode {\sf Ctraces}_{#1} \else ${\sf Ctraces}_{#1}$\fi}
 
-\newcommand{\trace}[1]{\relax\ifmmode {\sf Traces}_{#1} \else ${\sf Traces}_{#1}$\fi} 
-\newcommand{\tracef}[1]{\relax\ifmmode {\sf Traces}^*_{#1} \else ${\sf Traces}^*_{#1}$\fi} 
-\newcommand{\tracei}[1]{\relax\ifmmode {\sf Traces}^\omega_{#1} \else ${\sf Traces}^\omega_{#1}$\fi} 
+\newcommand{\trace}[1]{\relax\ifmmode {\sf Traces}_{#1} \else ${\sf Traces}_{#1}$\fi}
+\newcommand{\tracef}[1]{\relax\ifmmode {\sf Traces}^*_{#1} \else ${\sf Traces}^*_{#1}$\fi}
+\newcommand{\tracei}[1]{\relax\ifmmode {\sf Traces}^\omega_{#1} \else ${\sf Traces}^\omega_{#1}$\fi}
 
-\newcommand{\frag}[1]{\relax\ifmmode {\sf Frags}_{#1} \else ${\sf Frags}_{#1}$\fi} 
-\newcommand{\fragf}[1]{\relax\ifmmode {\sf Frags}^*_{#1} \else ${\sf Frags}^*_{#1}$\fi} 
-\newcommand{\fragi}[1]{\relax\ifmmode {\sf Frags}^\omega_{#1} \else ${\sf Frags}^\omega_{#1}$\fi} 
+\newcommand{\frag}[1]{\relax\ifmmode {\sf Frags}_{#1} \else ${\sf Frags}_{#1}$\fi}
+\newcommand{\fragf}[1]{\relax\ifmmode {\sf Frags}^*_{#1} \else ${\sf Frags}^*_{#1}$\fi}
+\newcommand{\fragi}[1]{\relax\ifmmode {\sf Frags}^\omega_{#1} \else ${\sf Frags}^\omega_{#1}$\fi}
 
-\newcommand{\reach}[1]{\relax\ifmmode {\sf Reach}_{#1} \else ${\sf Reach}_{#1}$\fi} 
-\newcommand{\pair}[2]{\relax\ifmmode \langle #1, #2 \rangle \else $\langle #1, #2 \rangle$\fi} 
+\newcommand{\reach}[1]{\relax\ifmmode {\sf Reach}_{#1} \else ${\sf Reach}_{#1}$\fi}
+\newcommand{\pair}[2]{\relax\ifmmode \langle #1, #2 \rangle \else $\langle #1, #2 \rangle$\fi}
 
-\newcommand{\TE}{\relax\ifmmode \mathit{Time} \else $\mathit{Time}$ \fi} 
-\newcommand{\EQ}{\relax\ifmmode \mathit{Enq} \else $\mathit{Enq}$ \fi} 
-\newcommand{\DQ}{\relax\ifmmode \mathit{Deq} \else $\mathit{DeqTime}$ \fi} 
+\newcommand{\TE}{\relax\ifmmode \mathit{Time} \else $\mathit{Time}$ \fi}
+\newcommand{\EQ}{\relax\ifmmode \mathit{Enq} \else $\mathit{Enq}$ \fi}
+\newcommand{\DQ}{\relax\ifmmode \mathit{Deq} \else $\mathit{DeqTime}$ \fi}
 \newcommand{\E}{\relax\ifmmode \mathsf{E} \else $\mathsf{E}$ \fi}
 
 \newcommand{\loc}{\relax\ifmmode \mathit{loc} \else $\mathit{loc}$ \fi}
@@ -96,14 +96,14 @@
 \newcommand{\itraces}{{\tracei{}}}
 \newcommand{\ifragss}{{\fragi{}}}
 
-\newcommand{\fstate}{{\sf fstate}}  
-\newcommand{\lstate}{{\sf lstate}}  
-\newcommand{\ltime}{{\sf ltime}}  
-\newcommand{\dur}{{\sf dur}}  
+\newcommand{\fstate}{{\sf fstate}}
+\newcommand{\lstate}{{\sf lstate}}
+\newcommand{\ltime}{{\sf ltime}}
+\newcommand{\dur}{{\sf dur}}
 
-\newcommand{\mode}{{\sf mode}}  
+\newcommand{\mode}{{\sf mode}}
 
-\newcommand{\ftime}{{\sf ftime}}  
+\newcommand{\ftime}{{\sf ftime}}
 
 
 
@@ -112,7 +112,7 @@
 
 % \newcounter{theorem}
 % \setcounter{theorem}{0}
-% 
+%
 %  \newtheorem{theorem}{Theorem}
 %  \newtheorem{lemma}[theorem]{Lemma}
 %  \newtheorem{corollary}[theorem]{Corollary}
@@ -124,56 +124,56 @@
 %  \newenvironment{proof}{\pf}{\qed}
 %  \newtheorem{proposition}[theorem]{Proposition}
 % \newtheorem{inv}[theorem]{Invariant}
-  
+
 %    \newcounter{rem}
 %  \setcounter{rem}{0}
-%  
+%
 %   \newenvironment{remark}
 %   {\refstepcounter{rem} \vspace{2ex}\par\noindent
 %    \textbf{Remark}~\textbf{\therem~}}
- 
+
 % \newcounter{example}
 %  \setcounter{example}{0}
 
 %   \newtheorem{example}[example]{Example}
 %  \newcounter{example}
-  
+
 %  \newenvironment{example}
 %  {\refstepcounter{example} \vspace{2ex}\par\noindent
 %  \textbf{Example}~\textbf{\theexample~}}%{\qed}
 
 % \newexample{example}[example]{Example}
 
- 
+
 %\theoremstyle{remark}
 %\newcounter{example}
 % \newtheorem{example}{Example}[chapter]
 % {\refstepcounter{theorem} \vspace{2ex}\par\noindent
 % \textbf{Example}~\textbf{\theexampletheorem~}}{\qed}
- 
- 
+
+
  \def\examplenonum#1#2{
         \vspace{.15in}
         \noindent
         {\bf Example #1}{\em ~(continued)}{\bf .}
         {#2}{\qed}
         }
-% 
+%
 % \renewcommand{\theequation}{\thesection.\arabic{equation}}
 % \renewcommand{\thefigure}{\thesection.\arabic{figure}}
 % \renewcommand{\thetable}{\thesection.\arabic{table}}
 % \newcommand{\Section}[1]{\section{#1}%
 %    \setcounter{equation}{0}\setcounter{figure}{0}\setcounter{table}{0}%
 %    \setcounter{example}{0}}
-% 
+%
 % \newenvironment{anotation}[1][Nancy]{\begin{quote}\small[[[#1]]]}{\normalsize\end{quote}}
 % \newcommand{\ba}{\begin{anotation}}
 % \newcommand{\ea}{\end{anotation}}
-% 
+%
 % \newcommand{\bcb}{\chgbarbegin}
 % \newcommand{\ecb}{\chgbarend}
 % \chgbarwidth 1pt
-% 
+%
 % \newcommand{\dec}{\ensuremath{{:}}}
 % \newcommand{\eqdef}{\mathbin{::=}}
 % \newcommand{\I}{{\ensuremath{\cap}}}
@@ -238,9 +238,9 @@
 \newcommand{\anyrelation}{\lessgtr}
 
 % Transformation for ADT
-\newcommand{\SC}[2]{\relax\ifmmode {\tt Scount}(#1,#2) \else ${\tt Scount}(#1,#2)$\fi} 
-\newcommand{\SCM}[2]{\relax\ifmmode {\tt Smin}(#1,#2) \else ${\tt Smin}(#1,#2)$\fi} 
-\newcommand{\Aut}[1]{\relax\ifmmode {\tt Aut}(#1) \else ${\tt Aut}(#1)$\fi} 
+\newcommand{\SC}[2]{\relax\ifmmode {\tt Scount}(#1,#2) \else ${\tt Scount}(#1,#2)$\fi}
+\newcommand{\SCM}[2]{\relax\ifmmode {\tt Smin}(#1,#2) \else ${\tt Smin}(#1,#2)$\fi}
+\newcommand{\Aut}[1]{\relax\ifmmode {\tt Aut}(#1) \else ${\tt Aut}(#1)$\fi}
 
 \newcommand{\auto}[1]{{\operatorname{\mathsf{#1}}}}
 \newcommand{\act}[1]{{\operatorname{\mathsf{#1}}}}
@@ -337,20 +337,20 @@
 
 
 \newcommand{\remove}[1]{}
-\newcommand{\salg}[1]{\relax\ifmmode {\mathcal F}_{#1}\else ${\mathcal F}_{#1}$\fi} 
-\newcommand{\msp}[1]{\relax\ifmmode (#1, \salg{#1}) \else $(#1, \salg{#1})$\fi} 
-\newcommand{\msprod}[2]{\relax\ifmmode ( #1 \times #2, \salg{#1} \otimes \salg{#2}) \else $(#1 \times #2, \salg{#1} \otimes \salg{#2})$\fi} 
+\newcommand{\salg}[1]{\relax\ifmmode {\mathcal F}_{#1}\else ${\mathcal F}_{#1}$\fi}
+\newcommand{\msp}[1]{\relax\ifmmode (#1, \salg{#1}) \else $(#1, \salg{#1})$\fi}
+\newcommand{\msprod}[2]{\relax\ifmmode ( #1 \times #2, \salg{#1} \otimes \salg{#2}) \else $(#1 \times #2, \salg{#1} \otimes \salg{#2})$\fi}
 \newcommand{\dist}[1]{\relax\ifmmode {\mathcal P}\msp{#1}
-  \else ${\mathcal P}\msp{#1}$\fi} 
-\newcommand{\subdist}[1]{\relax\ifmmode {\mathcal S}{\mathcal P}\msp{#1} 
-  \else ${\mathcal S}{\mathcal P}\msp{#1}$\fi} 
+  \else ${\mathcal P}\msp{#1}$\fi}
+\newcommand{\subdist}[1]{\relax\ifmmode {\mathcal S}{\mathcal P}\msp{#1}
+  \else ${\mathcal S}{\mathcal P}\msp{#1}$\fi}
 \newcommand{\disc}[1]{\relax\ifmmode {\sf Disc}(#1)
-  \else ${\sf Disc}(#1)$\fi} 
+  \else ${\sf Disc}(#1)$\fi}
 
-\newcommand{\Trajeq}{\relax\ifmmode {\mathcal R}_\T \else ${\mathcal R}_\T$\fi} 
-\newcommand{\Acteq}{\relax\ifmmode {\mathcal R}_A \else ${\mathcal R}_A$\fi} 
-\newcommand{\noop}{\relax\ifmmode \lambda \else $\lambda$\fi} 
-\newcommand{\close}[1]{\relax\ifmmode \overline{#1} \else $\overline{#1}$\fi} 
+\newcommand{\Trajeq}{\relax\ifmmode {\mathcal R}_\T \else ${\mathcal R}_\T$\fi}
+\newcommand{\Acteq}{\relax\ifmmode {\mathcal R}_A \else ${\mathcal R}_A$\fi}
+\newcommand{\noop}{\relax\ifmmode \lambda \else $\lambda$\fi}
+\newcommand{\close}[1]{\relax\ifmmode \overline{#1} \else $\overline{#1}$\fi}
 
 \newcommand{\corrtasks}{\mathop{\mathsf {c}}}
 \newcommand{\full}{\mathop{\mathsf {full}}}
@@ -487,7 +487,7 @@
   moredelim=[il][\rm]{//},
   moredelim=[is][\sf \figuresize]{!}{!},
   moredelim=[is][\bf \figuresize]{*}{*},
-  keywords={automaton,and, 
+  keywords={automaton,and,
          choose,const,continue, components,
          discrete, do, derived,
          eff, external,else, elseif, evolve, end,each,
@@ -502,7 +502,7 @@
      trajectories,trajdef, transitions, that,then, type, types, to, tasks,
      variables, vocabulary, uni,
      when,where, with,while},
-  emph={set, seq, tuple, map, array, enumeration},   
+  emph={set, seq, tuple, map, array, enumeration},
    literate=
         {(}{{$($}}1
         {)}{{$)$}}1
@@ -593,7 +593,7 @@
         {\\gamma}{{$\gamma$}}1
         {\\ell}{{$\ell\ $}}1
         {--}{{$-\ $}}1
-        {\\TT}{{\hspace{1.5em}}}3        
+        {\\TT}{{\hspace{1.5em}}}3
       }
 
 \lstdefinelanguage{ioaNums}[]{ioa}
@@ -698,14 +698,14 @@
         {<}{{$<$}}1
         {>}{{$>$}}1
         {=}{{$=$}}1
-        {~}{{$\neg$}}1 
+        {~}{{$\neg$}}1
         {|}{{$\mid$}}1
         {'}{{$^\prime$}}1
         % LSL symbols (two characters)
         {\\A}{{$\forall$}}1 {\\E}{{$\exists$}}1
-        {\\/}{{$\vee$}}1 {/\\}{{$\wedge$}}1 
-        {=>}{{$\Rightarrow$}}1 
-        {->}{{$\rightarrow$}}1 
+        {\\/}{{$\vee$}}1 {/\\}{{$\wedge$}}1
+        {=>}{{$\Rightarrow$}}1
+        {->}{{$\rightarrow$}}1
         {<=}{{$\leq$}}1 {>=}{{$\geq$}}1 {~=}{{$\neq$}}1
         {\\U}{{$\cup$}}1 {\\I}{{$\cap$}}1
         {|-}{{$\vdash$}}1 {-|}{{$\dashv$}}1
@@ -713,7 +713,7 @@
         {||}{{$\|$}}1
 %       {\[\]}{{\[\,\]}}2 {\{\}}{{\{\,\}}}2
         % LSL symbols (three or more characters)
-        {<=>}{{$\Leftrightarrow$}}2 
+        {<=>}{{$\Leftrightarrow$}}2
         {<->}{{$\leftrightarrow$}}2
         {(+)}{{$\oplus$}}1
         {(-)}{{$\ominus$}}1
@@ -740,14 +740,14 @@
         {<}{{$<$}}1
         {>}{{$>$}}1
         {=}{{$=$}}1
-        {~}{{$\neg$}}1 
+        {~}{{$\neg$}}1
         {|}{{$\mid$}}1
         {'}{{$^\prime$}}1
         % LSL symbols (two characters)
         {\\A}{{$\forall$}}1 {\\E}{{$\exists$}}1
-        {\\/}{{$\vee$}}1 {/\\}{{$\wedge$}}1 
-        {=>}{{$\Rightarrow$}}1 
-        {->}{{$\rightarrow$}}1 
+        {\\/}{{$\vee$}}1 {/\\}{{$\wedge$}}1
+        {=>}{{$\Rightarrow$}}1
+        {->}{{$\rightarrow$}}1
         {<=}{{$\leq$}}1 {>=}{{$\geq$}}1 {~=}{{$\neq$}}1
         {\\U}{{$\cup$}}1 {\\I}{{$\cap$}}1
         {|-}{{$\vdash$}}1 {-|}{{$\dashv$}}1
@@ -755,7 +755,7 @@
         {||}{{$\|$}}1
 %       {\[\]}{{\[\,\]}}2 {\{\}}{{\{\,\}}}2
         % LSL symbols (three or more characters)
-        {<=>}{{$\Leftrightarrow$}}2 
+        {<=>}{{$\Leftrightarrow$}}2
         {<->}{{$\leftrightarrow$}}2
         {(+)}{{$\oplus$}}1
         {(-)}{{$\ominus$}}1
@@ -893,11 +893,11 @@ $\mathord{\mathcode`-="702D\it #1\mathcode`\-="2200}$\fi}
 
 %\newcommand{\domain}[1]{{\it dom}(#1)} % domain
 
-% KEYWORDS 
-\newcommand{\kw}[1]{{\bf #1}} 
-\newcommand{\tcon}[1]{{\tt #1}} 
-\newcommand{\syn}[1]{{\tt #1}} 
-\newcommand{\pvskw}[1]{{\sc #1}} 
+% KEYWORDS
+\newcommand{\kw}[1]{{\bf #1}}
+\newcommand{\tcon}[1]{{\tt #1}}
+\newcommand{\syn}[1]{{\tt #1}}
+\newcommand{\pvskw}[1]{{\sc #1}}
 \newcommand{\pvsid}[1]{{\operatorname{\mathit{#1}}}}
 
 
@@ -927,7 +927,7 @@ $\mathord{\mathcode`-="702D\it #1\mathcode`\-="2200}$\fi}
 \newcommand{\Arrow}[1]{\mathrel{\stackrel{#1}{\Longrightarrow}}}
 
 
-\newcommand{\und}{{\tt U}} 
+\newcommand{\und}{{\tt U}}
 % AUTOMATA
 %\def\A{{\cal A}}
 %\def\B{{\cal B}}
@@ -954,7 +954,7 @@ $\mathord{\mathcode`-="702D\it #1\mathcode`\-="2200}$\fi}
   moredelim=[il][\rm]{//},
   moredelim=[is][\sf \figuresize]{!}{!},
   moredelim=[is][\bf \figuresize]{*}{*},
-  keywords={and, 
+  keywords={and,
          begin,
          cases, const,
          do,
@@ -963,15 +963,15 @@ $\mathord{\mathcode`-="702D\it #1\mathcode`\-="2200}$\fi}
          hidden,
          in, if, importing,
      let, lambda, lemma,
-     measure, 
+     measure,
      not,
      or, of,
      return, recursive,
-     stop, 
+     stop,
      theory, that,then, type, types, type+, to, theorem,
      var,
      with,while},
-  emph={nat, setof, sequence, eq, tuple, map, array, enumeration, bool, real, exp, nnreal, posreal},   
+  emph={nat, setof, sequence, eq, tuple, map, array, enumeration, bool, real, exp, nnreal, posreal},
    literate=
         {(}{{$($}}1
         {)}{{$)$}}1
@@ -1064,7 +1064,7 @@ $\mathord{\mathcode`-="702D\it #1\mathcode`\-="2200}$\fi}
         {\\gamma}{{$\gamma$}}1
         {\\ell}{{$\ell\ $}}1
         {--}{{$-\ $}}1
-        {\\TT}{{\hspace{1.5em}}}3        
+        {\\TT}{{\hspace{1.5em}}}3
       }
 
 
@@ -1086,7 +1086,7 @@ $\mathord{\mathcode`-="702D\it #1\mathcode`\-="2200}$\fi}
   moredelim=[il][\rm]{//},
   moredelim=[is][\sf \figuresize]{!}{!},
   moredelim=[is][\bf \figuresize]{*}{*},
-  keywords={and, 
+  keywords={and,
          begin,
          cases, const,
          do, datatype,
@@ -1099,11 +1099,11 @@ $\mathord{\mathcode`-="702D\it #1\mathcode`\-="2200}$\fi}
      not,
      or, of,
      return, recursive,
-     stop, 
+     stop,
      theory, that,then, type, types, type+, to, theorem,
      var,
      with,while},
-  emph={nat, setof, sequence, eq, tuple, map, array, first, rest, add, enumeration, bool, real, posreal, nnreal},   
+  emph={nat, setof, sequence, eq, tuple, map, array, first, rest, add, enumeration, bool, real, posreal, nnreal},
    literate=
         {(}{{$($}}1
         {)}{{$)$}}1
@@ -1196,7 +1196,7 @@ $\mathord{\mathcode`-="702D\it #1\mathcode`\-="2200}$\fi}
         {\\gamma}{{$\gamma$}}1
         {\\ell}{{$\ell\ $}}1
         {--}{{$-\ $}}1
-        {\\TT}{{\hspace{1.5em}}}3        
+        {\\TT}{{\hspace{1.5em}}}3
       }
 
 \lstdefinelanguage{pvsNums}[]{pvs}

@@ -1,0 +1,71 @@
+%The word �Abstract� should be centered 2? below the top of the page.
+%Skip one line, then center your name followed by the title of the
+%thesis/dissertation. Use as many lines as necessary. Centered below the
+%title include the phrase, in parentheses, �(Under the direction of
+%_________)� and include the name(s) of the dissertation advisor(s).
+%Skip one line and begin the content of the abstract. It should be
+%double-spaced and conform to margin guidelines. An abstract should not
+%exceed 150 words for a thesis and 350 words for a dissertation. The
+%latter is a requirement of both the Graduate School and UMI's
+%Dissertation Abstracts International.
+%Because your dissertation abstract will be published, please prepare and
+%proofread it carefully. Print all symbols and foreign words clearly and
+%accurately to avoid errors or delays. Make sure that the title given at
+%the top of the abstract has the same wording as the title shown on your
+%title page. Avoid mathematical formulas, diagrams, and other
+%illustrative materials, and only offer the briefest possible description
+%of your thesis/dissertation and a concise summary of its conclusions. Do
+%not include lengthy explanations and opinions.
+%The abstract should bear the lower case Roman number ii (if you did not
+%include a copyright page) or iii (if you include a copyright page).
+
+\begin{center}
+\vspace*{52pt}
+{\Large \textbf{ABSTRACT}}
+\vspace{11pt}
+
+\begin{singlespace}
+Edward Kim: \thesistitle \\
+(Under the direction of Parasara Sridhar Duggirala)
+\end{singlespace}
+
+\end{center}
+\par Reachable set computation is an important technique for the verification of safety properties of dynamical systems.
+%
+% one method proposed for solving this problem, based on parallelotope bundle reachability for
+%
+In this thesis, we investigate reachable set computation for discrete nonlinear systems based on parallelotope bundles.
+%
+The crux of the reachability algorithm relies on computing an upper and lower bound on the supremum and infimum respectively of a nonlinear function over a rectangular domain.
+%
+We cover two ways of computing these bounds: one method utilizing Bernstein polynomials and the other relying on a non-linear optimization tool developed by NASA, Kodiak.
+%
+We aim to improve the traditional parallelotope-based reachability method by removing the manual step of parallelotope template selection in order to make the procedure fully automatic.
+%
+Furthermore, we show that adding templates dynamically during computations can improve accuracy.
+%
+% One of the simplest algorithms for computing reachable sets for discrete nonlinear systems uses parallelotope bundles and Bernstein polynomials.
+%
+%Our main hypothesis in this paper is that generating templates in a dynamic manner would improve the accuracy of the reachable set.
+%
+To this end, we investigate two techniques for generating the template directions.
+%
+The first technique approximates the dynamics as a linear transformation and generates templates using this linear transformation.
+%
+The second technique uses Principal Component Analysis (PCA) of sample trajectories for generating templates.
+%
+We have implemented our approach in a Python-based tool called Kaa.
+%
+%Kaa was developed as a more compact, simple implementation of the pre-existing parallelotope-based reachability tool, Sapo.
+%
+% have implemented two main enhancements to it.
+%
+The tool is modular and use two types of global optimization solvers, the first using Bernstein polynomials and the second using
+the aforementioned Kodiak library.
+%
+Additionally, we leverage the natural parallelism of the reachability algorithm and parallelize the Kaa implementation.
+%
+Finally, we demonstrate the improved accuracy of our approach on several standard nonlinear benchmark systems, including a high-dimensional COVID19 model proposed by the Indian Supermodel Committee.
+
+
+\clearpage

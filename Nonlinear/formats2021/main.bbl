@@ -1,0 +1,182 @@
+\begin{thebibliography}{10}
+
+\bibitem{kodiak}
+Kodiak, a {C}++ library for rigorous branch and bound computation.
+\newblock \url{https://github.com/nasa/Kodiak}, Accessed: July 2020.
+
+\bibitem{althoff2010computing}
+M.~Althoff, O.~Stursberg, and M.~Buss.
+\newblock Computing reachable sets of hybrid systems using a combination of
+  zonotopes and polytopes.
+\newblock {\em Nonlinear analysis: hybrid systems}, 4(2):233--249, 2010.
+
+\bibitem{ansumali2020modelling}
+S.~Ansumali, S.~Kaushal, A.~Kumar, M.~K. Prakash, and M.~Vidyasagar.
+\newblock Modelling a pandemic with asymptomatic patients, impact of lockdown
+  and herd immunity, with applications to sars-cov-2.
+\newblock {\em Annual Reviews in Control}, 2020.
+
+\bibitem{bak2021reachability}
+S.~Bak, S.~Bogomolov, P.~S. Duggirala, A.~R. Gerlach, and K.~Potomkin.
+\newblock Reachability of black-box nonlinear systems after {K}oopman operator
+  linearization, 2021.
+
+\bibitem{chen2011choice}
+X.~Chen and E.~{\'A}brah{\'a}m.
+\newblock Choice of directions for the approximation of reachable sets for
+  hybrid systems.
+\newblock In {\em International Conference on Computer Aided Systems Theory},
+  pages 535--542. Springer, 2011.
+
+\bibitem{clariso2004octahedron}
+R.~Claris{\'o} and J.~Cortadella.
+\newblock The octahedron abstract domain.
+\newblock In {\em International Static Analysis Symposium}, pages 312--327.
+  Springer, 2004.
+
+\bibitem{dang2014parameter}
+T.~Dang, T.~Dreossi, and C.~Piazza.
+\newblock Parameter synthesis using parallelotopic enclosure and applications
+  to epidemic models.
+\newblock In {\em International Workshop on Hybrid Systems Biology}, pages
+  67--82. Springer, 2014.
+
+\bibitem{dang2011template}
+T.~Dang and T.~M. Gawlitza.
+\newblock Template-based unbounded time verification of affine hybrid automata.
+\newblock In {\em Asian Symposium on Programming Languages and Systems}, pages
+  34--49. Springer, 2011.
+
+\bibitem{dang2009image}
+T.~Dang and D.~Salinas.
+\newblock Image computation for polynomial dynamical systems using the
+  {B}ernstein expansion.
+\newblock In {\em International Conference on Computer Aided Verification},
+  pages 219--232. Springer, 2009.
+
+\bibitem{dang2012reachability}
+T.~Dang and R.~Testylier.
+\newblock Reachability analysis for polynomial dynamical systems using the
+  {B}ernstein expansion.
+\newblock {\em Reliable Computing}, 17(2):128--152, 2012.
+
+\bibitem{devonport2020pirk}
+A.~Devonport, M.~Khaled, M.~Arcak, and M.~Zamani.
+\newblock {PIRK}: Scalable interval reachability analysis for high-dimensional
+  nonlinear systems.
+\newblock In {\em International Conference on Computer Aided Verification},
+  pages 556--568. Springer, 2020.
+
+\bibitem{dreossi2017sapo}
+T.~Dreossi.
+\newblock Sapo: Reachability computation and parameter synthesis of polynomial
+  dynamical systems.
+\newblock In {\em Proceedings of the 20th International Conference on Hybrid
+  Systems: Computation and Control}, pages 29--34, 2017.
+
+\bibitem{dreossi2016parallelotope}
+T.~Dreossi, T.~Dang, and C.~Piazza.
+\newblock Parallelotope bundles for polynomial reachability.
+\newblock In {\em Proceedings of the 19th International Conference on Hybrid
+  Systems: Computation and Control}, pages 297--306, 2016.
+
+\bibitem{dreossi2017reachability}
+T.~Dreossi, T.~Dang, and C.~Piazza.
+\newblock Reachability computation for polynomial dynamical systems.
+\newblock {\em Formal Methods in System Design}, 50(1):1--38, 2017.
+
+\bibitem{duggirala2016parsimonious}
+P.~S. Duggirala and M.~Viswanathan.
+\newblock Parsimonious, simulation based verification of linear systems.
+\newblock In {\em International Conference on Computer Aided Verification},
+  pages 477--494. Springer, 2016.
+
+\bibitem{fitzhugh1961impulses}
+R.~FitzHugh.
+\newblock Impulses and physiological states in theoretical models of nerve
+  membrane.
+\newblock {\em Biophysical journal}, 1(6):445--466, 1961.
+
+\bibitem{garloff2003bernstein}
+J.~Garloff.
+\newblock The {B}ernstein expansion and its applications.
+\newblock {\em Journal of the American Romanian Academy}, 25:27, 2003.
+
+\bibitem{girard2005reachability}
+A.~Girard.
+\newblock Reachability of uncertain linear systems using zonotopes.
+\newblock In {\em International Workshop on Hybrid Systems: Computation and
+  Control}, pages 291--305. Springer, 2005.
+
+\bibitem{gronski2019template}
+J.~Gronski, M.-A.~B. Sassi, S.~Becker, and S.~Sankaranarayanan.
+\newblock Template polyhedra and bilinear optimization.
+\newblock {\em Formal Methods in System Design}, 54(1):27--63, 2019.
+
+\bibitem{huang2019reachnn}
+C.~Huang, J.~Fan, W.~Li, X.~Chen, and Q.~Zhu.
+\newblock Reachnn: Reachability analysis of neural-network controlled systems.
+\newblock {\em ACM Transactions on Embedded Computing Systems (TECS)},
+  18(5s):1--22, 2019.
+
+\bibitem{kim2020kaa}
+E.~Kim and P.~S. Duggirala.
+\newblock Kaa: A {P}ython implementation of reachable set computation using
+  {B}ernstein polynomials.
+\newblock {\em EPiC Series in Computing}, 74:184--196, 2020.
+
+\bibitem{munoz2013formalization}
+C.~Mu{\~n}oz and A.~Narkawicz.
+\newblock Formalization of {B}ernstein polynomials and applications to global
+  optimization.
+\newblock {\em Journal of Automated Reasoning}, 51(2):151--196, 2013.
+
+\bibitem{nataraj2007new}
+P.~S. Nataraj and M.~Arounassalame.
+\newblock A new subdivision algorithm for the {B}ernstein polynomial approach
+  to global optimization.
+\newblock {\em International journal of automation and computing},
+  4(4):342--352, 2007.
+
+\bibitem{nataray2002algorithm}
+P.~Nataray and K.~Kotecha.
+\newblock An algorithm for global optimization using the {T}aylor--{B}ernstein
+  form as inclusion function.
+\newblock {\em Journal of Global Optimization}, 24(4):417--436, 2002.
+
+\bibitem{indiansuper2020supermodel}
+{National Supermodel Committee }.
+\newblock Indian {Supermodel} for {Covid}-19 {Pandemic}.
+
+\bibitem{sankaranarayanan2008symbolic}
+S.~Sankaranarayanan, T.~Dang, and F.~Ivan{\v{c}}i{\'c}.
+\newblock Symbolic model checking of hybrid systems using template polyhedra.
+\newblock In {\em International Conference on Tools and Algorithms for the
+  Construction and Analysis of Systems}, pages 188--202. Springer, 2008.
+
+\bibitem{sassi2012reachability}
+M.~A.~B. Sassi, R.~Testylier, T.~Dang, and A.~Girard.
+\newblock Reachability analysis of polynomial systems using linear programming
+  relaxations.
+\newblock In {\em International Symposium on Automated Technology for
+  Verification and Analysis}, pages 137--151. Springer, 2012.
+
+\bibitem{seladji2017finding}
+Y.~Seladji.
+\newblock Finding relevant templates via the principal component analysis.
+\newblock In {\em International Conference on Verification, Model Checking, and
+  Abstract Interpretation}, pages 483--499. Springer, 2017.
+
+\bibitem{smith2009fast}
+A.~P. Smith.
+\newblock Fast construction of constant bound functions for sparse polynomials.
+\newblock {\em Journal of Global Optimization}, 43(2-3):445--458, 2009.
+
+\bibitem{stursberg2003efficient}
+O.~Stursberg and B.~H. Krogh.
+\newblock Efficient representation and computation of reachable sets for hybrid
+  systems.
+\newblock In {\em International Workshop on Hybrid Systems: Computation and
+  Control}, pages 482--497. Springer, 2003.
+
+\end{thebibliography}

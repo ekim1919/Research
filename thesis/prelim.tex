@@ -1,0 +1,146 @@
+\chapter{Preliminaries}
+\label{chap:prelim}
+
+We begin with some basic definitions pertaining to reachability and parallelotopes. The definition of Bernstein polynomials and the reachable set computaion algorithm will be defined. Finally, an outline of the reachability algorithm given by \cite{dreossi2016parallelotope} for polynomial dynamical systems will be presented.
+
+\section{Basic Definitions}
+\label{sec:definitions}
+
+As stated in the previous sections, this thesis pertains to the reachability analysis of dynamical systems. Roughly speaking, a dynamical system is governed by a set of differential equations such that the states of the system evolve according the solutions of the said differential equations.
+%
+The state of a system, denoted as $x$, lies in a domain $D \subseteq \reals^n$ where the solution to the differential equations is defined.
+%
+We restrict our attention to a specific definition of these dynamical systems:
+%
+\begin{definition}
+A discrete-time nonlinear system is denoted as
+\begin{equation}
+  x^{+} = f(x)
+\label{eq:sys}
+\end{equation}
+where $f: \reals^{n} \rightarrow \reals^{n}$ is a nonlinear function.
+\end{definition}
+%
+ Intuitively, the function $f$ takes input a state of the system and outputs the next step of the system evolved according to the non-linear dynamics.
+%
+Here, the function $f$ generally represents some discretized version of some specified continuous non-linear dynamical systems. Recall that a dynamical system is considered \emph{linear} if its dynamics can be expressed as
+
+$$
+x' = Ax, \quad A \in \reals^{n \times n}
+$$
+%
+Otherwise, we deem the system to be \emph{nonlinear}.
+%
+Hence, in particular, the function $f$ cannot be expressed as some matrix $A \in \reals^{n \times n}$.
+
+Examples of prominent non-linear dynamical systems include the Lotka-Volterra predator-prey model \cite{wangersky1978lotka}, FitzHugh Neuron model \cite{fitzhugh1961impulses}, and recently introduced COVID19 disease model \cite{indiansuper2020supermodel}. Throughout this thesis, we discretize any continuous dynamics through the well-known Euler method. Thus, up to some error term of bounded degree, we can turn any non-linear system into the form given by Equation~\ref{eq:sys}.
+%
+\begin{example}
+The SIR Epidemic model is a 3-dimensional dynamical system governed by the following continuous dynamics:
+\begin{align} \label{eqn:sir}
+    \begin{split}
+        s' &= \beta \cdot s_k i_k \\
+        i' &= \beta \cdot s_k i_k - \gamma \cdot i_k \\
+        r' &= \gamma \cdot i_k
+    \end{split}
+\end{align}
+where $s,i,r$ represent the fractions of a population of individuals designated as \textit{susceptible}, \textit{infected}, and \textit{recovered} respectively. There are two parameters, namely $\beta$ and $\gamma$, which influence the evolution of the system. $\beta$ is labeled as the contraction rate and $1/\gamma$ is the mean infective period.
+%
+Discretizing Equation~\ref{eqn:sir} according the Euler method yields the dynamics:
+%
+\begin{align} \label{eqn:discrete_sir}
+    \begin{split}
+        s_{k+1} &= s_k - (\beta \cdot s_k i_k)\cdot\Delta \\
+        i_{k+1} &= i_k + (\beta \cdot s_k i_k - \gamma \cdot i_k)\cdot\Delta \\
+        r_{k+1} &= r_k + (\gamma\cdot i_k)\cdot\Delta
+    \end{split}
+\end{align}
+ Here, $\Delta$ is the discretization step and the index $k \in \mathbb{N}$ simply represents the current step.
+%For the benchmarks, we set $\beta = 0.34$, $\gamma=0.05$, and $\Delta=0.5$.
+%
+Note the non-linear terms $s_ki_k$ which precludes the expression of the dynamics as a linear transformation.
+\end{example}
+
+The trajectory of a system that evolves according to Equation~\ref{eq:sys}, denoted as $\xi(x_0)$ is a sequence $x_0, x_1, \ldots $ where $x_{i+1} = f(x_i)$.
+%
+The $k^{th}$ element in this sequence $x_k$ is denoted as $\xi(x_0,k)$.
+
+\begin{definition}
+Given an initial set $\Theta \subseteq \reals^n$, the \emph{reachable set at step $k$}, denoted as $\Theta_k$ is defined as
+\begin{equation}
+  \Theta_k = \{ \xi(x,k)\: | \: x \in \Theta\}
+\label{eq:reachset}
+\end{equation}
+If we set the number of steps to be some $n \in \mathbb{N}$, we say the \emph{reachable set} is
+\begin{equation}
+  \Theta = \bigcup_{i=1}^n \Theta_i
+\end{equation}
+\end{definition}
+
+%
+We will see in a future section an example of the reachable set of the discretized SIR model presented in Equation~\ref{eqn:discrete_sir}.
+
+
+\section{Parallelotope-based Reachability}
+
+\subsection{Parallelotopes}
+\label{sec:parallelotope}
+A parallelotope $P$ is a set of states in $\mathbb{R}^{n}$ captured by the tuple $\langle \Lambda, c\rangle$ where $\Lambda \in \mathbb{R}^{2n \times n}$ is a matrix and $c \in \mathbb{R}^{2n}$ is a column vector. We impose the condition that $\Lambda_{i+n} = -\Lambda_{i}$ for all $i \in \{1, \ldots, n\}$ such that
+
+$$
+x \in P \mbox{ if and only if } \Lambda x \leq c.
+$$
+We deem $\Lambda$ as the \emph{direction matrix} where $\Lambda_i$ denotes the $i^{th}$ row of $\Lambda$. The column vector $c$ is called the \emph{offset vector}.
+%
+Alternatively, a parallelotope can also be represented in vertex-generator representation as $\langle v, g_1, \ldots, g_n\rangle$. Here $v \in \mathbb{R}^n$ is called the \emph{anchor} and $g_1, \ldots, g_n$, $g_i \in \mathbb{R}^n$, are called the \emph{generators}. The parallelotope is defined as the set:
+$$
+P := \{ x ~|~ \exists \alpha_1, \ldots, \alpha_n \in [0,1], \; x = v + \sum_{i=1}^n \alpha_i g_i \}
+$$
+This representation is very similar to Zonotopes~\cite{girard2005reachability,althoff2010computing} and Star sets~\cite{duggirala2016parsimonious}.
+
+The vertex $v_1$ is obtained by solving the linear equation $\Lambda x = c_{l}$.
+%
+The $j+1$ vertex is obtained by solving the linear equation $\Lambda x = \mu_{j}$ where $\mu_{j}[i] = c_{l}[i]$ when $i \neq j$ and $\mu_{j}[j] = c_{u}[j]$.
+%
+The anchor $a$ of the parallelotope is the vertex $v_1$ and the generator $g_{i} = v_{i+1} - v_{1}$.
+
+%
+Notice that for a parallelotope $P$, the vertex-generator representation also defines the affine transformation that maps $[0,1]^{n}$ to $P$.
+%
+We denote this affine transformation as $T_{p}$.
+%
+\begin{definition}
+A parallelotope bundle $Q$ is a set of parallelotopes $\{P_1, \ldots, P_m\}$ such that
+  $$ Q = \bigcap_{i=1}^{m}P_i $$.
+\end{definition}
+
+
+\subsection{Bernstein Polynomials}
+\label{sec:bernstein}
+
+Given two multi-indices $i$ and $d$ of size $n$, where $i \leq d$, the Bernstein polynomial of degree $d$ and index $i$ is
+$$
+\mathcal{B}_{i,d} = \beta_{i_1,d_1}(x_1) \beta_{i_2,d_2}(x_2)\ldots \beta_{i_n,d_n}(x_n).
+$$
+%
+where $\beta_{i_m,d_m}(x_m) = \binom{d_m}{i_m}x_{m}^{i_m}(1-x_m)^{d_m - i_m}$.
+%
+Any polynomial function can be expressed in the Bernstein basis.
+%
+The primary advantage of the Bernstein representation of a polynomial $h(x_1,...,x_n)$ is that an upper bound on the supremum and lower bound on the infimum of $h(x_1,...,x_n)$ in $[0,1]^{n}$ can be computed purely by observing the coefficients of the polynomial in the Bernstein basis.
+
+In other words, given a polynomial $h(x_1,\ldots,x_n) = \sum_{j \in J} a_j {\bf x}_{j}$ where $J$ is a set of multi-indices iterating through the degrees found in $p$ with $a_j \in \mathbb{R}$, then $h(x_1,\ldots,x_n)$ can be converted into its counterpart under the Bernstein basis, $h(x_1,\ldots,x_n) = \sum_{j \in J} b_j \mathcal{B}_j $ where $b_j$ are the corresponding Bernstein coefficients.
+%
+The upper and lower bounds of $h(x_1,\ldots,x_n)$ over $[0,1]^n$ are bounded by the Bernstein coefficients:
+$$
+min \{b_1, \ldots, b_m\} ~~\leq~~ inf_{x \in [0,1]^n} h(x) ~~~~~\leq~~~~ sup_{x \in [0,1]^{n}} h(x) ~~\leq~~ max \{b, \ldots, b_m\}.
+$$
+
+As mentioned earlier, a parallelotope $P$ can also be represented as an affine transformation $T_{p}$ from $[0,1]^{n}$ to $P$.
+%
+Therefore, upper bounds on the suprenum of a function $h$ over $P$ is equivalent to upper bound of $h \circ T_{p}$ over $[0,1]^{n}$.
+%
+A similar argument follows for the lower bound on the infimum.
+
+\subsection{The Static Algorithm}
+\label{sec:static}
