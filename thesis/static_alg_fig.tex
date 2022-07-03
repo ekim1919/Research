@@ -1,0 +1,49 @@
+\begin{algorithm}[t]
+  \SetKwInput{KwInput}{Input}
+  \SetKwInput{KwOutput}{Output}
+  \SetKwFunction{AppendPCA}{AppendNewPCATemplates}
+  \SetKwFunction{AppendLin}{AppendNewLinAppTemplates}
+  \SetKwFunction{TransformBund}{TransformBundle}
+  \SetKwFunction{UpdateTemp}{UpdateTemplates}
+  \SetKwFunction{GetSupp}{GetSupportPoints}
+  \SetKwFunction{PropPoints}{PropagatePointsOneStep}
+  \SetKwFunction{PCA}{PCA}
+  \SetKwFunction{ApproxLinearTrans}{ApproxLinearTrans}
+  \SetKwFunction{SetLifeSpan}{SetLifeSpan}
+  \SetKwFunction{AddTemptoBund}{AddTemplateToBundle}
+  \SetKwFunction{RemoveTemp}{RemoveTempFromBund}
+  \SetKwProg{Fun}{Proc}{:}{}
+
+\SetAlgoLined
+\DontPrintSemicolon
+
+\KwInput{Dynamics $f$, Initial Parallelotope $P_0$, Step Bound $S$, Template Dirs $\Lambda$, indexes for parallelotopes $I$}
+\KwOutput{Reachable Set Overapproximation $\overline\Theta_k$ for each step $k$}
+$Q_0 = \{ P_0 \}$ \;
+ \For{$k \in [1, 2, \ldots, S]$}{
+    $Q_k$ = \TransformBund($f$, $Q_{k-1}$, $\Lambda$) \;
+   $\overline\Theta_k = Q_k$ \;
+ }
+ \Return{$\overline\Theta_1 \ldots \overline\Theta_S$} \;
+ \;
+ %
+ \Fun{\TransformBund{$f$, $Q$, $\Lambda$}}{
+   $Q' \gets \{\}$; $c_{u} \gets +\infty$; $c_{l} \gets -\infty$\;
+   \For{each parallelotope $P$ in $Q$}{
+     % $\tup{\T, c_{l}, c_{u}} \gets \mathsf{half-spaceRepresentation}(P)$\;
+     $\tup{v, G} \gets \mathsf{generatorRepresentation}(P)$\;
+     \For{each template direction $\Lambda_i$ in the template directions $\Lambda$ }{
+       $c_{u}'[i] \gets \mathsf{min}\{ \mathsf{optBox(\Lambda_{i} \cdot f)}, c_{u}'[i] \}$ (Equation~\ref{eq:maxalpha})\;
+       $c_{l}'[i] \gets \mathsf{max}\{ -1 \times \mathsf{optBox(-1\times \Lambda_{i} \cdot f)}, c_{l}'[i] \}$\;
+     }
+   }
+   Construct parallelotopes $P_{1}', \ldots, P_{k}'$ from $\Lambda, c_{l}', c_{u}'$ and indexes from $I$\;
+   % \textcolor{red}{\textbf{SRIDHAR: add this}} \;
+   $Q' \gets \{P_{1}', \ldots, P_{k}'\}$\;
+     % $P' \gets \tup{\T, c_{l}', c_{u}'}$\;
+     % $Q' \gets Q' \cup \{P'\}$\;
+   \Return{$Q'$} \;
+ }
+\caption{Reachable set computation using manual and static templates.}
+\label{alg:old}
+\end{algorithm}

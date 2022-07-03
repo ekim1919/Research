@@ -100,16 +100,28 @@ If we unpack Equation~\ref{eq:halfspace}, we can re-express the inequalities as 
   -& \Lambda_i x \leq (c_l)_i
 \end{align*}
 %
-Combining these two observation yields the \emph{half-space representation} of parallelotope $P$.
+Additionally, the definition of the paralleotope above requires that for each of $n$ ``postive" directions, there must exist a corresponding ``negative" direction. This is encoded into the template matrix $\Lambda$ by the condition $\Lambda_{i+n} = -\Lambda_{i}$. However, by the observation made above, we only need to keep the positive directions and divide our offset vector into equal components with the top half encoding the offsets for the positive directions and the bottom half encoding the offsets for the negative directions.
+%
+Combining these remarks yields the \emph{half-space representation} of parallelotope $P$.
 %
 \begin{definition}
-The half-space representation of parallelotope $P$ is tuple  $\langle \Lambda, c\rangle$ where $\Lambda \in \mathbb{R}^{2n \times n}$ and $\Lambda \in \mathbb{R}^{2n \times n}$ such that if $\overline{\Lambda}$ represents the submatrix of $\Lambda$ consisting of the first $n$ rows of $\Lambda$, then
+\label{def:halfspace_def}
+The half-space representation of parallelotope $P$ is tuple  $\langle \Lambda, c_l, c_u \rangle$ where $\Lambda \in \mathbb{R}^{n \times n}$ and $c_l, c_u \in \reals^n$
+such that
 \begin{equation}
 \label{eq:halfspaceconst}
-P =\{x ~|~ -c_l \leq \overline{\Lambda} x \leq c_u\}
+P =\{x ~|~ c_l \leq \Lambda x \leq c_u\}
 \end{equation}
 \end{definition}
-%
+
+
+\begin{example}
+\label{ex:simple_ptope}
+Consider the 2D plane, namely $\reals^2$. We can construct a couple of simple examples of parallelotopes. First, if we define our parallelotope's template direction matrix to be
+%come back to this
+\end{example}
+
+
 \noindent Alternatively, a parallelotope can also be represented in a \emph{generator representation}
 %
 \begin{definition}
@@ -135,12 +147,6 @@ The anchor $v$ of the parallelotope is the vertex $v_1$ and the generators will 
 As a final remark, notice that for a parallelotope $P$, the generator representation also defines an affine transformation that maps $[0,1]^{n}$ to $P$.
 %
 Let us denote this affine transformation associated to $P$ as $T_P$.
-
-\begin{example}
-\label{ex:simple_ptope}
-Consider the 2D plane, namely $\reals^2$. We can construct a couple of simple examples of parallelotopes. First, if we define our parallelotope's template direction matrix to be
-%come back to this
-\end{example}
 
 \begin{example}
 \label{ex:ptope}
@@ -182,9 +188,17 @@ Therefore, all the points in the paralellotope can be written as $(x,y) = (0,0) 
 %We denote this affine transformation as $T_{p}$.
 %
 \begin{definition}
-A parallelotope bundle $Q$ is a set of parallelotopes $\{P_1, \ldots, P_m\}$ such that
+A parallelotope bundle $Q$ is a set of parallelotopes $\{P_0, \ldots, P_m\}$ such that
   $$ Q = \bigcap_{i=1}^{m}P_i $$.
 \end{definition}
+
+\begin{remark}
+There is a slight abuse of notation above where we refer to the parallelotope bundle $Q$ as both the set of parallelotopes and the region in $\reals^n$ of the intersection of all the parallelotopes $P_i$. To specify the \emph{set of parallelotopes} which consists the bundle, we will write
+$$
+\mathcal{P}(Q) = \{P_0, \ldots, P_m\}
+$$
+\end{remark}
+
 %
 \noindent This parallelotope bundle will be the geometric data structure which will enclose the region we compute to be the approximation of the exact reachable set.
 
@@ -228,10 +242,16 @@ b_{\boldi} = \sum_{\boldj \leq \boldi} \frac{\binom{\boldi}{\boldj}}{\binom{\bol
 %
 \noindent In other words, given a polynomial $p(x_1,\ldots,x_n) = \sum_{j \in J} a_j {\bf x}_{j}$ where $J$ is a set of multi-indices iterating through the degrees found in $p$ with $a_j \in \mathbb{R}$, then $p(x_1,\ldots,x_n)$ can be converted into its counterpart under the Bernstein basis, $p(x_1,\ldots,x_n) = \sum_{j \in J} b_j \mathcal{B}_j $ where $b_j$ are the corresponding Bernstein coefficients.
 
-The primary advantage of the Bernstein representation of a polynomial $p(x_1,...,x_n)$ is that an upper bound on the supremum and lower bound on the infimum of $p(x_1,...,x_n)$ in $[0,1]^{n}$ can be computed purely by observing the coefficients of the polynomial in the Bernstein basis. Specifically, the upper and lower bounds of $p(x_1,\ldots,x_n)$ over $[0,1]^n$ are bounded by the Bernstein coefficients:
-$$
-\min \{b_1, \ldots, b_m\} ~~\leq~~ \inf_{x \in [0,1]^n} p(x) ~~~~~\leq~~~~ \sup_{x \in [0,1]^{n}} p(x) ~~\leq~~ \max \{b, \ldots, b_m\}.
-$$
+The primary advantage of the Bernstein representation of a polynomial $p(x_1,...,x_n)$ is that an upper bound on the supremum and lower bound on the infimum of $p(x_1,...,x_n)$ in $[0,1]^{n}$ can be computed purely by observing the coefficients of the polynomial in the Bernstein basis. Specifically, the upper and lower bounds of $p(x_1,\ldots,x_n)$ over $[0,1]^n$ are bounded by the Bernstein coefficients. We state this as a property without proof.
+%
+\begin{property} (Enclosure Property)
+  \label{prop:bern_enclosure}
+  Let $p: \reals^n \rightarrow \reals$ be a real mutlivarite polynomial of degree $\boldd$, and let $p(\boldx) = \sum_{\boldi \leq \boldd} b_\boldi \cdot \mathcal{B}_{(\boldi,\boldd)}(\boldx)$ be the Bernstein expansion of $p$, then
+  $$
+  \min_{\boldi \leq \boldd} \{b_\boldi\} ~~\leq~~ \inf_{x \in [0,1]^n} p(x) ~~~~~\leq~~~~ \sup_{x \in [0,1]^{n}} p(x) ~~\leq~~ \max_{\boldi \leq \boldd} \{b_\boldi\}
+  $$
+\end{property}
+
 
 As mentioned earlier, a parallelotope $P$ can also be represented as an affine transformation $T_{p}$ from $[0,1]^{n}$ to $P$.
 %
@@ -243,6 +263,6 @@ The crux of the reachability algorithm involves exploiting this property of Bern
 %
 We will cover this algorithm in the upcoming section.
 %
-For a more rigorous exposition on Bernstein polynomials and their properties, refer to \cite{garloff2003bernstein}.
+For a more rigorous exposition on Bernstein polynomials and Property~\ref{prop:bern_enclosure}, refer to \cite{garloff2003bernstein}.
 
 \input{staticalg}
