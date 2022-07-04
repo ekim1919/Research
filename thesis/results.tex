@@ -1,13 +1,83 @@
 \chapter{Experimental Results}
-
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Kaa}
 \label{sec:kaa}
-
+We evaluate the efficacy of our dynamic parallelotope bundle strategies with our tool, \emph{Kaa} \cite{kim2020kaa}. Kaa is written in Python and relies on the \emph{numpy} library for matrix computations, \emph{sympy} library for all symbolic subsitution, and \emph{scipy}, \emph{matplotlib} for plotting the reachable sets and computing the volume for lower-dimensional systems. The optimization procedure for finding the direction offets is performed through the \emph{Kodiak} library. Finally, parallelization of the offset calculation procedures is implemented through the \emph{multiprocessing} module. To estimate volume of reachable sets, we employ two techniques for estimating volume of individual parallelotope bundles. For systems of dimension fewer than or equal to three, we utilize scipy's convex hull routine.
+%
+For higher-dimensional systems, we employ the volume of the tightest enveloping box around the parallelotope bundle.
+%
+The total volume estimate of the overapproximation will be the sum of all the bundles' volume estimates.
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Benchmarks}
 \label{sec:benchmarks}
+For benchmarking, we select six non-linear models with polynomial dynamics.
+%
+Many of these models are also implemented in \emph{Sapo} \cite{dreossi2017sapo}, a previous tool exploring reachability with {\bf static} parallelotope bundles.
+%
+We choose benchmarks with polynomial dynamics to directly compare the performance of our dynamic strategies with the Sapo's static parallelotopes. To provide meaningful comparisions, we set the number of dynamic parallelotopes to be equal to the number of static ones excluding the initial box. Here, {\bf diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other.
+%
+By {\bf diagonal parallelotopes}, we refer to parallelotopes defined only by axis-aligned and diagonal directions. Similarly, {\bf diagonal parallelotope bundles} are parallelotope bundles solely consisting of diagonal parallelotopes. Sapo primarily utilizes {\bf static diagonal parallelotope bundles} to perform its reachability computation.
+Note that the initial box, which is defined only through the axis-aligned directions, is contained in every bundle.
+%
+For our experiments, we are concerned with the effects of additional static or dynamic parallelotopes added alongside the initial box. We refer to these parallelotopes as {\bf non-axis-aligned parallelotopes}.
 
+Table \ref{tab:modeldyns} summarizes five standard benchmarks used for experimentation. The last seven-dimensional COVID supermodel is explained in the subsequent subsection below.
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{COVID19 Supermodel}
 \label{sec:covid}
+We benchmark our dynamic strategies with the recently introduced COVID supermodel \cite{ansumali2020modelling}, \cite{indiansuper2020supermodel}. This model is a modified SIR model accounting for the possibility of \emph{asymptomatic} patients. These patients can infect susceptible members with a fixed probability. The dynamics account for this new group and its interactions with the traditional SIR groups.
 
+\begin{align}
+  \begin{split}
+   S_A' & = S_A  -(\beta S_A(A+I))\cdot \Delta \\
+   S_I' & = S_I  -(\beta S_I (A + I))\cdot \Delta \\
+   A' & = A + (\beta S_I(A+I) - \gamma I)\cdot \Delta \\
+   I' & = I + (\beta S_I (A+I) - \gamma I)\cdot  \Delta \\
+   R_A' & = R_A + (\gamma A)\cdot \Delta \\
+   R_I' & = R_I + (\gamma I)\cdot \Delta \\
+   D' & = D + (\eta I)\cdot \Delta
+  \end{split}
+\end{align}
+where the variables denote the fraction of a population of individuals designated as \emph{Susceptible to Asymptomatic $(S_A)$}, \emph{Susceptible to Symptomatic $(S_I)$}, \emph{Asymptomatic (A)}, \emph{Symptomatic (I)}, \emph{Removed from Asymptomatic $(R_A)$}, \emph{Removed from Symptomatic $(R_I)$}, and \emph{Deceased (D)}. We choose the parameters ($\beta = 0.25, \gamma=0.02, \eta=0.02$) where $\beta$ is the probablity of infection, $\gamma$ is the removal rate, and $\eta$ is the mortality rate. The parameters are set based on figures shown in \cite{ansumali2020modelling}. The discretization step is chosen to be $\Delta = 0.1$ and the initial box is set to be following dimensions: $S_A  \in [0.69, 0.7], \, S_I \in [0.09, 0.1], \, A \in [0.14, 0.15], \, I \in [0.04, 0.05], \, R_A  = 0,\, R_I  = 0, \, D  = 0$.
+
+\begin{table}
+%\hspace{-5em}
+  \centering
+\begin{tabular}{|p{1.5cm}|c|p{1.7cm}|c|c|p{5cm}|}
+\hline
+Model & Dimension & Parameters & \# steps & $\Delta$ & \hspace{1.5cm}Initial Box \\
+\hline
+Vanderpol & 2 & \quad \quad \; - & 70 steps & 0.08 & $x \in [0,0.1], y \in [1.99,2]$ \\
+\hline
+Jet Engine& 2 & \quad \quad \; - & 100 steps & 0.2 & $x \in [0.8,1.2], y \in [0,8,1.2]$ \\
+\hline
+Neuron \cite{fitzhugh1961impulses}& 2 & \quad \quad \; - & 200 steps & 0.2 & $x \in [0.9,1.1], y \in [2.4,2.6]$ \\
+\hline
+SIR& 3 & $\beta=0.05$ \newline $\gamma=0.34$ & 150 steps & 0.1 & $s \in [0.79,0.8], i \in [0.19,0.2], r = 0$ \\
+\hline
+Coupled \newline Vanderpol & 4 & \quad \quad \; - & 40 steps & 0.08 & $x1 \in [1.25, 2.25], y1 \in [1.25, 2.25]$ \newline $x2 \in [1.25, 2.25], y2 \in [1.25, 2.25]$ \\
+\hline
+COVID & 7 & $\beta=0.05$ \newline $\gamma=0.0$ \newline $\eta=0.02$ & 200 steps & 0.08 & \quad \quad \quad \; \; Stated Below\\
+\hline
+\end{tabular}
+\caption{Benchmark models and relevant information}
+\label{tab:modeldyns}
+\end{table}
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Comparison of Template Generation Techniques}
 \label{sec:compare}
+
+The results of testing our dynamic strategies against static ones are summarized in Table~\ref{tab:voltable}. For models previously defined in Sapo, we set the static parallelotopes to be exactly those found in Sapo.
+If a model is not implemented in Sapo, we simply use the static parallelotopes defined in a model of equal dimension. To address the unavailability of a four-dimensional model implemented in Sapo, we sampled random subsets of five static non-axis-aligned parallelotopes and chose the flowpipe with smallest volume.
+%
+% As justifiction for this scheme, we wish to remark the time required in testing all possible subsets of diagonal parallelotopes.
+%
+A cursory analysis shows that the number of possible templates with diagonal directions grows with $O(n^n)$ with the number of dimensions and hence an exhaustive search on optimal template directions is infeasible.
+
+% are $2{n \choose 2}$ diagonal directions for an $n$-dimensional system, giving a total of $n + 2 {n \choose 2}$ axis-aligned and diagonal directions. Thus, there are ${n + 2 {n \choose 2} \choose n} = {n^2 \choose n}$ possible diagonal parallelotopes for an $n$-dimensional system. This explosive growth in search space size compelled us to proceed by sampling the search space instead.
+
+From our experiments, we conclude there is no universal optimal ratio between the number of dynamic parallelotopes defined by PCA and Linear Approxiation directions which perform well on all benchmarks. In Figure \ref{fig:PCALinAppRatio}, we demonstrate two cases where varying the ratio imparts differing effects. Observe that using parallelotopes defined by linear approximation directions is more effective than those defined by PCA directions in the Vanderpol model whereas the Neuron model shows the opposite trend.
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+%\input{comp_temp_fig}

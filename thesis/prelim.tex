@@ -76,11 +76,10 @@ If we set the number of steps to be some $n \in \mathbb{N}$, we say the \emph{re
   \Theta = \bigcup_{i=1}^n \Theta_i
 \end{equation}
 \end{definition}
-
 %
-We will see in a future section an example of the reachable set of the discretized SIR model presented in Equation~\ref{eqn:discrete_sir}.
+\noindent We will see in a future section an example of the reachable set of the discretized SIR model presented in Equation~\ref{eqn:discrete_sir}.
 
-
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Parallelotope-based Reachability}
 
 \subsection{Parallelotopes}
@@ -91,16 +90,16 @@ A parallelotope $P$ is a set of states in $\mathbb{R}^{n}$ captured by the tuple
 \label{eq:halfspace}
 x \in P \mbox{ if and only if } \Lambda x \leq c.
 \end{equation}
-We deem $\Lambda$ as the \emph{template direction matrix} where $\Lambda_i$ denotes the $i^{th}$ row of $\Lambda$ called the \emph{$i^{th}$ template direction}. The column vector $c$ is called the \emph{offset vector} with $c_i$ denoting the $i^{th}$ element of $c$.
+We deem $\Lambda$ as the \emph{template direction matrix} where $\Lambda_i$ denotes the $i^{th}$ row of $\Lambda$ called the \emph{$i^{th}$ template direction}. The column vector $c$ is called the \emph{offset vector} with $c(i)$ denoting the $i^{th}$ element of $c$.
 %
-If we unpack Equation~\ref{eq:halfspace}, we can re-express the inequalities as a conjection of half-space constraints. If we define $c_{u} = [c_1, c_2, \cdots, c_n]^T$ and $c_{l} = [c_{n+1}, c_{n+2}, \cdots, c_{2n}]^T$, then Equation~\ref{eq:halfspace} tells us that:
+If we unpack Equation~\ref{eq:halfspace}, we can re-express the inequalities as a conjunction of half-space constraints. If we define $c_{u} = [c(1), c(2), \cdots, c(n)]^T$ and $c_{l} = [c(n+1), c(n+2), \cdots, c(2n)]^T$, then Equation~\ref{eq:halfspace} tells us that:
 %
-\begin{align*}
-  & \Lambda_i x \leq (c_u)_i \\
-  -& \Lambda_i x \leq (c_l)_i
-\end{align*}
+\begin{align}
+  & \Lambda_i x \leq c_u(i)  \label{eq:upper_ineq}\\
+  -& \Lambda_i x \leq c_l(i) \label{eq:lower_ineq}
+\end{align}
 %
-Additionally, the definition of the paralleotope above requires that for each of $n$ ``postive" directions, there must exist a corresponding ``negative" direction. This is encoded into the template matrix $\Lambda$ by the condition $\Lambda_{i+n} = -\Lambda_{i}$. However, by the observation made above, we only need to keep the positive directions and divide our offset vector into equal components with the top half encoding the offsets for the positive directions and the bottom half encoding the offsets for the negative directions.
+Additionally, the definition of the paralleotope above requires that for each of $n$ ``postive" directions, there must exist a corresponding ``negative" direction. This is encoded into the template matrix $\Lambda$ by the condition $\Lambda_{i+n} = -\Lambda_{i}$. However, by the observation made above, we only need to keep the positive directions and divide our offset vector into equal components with the top half encoding the offsets for the positive directions and the bottom half encoding the offsets for the negative directions. The bottom half must be multiplied by a negative sign to account for Inequality \ref{eq:lower_ineq}.
 %
 Combining these remarks yields the \emph{half-space representation} of parallelotope $P$.
 %
@@ -113,43 +112,97 @@ such that
 P =\{x ~|~ c_l \leq \Lambda x \leq c_u\}
 \end{equation}
 \end{definition}
-
-
+%
+\noindent In particular, as a bounded intersection of pairs of parallel half-spaces, it is convex.
+%
 \begin{example}
 \label{ex:simple_ptope}
-Consider the 2D plane, namely $\reals^2$. We can construct a couple of simple examples of parallelotopes. First, if we define our parallelotope's template direction matrix to be
-%come back to this
+Consider the 2D plane, namely $\reals^2$. We can construct a couple of simple examples of parallelotopes. First, if we define our parallelotope's template direction matrix to be the rows of the matrix:
+%
+\begin{equation}
+  \Lambda = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}
+\end{equation}
+%
+We see that our template directions will be the vectors $[1,0]^T, [0,1]^T$. Suppose now we set our upper and lower offsets to be:
+%
+\begin{equation}
+  c_l = [1,1]^T, \quad c_u = [2,2]^T
+\end{equation}
+Then by Definition \ref{def:halfspace_def}, the bounded region in space will be the intersection of the following linear constraints:
+%
+\begin{align}
+  1 \leq x \leq 2 \\
+  1 \leq y \leq 2
+\end{align}
+This is exactly the shifted unitbox $[1,2] \times [1,2]$. In fact, we can easily generalize this a general $n$-dimensional system by considering the template direction matrix $\Lambda = I_n$ where $I_n$ is the $n \times n$ identity matrix and two offset vectors $c_l, c_u$ of length $n$. This would yield the shifted $n$-dimensional unitbox:
+
+\begin{equation}
+[c_l(1), \;c_u(1)] \times [c_l(2),\; c_u(2)] \times \cdots \times [c_l(n), \; c_u(n)]
+\end{equation}
+%
+It is worth noting that axis-aligned box on the 2D plane above would give the representation:
+\begin{align}
+  \Lambda = \begin{bmatrix}
+            1 & 0 \\
+            0 & 1 \\
+            -1 & 0 \\
+            0 & -1 \\
+            \end{bmatrix} , \quad c = [2,2,-1,-1]^T
+\end{align}
+if we were to convert the half-space representation above into the form defined in Equation \ref{eq:halfspace}.
 \end{example}
 
 
-\noindent Alternatively, a parallelotope can also be represented in a \emph{generator representation}
+\noindent Alternatively, a parallelotope can also be represented in a \emph{generator representation}.
 %
 \begin{definition}
+\label{def:generator_def}
 The generator representation of a parallelotope $P$ is a tuple of vectors $\langle v, g_1, \ldots, g_n\rangle$ such that $v,g_1, \cdots g_n \in \reals^n$. The vector  $v \in \mathbb{R}^n$ is called the \emph{anchor} and the $g_i \in \mathbb{R}^n$, are called the \emph{generators}. The parallelotope is defined as the set:
 $$
 P := \{ x ~|~ \exists \alpha_1, \ldots, \alpha_n \in [0,1], \; x = v + \sum_{i=1}^n \alpha_i g_i \}
 $$
 \end{definition}
 %
-\noindent This representation is very similar to Zonotopes~\cite{girard2005reachability,althoff2010computing} and Star sets~\cite{duggirala2016parsimonious}.
+\noindent This is esstentially a convex reprsentation of the parallelotope, which shares many similarities to Zonotopes~\cite{girard2005reachability,althoff2010computing} and Star sets~\cite{duggirala2016parsimonious}.
 %
 In particular, a parallelotope is a special case of a zonotope where the number of generators is exactly the dimension of the system $n$.
 
-There is a simple method to convert from the half-space representation of $P$ to its generator representation.
-%
-Obtain vertex $v_1$ by solving the linear equation $\Lambda x = c_{l}$.
-%
-The $j+1$ vertex is obtained by solving the linear equation $\Lambda x = \mu_{j}$ where $\mu_{j}[i] = c_{l}[i]$ when $i \neq j$ and $\mu_{j}[j] = c_{u}[j]$.
-%
-The anchor $v$ of the parallelotope is the vertex $v_1$ and the generators will be $g_{i} = v_{i+1} - v_{1}$. Refer to \cite{dang2014parameter} for a more detailed exposition of this procedure.
+There is a simple method to convert from the half-space representation of $P$ to its generator representation:
 
+\hspace{1.5cm} \textbf{Half-Space Representation to Generator Representation Conversion}
+\begin{enumerate}
+
+  \item Obtain vertex $v_1$ by solving the linear equation $\Lambda x = c_{l}$.
+  \item The $j+1$ vertex is obtained by solving the linear equation $\Lambda x = \mu_{j}$ where $\mu_{j}[i] = c_{l}[i]$ when $i \neq j$ and $\mu_{j}[j] = c_{u}[j]$.
+  \item The anchor $v$ of the parallelotope is the vertex $v_1$ and the generators will be $g_{i} = v_{i+1} - v_{1}$.
+\end{enumerate}
 %
+There is a procedure to perform the reverse direction, namely to convert from the generator representation to the half-space representation. However, we will not need this procedure for this thesis. Refer to \cite{dang2014parameter} for a more detailed exposition.
+
 As a final remark, notice that for a parallelotope $P$, the generator representation also defines an affine transformation that maps $[0,1]^{n}$ to $P$.
 %
-Let us denote this affine transformation associated to $P$ as $T_P$.
-
+We refer to this affine transformation associated to $P$ as $T_P:[0,1]^n \rightarrow P$ when necessary.
+%
 \begin{example}
-\label{ex:ptope}
+Let us return to the axis-aligned box considered in Example \ref{ex:simple_ptope}.
+%
+To obtain the anchor, we end up with the trivial solution $x = 1, y=1$ by adhering to Step 1. Hence, the anchor is set to $v = (1,1)$
+%
+Subsequently, we solve for the two other vertices by following Step 2 to obtain $x=2, y= 1$ and $x=1,y=2$.
+%
+By Step 3, this would imply that the two generators are $g_1 = (2,1)-(1,1) = (1,0)$ and $g_2 = (1,2)-(1,1) = (0,1)$.
+%
+Now combine the anchor and generators to get the generator representation for this paralellotope:
+%
+\begin{equation}
+ P = (1,1) + \alpha_1\cdot(1,0) + \alpha_2\cdot(0,1) \quad \alpha_1, \alpha_2 \in [0,1]
+\end{equation}
+%
+This is exactly the unit box $[0,1]^2$ with its corner at the origin shifted to $(1,1)$.
+\end{example}
+%
+\begin{example}
+\label{ex:diag_ptope}
 Once again, consider the space $\reals^2$ and the parallelotope $P$ given in half-plane representation as $0 \leq x-y \leq 1$, $0 \leq y \leq 1$.
 %
 This is a parallelotope with vertices at $(0,0)$, $(1,0)$, $(2,1)$, and $(1,1)$.
@@ -182,7 +235,7 @@ The generator $g_1$ is the vector $v_1 - a$, that is $(1,0)- (0,0) = (1,0)$
 %
 The generator $g_2$ is the vector $v_2 - a$, that is $(1,1) - (0,0) = (1,1)$.
 %
-Therefore, all the points in the paralellotope can be written as $(x,y) = (0,0) + \alpha_1 (1,0) + \alpha_2(1,1)$, $\alpha_1, \alpha_2 \in [0,1]$.
+Therefore, all the points in the paralellotope can be written as $(x,y) = (0,0) + \alpha_1 \cdot (1,0) + \alpha_2\cdot (1,1)$, $\alpha_1, \alpha_2 \in [0,1]$.
 \end{example}
 %
 %We denote this affine transformation as $T_{p}$.
@@ -200,8 +253,9 @@ $$
 \end{remark}
 
 %
-\noindent This parallelotope bundle will be the geometric data structure which will enclose the region we compute to be the approximation of the exact reachable set.
+\noindent This parallelotope bundle will be the geometric data structure which will enclose the region we compute to be the approximation of the exact reachable set. Observe that $Q$ can be expressed as the conjunction of all the linear constraints defining each parallelotope $P_i \in \ptopeset{Q}$.
 
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \subsection{Bernstein Polynomials}
 \label{sec:bernstein}
 In this section, we define Bernstein polynomials and state some of their enclosure properties. A \emph{multi-index} ${\bf i}$ of length $n$ is defined as tuple of $n$ elements ${\bf i} = (i_1,\cdots, i_n)$ such that each $i_k \in \mathbb{N}$. Furthermore, we order the multi-indices as follows: if ${\bf i}$ and ${\bf j}$ are two multi-indices of length $n$, then
@@ -265,4 +319,5 @@ We will cover this algorithm in the upcoming section.
 %
 For a more rigorous exposition on Bernstein polynomials and Property~\ref{prop:bern_enclosure}, refer to \cite{garloff2003bernstein}.
 
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \input{staticalg}
