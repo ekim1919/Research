@@ -150,6 +150,18 @@ It is worth noting that axis-aligned box on the 2D plane above would give the re
             \end{bmatrix} , \quad c = [2,2,-1,-1]^T
 \end{align}
 if we were to convert the half-space representation above into the form defined in Equation \ref{eq:halfspace}.
+%
+From here on out, we refer to parallelotopes defined by the $n$ axis-aligned directions as the \emph{axis-aligned} parallelotopes.
+\end{example}
+
+\begin{example}
+  \label{ex:simple_diag_ptope}
+  We can also consider the axis-aligned directions rotated $45^\circ$ counter-clockwise. This would yield the two diagonal directions $[1,1]^T, [-1,1]$. Suppose we set the upper and lower offsets to be $c_u = [1,1]^T$ and $c_l = [-1,-1]^T$ respectively, then once again by Definition \ref{def:halfspace_def}, the bounded region in $\reals^2$ will be the conjunction of the linear inequalities:
+  \begin{align}
+    -1 \leq x - y \leq 1 \\
+    -1 \leq y - x \leq 1
+  \end{align}
+  In general, we define \emph{diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other. As a matter of convenience however, we refer to \emph{diagonal parallelotopes} as those defined by a combination of axis-aligned and diagonal directions. This definition will be useful when we consider parallelotopes defined by unconventional directions (i.e those which are neither axis-aligned nor diagonal).
 \end{example}
 
 

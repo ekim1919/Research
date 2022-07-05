@@ -1,6 +1,6 @@
 \chapter{Experimental Results}
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{Kaa}
+\section{Kaa}
 \label{sec:kaa}
 We evaluate the efficacy of our dynamic parallelotope bundle strategies with our tool, \emph{Kaa} \cite{kim2020kaa}. Kaa is written in Python and relies on the \emph{numpy} library for matrix computations, \emph{sympy} library for all symbolic subsitution, and \emph{scipy}, \emph{matplotlib} for plotting the reachable sets and computing the volume for lower-dimensional systems. The optimization procedure for finding the direction offets is performed through the \emph{Kodiak} library. Finally, parallelization of the offset calculation procedures is implemented through the \emph{multiprocessing} module. To estimate volume of reachable sets, we employ two techniques for estimating volume of individual parallelotope bundles. For systems of dimension fewer than or equal to three, we utilize scipy's convex hull routine.
 %
@@ -8,7 +8,7 @@ For higher-dimensional systems, we employ the volume of the tightest enveloping 
 %
 The total volume estimate of the overapproximation will be the sum of all the bundles' volume estimates.
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{Benchmarks}
+\section{Benchmarks}
 \label{sec:benchmarks}
 For benchmarking, we select six non-linear models with polynomial dynamics.
 %
@@ -21,10 +21,10 @@ Note that the initial box, which is defined only through the axis-aligned direct
 %
 For our experiments, we are concerned with the effects of additional static or dynamic parallelotopes added alongside the initial box. We refer to these parallelotopes as {\bf non-axis-aligned parallelotopes}.
 
-Table \ref{tab:modeldyns} summarizes five standard benchmarks used for experimentation. The last seven-dimensional COVID supermodel is explained in the subsequent subsection below.
+Table \ref{tab:modeldyns} summarizes five standard benchmarks used for experimentation. The last seven-dimensional COVID supermodel is explained in the subsequent section below.
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{COVID19 Supermodel}
+\section{COVID19 Supermodel}
 \label{sec:covid}
 We benchmark our dynamic strategies with the recently introduced COVID supermodel \cite{ansumali2020modelling}, \cite{indiansuper2020supermodel}. This model is a modified SIR model accounting for the possibility of \emph{asymptomatic} patients. These patients can infect susceptible members with a fixed probability. The dynamics account for this new group and its interactions with the traditional SIR groups.
 
@@ -41,6 +41,10 @@ We benchmark our dynamic strategies with the recently introduced COVID supermode
 \end{align}
 where the variables denote the fraction of a population of individuals designated as \emph{Susceptible to Asymptomatic $(S_A)$}, \emph{Susceptible to Symptomatic $(S_I)$}, \emph{Asymptomatic (A)}, \emph{Symptomatic (I)}, \emph{Removed from Asymptomatic $(R_A)$}, \emph{Removed from Symptomatic $(R_I)$}, and \emph{Deceased (D)}. We choose the parameters ($\beta = 0.25, \gamma=0.02, \eta=0.02$) where $\beta$ is the probablity of infection, $\gamma$ is the removal rate, and $\eta$ is the mortality rate. The parameters are set based on figures shown in \cite{ansumali2020modelling}. The discretization step is chosen to be $\Delta = 0.1$ and the initial box is set to be following dimensions: $S_A  \in [0.69, 0.7], \, S_I \in [0.09, 0.1], \, A \in [0.14, 0.15], \, I \in [0.04, 0.05], \, R_A  = 0,\, R_I  = 0, \, D  = 0$.
 
+
+
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \begin{table}
 %\hspace{-5em}
   \centering
@@ -65,9 +69,13 @@ COVID & 7 & $\beta=0.05$ \newline $\gamma=0.0$ \newline $\eta=0.02$ & 200 steps 
 \label{tab:modeldyns}
 \end{table}
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{Comparison of Template Generation Techniques}
+\section{Comparison of Template Generation Techniques}
 \label{sec:compare}
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+\subsection{Accuracy of Dynamic Strategies}
+\label{sec:dynamic_accuracy}
 The results of testing our dynamic strategies against static ones are summarized in Table~\ref{tab:voltable}. For models previously defined in Sapo, we set the static parallelotopes to be exactly those found in Sapo.
 If a model is not implemented in Sapo, we simply use the static parallelotopes defined in a model of equal dimension. To address the unavailability of a four-dimensional model implemented in Sapo, we sampled random subsets of five static non-axis-aligned parallelotopes and chose the flowpipe with smallest volume.
 %
@@ -79,5 +87,23 @@ A cursory analysis shows that the number of possible templates with diagonal dir
 
 From our experiments, we conclude there is no universal optimal ratio between the number of dynamic parallelotopes defined by PCA and Linear Approxiation directions which perform well on all benchmarks. In Figure \ref{fig:PCALinAppRatio}, we demonstrate two cases where varying the ratio imparts differing effects. Observe that using parallelotopes defined by linear approximation directions is more effective than those defined by PCA directions in the Vanderpol model whereas the Neuron model shows the opposite trend.
 
-%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+%\input{voltable}
+
 %\input{comp_temp_fig}
+
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+\subsection{Performance under Increasing Initial Sets}
+\label{sec:increasing_initial}
+
+A key advantage of our dynamic strategies is the improved ability to control the wrapping error naturally arising from larger initial sets. Figure \ref{fig:InitVolReachComp} presents charts showcasing the effect of increasing initial sets on the total flowpipe volume. We vary the initial box dimensions to gradually increase the box's volume. We then plot the total flowpipe volume after running the benchmark. The same initial boxes are also used in computations using Sapo's static parallelotopes. The number of parallelotopes defined by PCA and Linear Approximation directions were chosen based on best performance as seen in Table \ref{tab:voltable}. We remark that our dynamic strategies perform better than static ones in controlling the total flowpipe volume as the initial set becomes larger. On the other hand, the performance of static parallelotopes tends to degrade rapidly as we increase the volume of the initial box.
+
+%\input{initvolreachtab}
+
+
+\subsection{Performance against Random Static Templates}
+\label{sec:random_static}
+
+We additionally benchmark our dynamic strategies against static random parallelotope bundles. We sample such parallelotopes in $n$ dimensions by first sampling a set of $n$ directions uniformly on the surface of the unit $(n-1)$-sphere, then defining our parallelotope using these sampled directions. We sample twenty of these parallelotopes for each trial and average the total flowpipe volumes. As shown in Figure \ref{fig:RanStaticStratComp}, our best-performing dynamic strategies consistently outperform static random strategies for all tested benchmarks.
+
+%\input{randomstaticstrattab}

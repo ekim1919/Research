@@ -1,10 +1,12 @@
 \chapter{Dynamic Paralleotope Bundles}
 
-In this chapter, we cover a method of generating template directions dynamically and automatically. By dynamic, we mean that the template directions must be generated adaptively based on sampled trajectories and/or data from the state of the system.
+In this chapter, we cover a method of generating template directions dynamically and automatically.
 %
- By automatic, we mean that the template directions require no consideration from the user to proceed with the reachable set computation. This is in contrast to the original static algorithm treated in Section \ref{sec:static} where the user must input his or her own template directions to specify the parallelotopes before the computation starts.
+By dynamic, we mean that the template directions must be generated adaptively based on sampled trajectories and/or data from the state of the system.
 %
-To briefly outline the structure of this chapter, we first expound on the two techniques we utilize to dynamically generate template directions at each step.
+By automatic, we mean that the template directions require no consideration from the user to proceed with the reachable set computation. This is in contrast to the original static algorithm treated in Section \ref{sec:static} where the user must input his or her own template directions to specify the parallelotopes before the computation starts.
+%
+To briefly outline the structure of this chapter, we first expound on two techniques we utilize to dynamically generate template directions at each step.
 %
 The first method is based on local linear approximations where the algorithm approximates the dynamics as a linear transformation based on sample trajectories.
 %
@@ -15,10 +17,10 @@ Finally, we cover the high-level pseudo-code of the dynamic algorithm and explai
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsection{Local Linear Approximations}
+\section{Local Linear Approximations}
 \label{sec:lin_app}
 %
-Intuitively speaking, if time step is discretized to be sufficiently small, propagating trajectories according to the nonlinear dynamics $f$ for one step could lead to good lienar approximations of the dynamics within a small region.
+Intuitively speaking, if time step is discretized to be sufficiently small, propagating trajectories according to the non-linear dynamics $f$ for one step could lead to good lienar approximations of the dynamics within a small region.
 %
 %
 To do this, we first sample a set of points in the parallelotope bundle called \emph{support points} and propagate them to the next step using the dynamics $f$.
@@ -37,66 +39,83 @@ for all tempalte direcitons of the bundle $\Lambda^Q_i$. These are all found by 
 %
 We use the support points as a data-driven approach to find the best-fit linear function to use.
 %
+To find the approximate linear transformation, let $x_i$ denote the support points calculated by Equation \ref{eq:support}. We perform the following least-squares procedure: the objective would be to find an linear transformation $A$ such that it minimizes the following objective function:
+\begin{equation}
+  \min_{A} \sum_{x_i} ||f(x_i) - Ax_i||^2_2
+\end{equation}
+%
+where $||\cdot||_2$ is the standard $2$-norm on $\reals^n$.
+%
 If the dynamics of a system is linear, i.e., $x^{+} = Ax$, the image of the parallelotope $c_{l} \leq \T x \leq c_{u}$, is the set $c_{l} \leq \T \cdot A^{-1} x \leq c_{u}$.
 %
-Therefore, given the template directions of the initial set as $\T_0$, we compute the local linear approximation of the nonlinear dynamics and change the template directions by multiplying them with the inverse of the approximate linear dynamics.
+Therefore, given the template directions of the initial set as $\T_0$, we compute the local linear approximation of the non-linear dynamics and change the template directions by multiplying them with the inverse of the approximate linear dynamics.
 %
-To find the approximate linear transformation, let $x_i$ denote the support points defined in Equation \ref{eq:support}, then we perform the following least-squares procedure: the objective would be to find an linear transformation $A$ such that it minimizes the following objective function:
-\begin{equation}
-  \min_{A} \sum_{x_i} |f(x_i) - Ax_i|^2
-\end{equation}
+
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-\subsection{Principal Component Analysis}
+\section{Principal Component Analysis}
 \label{sec:pca}
-The second technique for generating template directions performs Principal cCmponent Analysis (PCA) over the images of the support points.
+The second technique for generating template directions performs Principal Component Analysis (PCA) over the images of the support points.
+%
+PCA is a standard technique in Statistical Machine Learning used for reduction of dimensionality by performing Singular Value Decomposition (SVD) on the covariance matrix generated by a set of data points.
+%
+Since the covariance matrix is symmetric (i.e $A = A^T$), the eigenvectors of this matrix will always be a orthonormal basis of the system.
 %
 Using PCA is a reasonable choice as it produces orthonormal directions that can construct a rotated box for bounding the points.
 %
 
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-\subsection{The Dynamic Algorithm}
+\section{The Dynamic Algorithm}
 \label{sec:dyna_algo}
-Observe that in general, the dynamics is nonlinear and therefore, the reachable set could be non-convex.
+Observe that in general, our input dynamics are non-linear and therefore, the reachable set is generally non-convex.
 %
 On the other hand, a parallelotope bundle is always a convex set.
 %
-To mitigate this discrepancy, we can improve accuracy of this representation by considering more template directions.
+To mitigate the drawbacks of this discrepancy, we can improve accuracy of this representation by considering more template directions and more parallelotopes.
 %
-For this purpose, we use a notion of \emph{template lifespan}, where we use the linear approximation and/or PCA template directions not only from the current step, but also from the previous $L$ steps.
+To this end, we add a parameter called \emph{template lifespan}, where we use the generated linear approximation and/or PCA template directions not only from the current step but also from previous steps.
 %
-We will demonstrate the effectiveness and tune each of the options (PCA / linear approximation as well as lifespan option) in our benchmarks.
+ In our benchmarks, we tune each of the options (PCA / linear approximation as well as lifespan option) to demonstrate that specific parameters generate more accurate reachable sets than those generated by the static algorithm.
 
 The new approach is given in Algorithm~\ref{alg:new}.
 %
-In this algorithm, instead of fixing the set of templates, we compute one set of templates (that is, a collection of $n$ template directions), using linear approximation of the dynamics and PCA.
-%
-The algorithm makes use of helper function \texttt{hstack}, which converts column vectors into a matrix (as shown in Equation~\ref{eq:ptopeexample} provided in Example~\ref{ex:ptope}).
-%
-The notation $M_{*,i}$ is used to refer to the $i^{th}$ column of matrix $M$.
+During each step, the algorithm computes a collection of template directions from the two techniques outlined in Sections \ref{sec:lin_app} and \ref{sec:pca}. Each technique will be encoded as a subroutine labeled \texttt{ApproxLinearTrans} and \texttt{PCA}.
 %
 The \texttt{ApproxLinearTrans} function computes the best approximation of a linear transformation given a list of points before and after the one-step transformation $f$.
 %
-%More specifically, given a matrix $X$ of points before applying the transformation $f$, a matrix of points after the transformation $X'$, we perform a least-squares fit for the linear transition matrix $A$ such that $X' \approx AX$.
-%
-%This can be computed by $A = X' X^\dagger$, where $X^\dagger$ is the Moore-Penrose pseudoinverse of $X$.
-%
 The \texttt{PCA} function returns a set of orthogonal directions using principal component analysis of a set of points.
 %
-Finally, \texttt{TransformBundle} is the same as in Algorithm~\ref{alg:old}.
+Now each subroutine will return a collection of $n$ template directions, which in turn will specifiy exactly one parallelotope.
+%
+Hence, two parallelotopes, one generated by \texttt{ApproxLinearTrans} and the other by \texttt{PCA}, can be added to the parallelotope bundle at each step.
+%
+
+There are a few subtle points to be made about the sub-routines used in Algorithm \ref{alg:new}.
+%
+First, The algorithm makes use of helper function \texttt{hstack}, which attaches two matrices along their rows. In other words, \texttt{hstack} can be visualized as two matrices with the same number of columns stacked on top of one another.
+%
+Second, we assume that the sub-routine  \texttt{PCA} returns the orthonormal eigenvectors as rows. This assures that the eigenvectors are rows of a template direction matrix of a parallelotope.
+%
+Third, the \texttt{Maximize} and \texttt{Minimize} sub-routines encapsulate the linear programming procedures required to compute the support points as discussed in Equation \ref{eq:support}.
+%
+Both sub-routines take the feasible region as the first parameter and the objective function as the second parameter.
+%
+%The notation $M_{*,i}$ is used to refer to the $i^{th}$ column of matrix $M$.
+ Finally, the subroutine \texttt{TransformBundle} is the same as specified in Algorithm~\ref{alg:old}.
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 \input{dynamic_alg_fig}
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-lgorithm~\ref{alg:new} computes the dynamic templates for each time step $k$.
+Algorithm~\ref{alg:new} computes the dynamic templates for each time step $k$.
 %
-Line~\ref{ln:linearapprox} computes the linear approximation of the nonlinear dynamics and this linear approximation is used to compute the new template directions according to this linear transformation in Line~\ref{ln:linapp}.
+Line~\ref{ln:linearapprox} computes the linear approximation of the non-linear dynamics and this linear approximation is used to compute the new template directions according to this linear transformation in Line~\ref{ln:linapp}.
 %
 The PCA directions of the images of support points is computed in line~\ref{ln:pca}.
 %
-For the time step $k$, the linear and PCA templates are given as $\T_{k}^{lin}$ and $\T_{k}^{pca}$, respectively.
+For the time step $k$, the linear approximation and PCA templates direction matrices are given as $\Lambda_{k}^{lin}$ and $\Lambda_{k}^{pca}$, respectively.
 %
-To improve the accuracy of the reachable set, we compute the overapproximation of the reachable set with respect to not just the template directions at the current step, but with respect to other template directions for time steps that are within the lifespan $L$.
+To improve the accuracy of the reachable set, we compute the overapproximation of the reachable set with respect to not just the template directions at the current step, but with respect to other template directions for time steps that are within the template lifespan parameter $L$.
 %
+Alternatively, we assign each parallelotope a parameter $L$ which dictates the number of steps we keep the parallelotope in the bundle after adding it in the current step.

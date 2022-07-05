@@ -1,4 +1,4 @@
-\begin{algorithm}[t]
+\begin{algorithm}[t!]
   \SetKwInput{KwInput}{Input}
   \SetKwInput{KwOutput}{Output}
   \SetKwFunction{CreatePCA}{CreatePCA}
@@ -20,28 +20,29 @@
 \SetAlgoLined
 \DontPrintSemicolon
 
-\KwInput{Dynamics $f$, Initial Parallelotope $P_0$, Step Bound $S$}
+\KwInput{Dynamics $f$, Initial Parallelotope $P_0$, Step Bound $S$, Lifespan Parameter $L$}
 \KwOutput{Reachable Set Overapproximation $\overline\Theta_k$ at each step $k$}
 
 $Q_0 = \{P_0 \}$ \;
-
+$\Lambda^{accum} = I_n$ \;
 % $\T_0 = \{ \{ P_0.\T_1, \ldots P_0.\T_n \} \}$ \;
-$\T = \hstack(P_0.\T_1, \ldots, P_0.\T_n)$ \tcp{Init Template Directions}
+$\Lambda^{Q_0} = \Lambda^{P_0}$ \tcp{Init Template Directions}
 
  \For{$k \in [1, 2, \ldots, S]$}{
     $P_{supp}$ = \GetSupp($Q_{k-1}$) (support points of $Q_{k-1}$) \;
     $P_{prop}$ = \PropPoints($P_{supp}$, $f$) (image of support points) \;
 
     $A$ =  \ApproxLinearTrans($P_{supp}$, $P_{prop}$) \; \label{ln:linearapprox}
-    $\T = \T \cdot A^{-1}$ \;
+    $\Lambda^{accum} = \Lambda^{accum} \cdot A^{-1}$ \;
+    $\Lambda_k^\text{lin} = \Lambda^{accum}$ \\ \; \label{ln:linapp}
+    $\Lambda_k^\text{pca} = \PCA(P_{prop}) $\; \label{ln:pca}
 
-    $\T_k^\text{lin} = \{ \{\T_{*,1} , \ldots, \T_{*,n} \} \} $ \; \label{ln:linapp}
-    $\T_k^\text{pca} = \{ \PCA(P_{prop}) \} $\; \label{ln:pca}
-
-    $\T_k = \T_k^\text{lin} \cup \T_k^\text{pca}$ \;
-    \;
-    \tcc{For lifespan $L$, instead call \TransformBund with $\T_k \cup \T_{k-1} \cup \ldots \cup \T_{k-L}$}
-    $Q_k$ = \TransformBund($f$, $Q_{k-1}, \T_k$) \;
+    $\Lambda_k = \hstack(\Lambda_k^\text{lin}, \Lambda_k^\text{pca})$ \;
+    $\Lambda^{total} = \Lambda_k$ \;
+    \For{$ i \in [1,2, \ldots, L]$}{ \tcp{If $L = 0$, then skip}
+        $\Lambda^{total} = \hstack(\Lambda^{total}, \Lambda_{k-i})$
+    } \;
+    $Q_k$ = \TransformBund($f$, $Q_{k-1}, \Lambda_k$) \;
    $\overline\Theta_k \gets Q_k$ \;
  }
  \Return{$\overline\Theta_1 \ldots \overline\Theta_S$} \;
@@ -49,9 +50,9 @@ $\T = \hstack(P_0.\T_1, \ldots, P_0.\T_n)$ \tcp{Init Template Directions}
  \;
    \Fun{\GetSupp{$Q$}}{
      $P_{supp} = \emptyset$ \;
-      \For{$P \in Q$}{
+      \For{$P \in \ptopeset{Q}$}{
         \For{$i \in [1, 2, \ldots, n]$}{
-         $P_{supp} = P_{supp} \cup ~ \Maximize (Q, P.T_i) \cup ~ \Maximize (Q, -P.T_i)$
+         $P_{supp} = P_{supp} \cup ~ \Maximize (Q, \Lambda_i^P) \cup ~ \Maximize (Q, -\Lambda_i^P)$
         }
      }
 

@@ -1,4 +1,4 @@
-\begin{algorithm}[t]
+\begin{algorithm}[t!]
   \SetKwInput{KwInput}{Input}
   \SetKwInput{KwOutput}{Output}
   \SetKwFunction{AppendPCA}{AppendNewPCATemplates}
@@ -31,18 +31,16 @@ $Q_0 = \{ P_0 \}$ \;
    $Q' \gets \{\}$; $c_{u} \gets +\infty$; $c_{l} \gets -\infty$\;
    \For{each parallelotope $P$ in $Q$}{
      % $\tup{\T, c_{l}, c_{u}} \gets \mathsf{half-spaceRepresentation}(P)$\;
-     $\tup{v, G} \gets \mathsf{generatorRepresentation}(P)$\;
+     $\langle v, G \rangle \gets \mathsf{generatorRepresentation}(P)$\;
      \For{each template direction $\Lambda_i$ in the template directions $\Lambda$ }{
        $c_{u}'[i] \gets \mathsf{min}\{ \mathsf{optBox(\Lambda_{i} \cdot f)}, c_{u}'[i] \}$ (Equation~\ref{eq:maxalpha})\;
        $c_{l}'[i] \gets \mathsf{max}\{ -1 \times \mathsf{optBox(-1\times \Lambda_{i} \cdot f)}, c_{l}'[i] \}$\;
      }
    }
-   Construct parallelotopes $P_{1}', \ldots, P_{k}'$ from $\Lambda, c_{l}', c_{u}'$ and indexes from $I$\;
-   % \textcolor{red}{\textbf{SRIDHAR: add this}} \;
-   $Q' \gets \{P_{1}', \ldots, P_{k}'\}$\;
-     % $P' \gets \tup{\T, c_{l}', c_{u}'}$\;
-     % $Q' \gets Q' \cup \{P'\}$\;
-   \Return{$Q'$} \;
+   Construct parallelotopes $P_{1}', \ldots, P_{k}'$ from $\Lambda, c_{l}', c_{u}'$ and indexes from $I$ \;
+
+   $Q' \gets \{P_{1}', \ldots, P_{k}'\}$ \;
+   \Return{$Q'$}
  }
 \caption{Reachable set computation using manual and static templates.}
 \label{alg:old}
