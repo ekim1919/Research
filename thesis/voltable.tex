@@ -1,7 +1,6 @@
-\begin{table}[h!]
-\hspace{1em}
-\begin{subtable}[h]{0.45\textwidth}
-     \centering
+\begin{figure}[h!]
+\centering
+\subfloat[Vanderpol]{
      \begin{tabular}{|c|c|}
      \hline
      Strategy & Total  Volume \\
@@ -21,11 +20,9 @@
      5 Static Diagonal(Sapo) & 2.863307  \\
      \hline
     \end{tabular}
-    \caption{Vanderpol}
     \label{tab:vdpvol}
- \end{subtable}\hspace{1em}
- \begin{subtable}[h]{0.45\textwidth}
-      \centering
+ }
+ \subfloat[Jet Engine]{
       \begin{tabular}{|c|c|}
       \hline
       Strategy & Total  Volume \\
@@ -45,13 +42,10 @@
       5 Static Diagonal (Sapo) & 66182.18  \\
       \hline
      \end{tabular}
-     \caption{Jet Engine}
      \label{tab:enginevol}
-  \end{subtable}
+  }
 
-  \hspace{1em}
-  \begin{subtable}[h]{0.45\textwidth}
-       \centering
+  \subfloat[FitzHugh-Nagumo]{
        \begin{tabular}{|c|c|}
        \hline
        Strategy & Total  Volume \\
@@ -71,73 +65,68 @@
        5 Static Diagonal  (Sapo) & 202.406  \\
        \hline
       \end{tabular}
-      \caption{FitzHugh-Nagumo}
-      \end{subtable} \hspace{1em}
-      \begin{subtable}[h]{0.45\textwidth}
-        \centering
-        \begin{tabular}{|c|c|}
-        \hline
-        Strategy & Total  Volume \\
-        \hline
-        {\bf 2 LinApp } & {\bf 0.001423} \\
-        \hline
-        1 PCA, 1 LinApp & 0.106546\\
+      \label{tab:neuronvol}
+  }
+  \subfloat[SIR]{
+    \begin{tabular}{|c|c|}
+    \hline
+    Strategy & Total  Volume \\
+    \hline
+    {\bf 2 LinApp } & {\bf 0.001423} \\
+    \hline
+    1 PCA, 1 LinApp & 0.106546\\
 
-        \hline
-        2 PCA  & 0.117347\\
-        \hline
-        2 Static Diagonal (Sapo) & 0.020894\\
-        \hline
-       \end{tabular}
-       \caption{SIR}
-       \label{tab:sirvol}
-    \end{subtable}
+    \hline
+    2 PCA  & 0.117347\\
+    \hline
+    2 Static Diagonal (Sapo) & 0.020894\\
+    \hline
+   \end{tabular}
+   \label{tab:sirvol}
+}
 
-    \hspace{1em}
-    \begin{subtable}[h]{0.45\textwidth}
-         \centering
-         \begin{tabular}{|c|c|}
-         \hline
-         Strategy & Total  Volume \\
-         \hline
-         5 LinApp & 5.5171 \\
-         \hline
-         {\bf 1 PCA, 4 LinApp } & {\bf 5.2536} \\
-         \hline
-         2 PCA, 3 LinApp  & 5.6670\\
-         \hline
-         3 PCA, 2 LinApp  & 5.5824\\
-         \hline
-         4 PCA, 1 LinApp  & 312.2108 \\
-         \hline
-         5 PCA  & 388.0513 \\
-         \hline
-         5 Static Diagonal (Best) & 3023.4463  \\
-         \hline
-        \end{tabular}
-        \caption{Coupled Vanderpol}
-        \label{tab:sirvol}
-     \end{subtable}\hspace{1 em}
-    \begin{subtable}[h]{0.45\textwidth}
-         \centering
-         \begin{tabular}{|c|c|}
-         \hline
-         Strategy & Total  Volume \\
-         \hline
-         3 LinApp & $2.95582227 * 10^{-10}$ \\
-         \hline
-         {\bf 1 PCA, 2 LinApp } & {\bf $2.33007583 * 10^{-10}$}\\
-         \hline
-         2 PCA, 1 LinApp &$ 4.02751770 * 10^{-9}$\\
-         \hline
-         3 PCA & $4.02749571 * 10^{-9}$\\
-         \hline
-         3 Static Diagonal (Sapo) & $4.02749571 * 10^{-9}$\\
-         \hline
-        \end{tabular}
-        \caption{COVID}
-        \label{tab:covidvol}
-     \end{subtable}
+  \subfloat[Coupled Vanderpol]{
+     \centering
+     \begin{tabular}{|c|c|}
+     \hline
+     Strategy & Total  Volume \\
+     \hline
+     5 LinApp & 5.5171 \\
+     \hline
+     {\bf 1 PCA, 4 LinApp } & {\bf 5.2536} \\
+     \hline
+     2 PCA, 3 LinApp  & 5.6670\\
+     \hline
+     3 PCA, 2 LinApp  & 5.5824\\
+     \hline
+     4 PCA, 1 LinApp  & 312.2108 \\
+     \hline
+     5 PCA  & 388.0513 \\
+     \hline
+     5 Static Diagonal (Best) & 3023.4463  \\
+     \hline
+    \end{tabular}
+    \label{tab:sirvol}
+  }
+  \subfloat[COVID]{
+     \begin{tabular}{|c|c|}
+     \hline
+     Strategy & Total  Volume \\
+     \hline
+     3 LinApp & $2.95582227 * 10^{-10}$ \\
+     \hline
+     {\bf 1 PCA, 2 LinApp } & {\bf $2.33007583 * 10^{-10}$}\\
+     \hline
+     2 PCA, 1 LinApp &$ 4.02751770 * 10^{-9}$\\
+     \hline
+     3 PCA & $4.02749571 * 10^{-9}$\\
+     \hline
+     3 Static Diagonal (Sapo) & $4.02749571 * 10^{-9}$\\
+     \hline
+    \end{tabular}
+    \label{tab:covidvol}
+  }
+
  \caption{Tables presenting upper bounds on the total reachable set volume by strategy. The static directions are retrieved and/or inspired from Sapo models of equal dimension for benchmarking. The best performing strategy is highlighted in bold.}
-     \label{tab:voltable}
-\end{table}
+\label{tab:voltable}
+\end{figure}

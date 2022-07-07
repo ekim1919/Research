@@ -152,6 +152,16 @@ It is worth noting that axis-aligned box on the 2D plane above would give the re
 if we were to convert the half-space representation above into the form defined in Equation \ref{eq:halfspace}.
 %
 From here on out, we refer to parallelotopes defined by the $n$ axis-aligned directions as the \emph{axis-aligned} parallelotopes.
+%
+For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_align_ptope}
+
+\begin{figure}
+  \centering
+  \includegraphics{example-image-a}
+  \caption{Plot of the axis-aligned parallelotope of Example \ref{ex:simple_ptope}.}
+  \label{fig:axis_align_ptope}
+\end{figure}
+
 \end{example}
 
 \begin{example}
@@ -161,7 +171,14 @@ From here on out, we refer to parallelotopes defined by the $n$ axis-aligned dir
     -1 \leq x - y \leq 1 \\
     -1 \leq y - x \leq 1
   \end{align}
-  In general, we define \emph{diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other. As a matter of convenience however, we refer to \emph{diagonal parallelotopes} as those defined by a combination of axis-aligned and diagonal directions. This definition will be useful when we consider parallelotopes defined by unconventional directions (i.e those which are neither axis-aligned nor diagonal).
+  In general, we define \emph{diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other. As a matter of convenience however, we refer to \emph{diagonal parallelotopes} as those defined by a combination of axis-aligned and diagonal directions. This definition will be useful when we consider parallelotopes defined by unconventional directions (i.e those which are neither axis-aligned nor diagonal). To see a visual plot of the diagonal parallelotope, see Figure \ref{fig:diagonal_ptope}.
+
+  \begin{figure}
+    \centering
+    \includegraphics{example-image-b}
+    \caption{Plot of the rotated parallelotope of Example \ref{ex:simple_diag_ptope}.}
+    \label{fig:diagonal_ptope}
+  \end{figure}
 \end{example}
 
 
@@ -181,6 +198,7 @@ In particular, a parallelotope is a special case of a zonotope where the number 
 
 There is a simple method to convert from the half-space representation of $P$ to its generator representation:
 
+\begin{tcolorbox}
 \hspace{1.5cm} \textbf{Half-Space Representation to Generator Representation Conversion}
 \begin{enumerate}
 
@@ -188,6 +206,7 @@ There is a simple method to convert from the half-space representation of $P$ to
   \item The $j+1$ vertex is obtained by solving the linear equation $\Lambda x = \mu_{j}$ where $\mu_{j}[i] = c_{l}[i]$ when $i \neq j$ and $\mu_{j}[j] = c_{u}[j]$.
   \item The anchor $v$ of the parallelotope is the vertex $v_1$ and the generators will be $g_{i} = v_{i+1} - v_{1}$.
 \end{enumerate}
+\end{tcolorbox}
 %
 There is a procedure to perform the reverse direction, namely to convert from the generator representation to the half-space representation. However, we will not need this procedure for this thesis. Refer to \cite{dang2014parameter} for a more detailed exposition.
 

@@ -1,0 +1,32 @@
+\def \randvolwidth {0.6}
+\def \randvolheight {0.5}
+\def \randvolhorshift {-1.5cm}
+\def \randvolvertshift {-2cm}
+
+\begin{figure}
+  \centering
+  \vspace*{\randvolvertshift}
+    \hspace*{\randvolhorshift}\subfloat[Vanderpol]{
+    \includegraphics[width=\initvolwidth\textwidth, height=\initvolheight \textwidth]{figures/InitVolVSReachVol/VDPInitReachVolRanStrat.png}
+  }
+  \subfloat[Jet Engine]{
+  \includegraphics[width=\initvolwidth\textwidth, height=\initvolheight \textwidth]{figures/InitVolVSReachVol/JetEngineInitReachVolRanStrat.png}
+  }
+
+  \hspace*{\randvolhorshift}\subfloat[Neuron]{
+    \includegraphics[width=\initvolwidth\textwidth, height=\initvolheight \textwidth]{figures/InitVolVSReachVol/NeuronInitReachVolRanStrat.png}
+  }
+  \subfloat[Coupled Vanderpol]{
+  \includegraphics[width=\initvolwidth\textwidth, height=\initvolheight \textwidth]{figures/InitVolVSReachVol/CVDPInitReachVolRanStrat.png}
+  }
+
+  \hspace*{\randvolhorshift}\subfloat[SIR]{
+  \includegraphics[width=\initvolwidth\textwidth, height=\initvolheight \textwidth]{figures/InitVolVSReachVol/SIRInitReachVolRanStrat.png}
+  }
+  \subfloat[COVID]{
+  \includegraphics[width=\initvolwidth\textwidth, height=\initvolheight \textwidth]{figures/InitVolVSReachVol/CovidInitReachVolRanStrat.png}
+  }
+
+  \caption{Comparision between random static strategies and the best performing dynamic strategies as the volume of the initial set grows. The total reachable set volumes for random static strategies are averaged over ten trials for each system.}
+  \label{fig:RanStaticStratComp}s
+\end{figure}

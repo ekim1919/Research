@@ -1,47 +1,82 @@
-\chapter{Experimental Results}
+\chapter{Evaluations}
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Kaa}
 \label{sec:kaa}
-We evaluate the efficacy of our dynamic parallelotope bundle strategies with our tool, \emph{Kaa} \cite{kim2020kaa}. Kaa is written in Python and relies on the \emph{numpy} library for matrix computations, \emph{sympy} library for all symbolic subsitution, and \emph{scipy}, \emph{matplotlib} for plotting the reachable sets and computing the volume for lower-dimensional systems. The optimization procedure for finding the direction offets is performed through the \emph{Kodiak} library. Finally, parallelization of the offset calculation procedures is implemented through the \emph{multiprocessing} module. To estimate volume of reachable sets, we employ two techniques for estimating volume of individual parallelotope bundles. For systems of dimension fewer than or equal to three, we utilize scipy's convex hull routine.
+%Mention kodiak, general structure of program, difference between kaa and dynamic.
+%
+We evaluate the efficacy of our dynamic parallelotope bundle strategies with our tool, \emph{Kaa} .
+%
+Kaa is written in Python and relies on several modules to perform reachable set computation.
+\begin{description}
+  \item[Numpy:] The \emph{Numpy} module is used to do all matrix computations, such as matrix multiplication and matrix inversions. It is also used to efficiently solve systems of linear equations, especially those which arise from converting from half-space representation to generator representation (See Section \ref{sec:parallelotope}), and execute the Least Squares routine required to compute the solution to Problem \ref{eq:least_squares}.
+  %
+  \item[Sympy:] The \emph{Sympy} module is used to do all symbolic computations. The polynomials which result from performing the $\Lambda_i \cdot f(x)$ in Equation \ref{eq:maxalpha} are all simplified and encapsulated by the $\texttt{sp.Poly}$ object. This allows extraction of coefficients of monomial terms to become a simple call to
+  $\texttt{sp.Poly.coeff\_monomial}$.
+  %
+  \item[Sklearn:] The \emph{Sklearn} module called to perform PCA on the end-points of the sample trajectories as described in Section \ref{sec:pca}. The exact method is $\texttt{sklearn.decomposition.PCA}$.
+  %
+  \item[Scipy:] The \emph{Scipy} module offers several auxiliary routines important to the our analysis of reachable sets, especially \texttt{scipy.spatial.ConvexHull}.
+  %
+  \item[Matplotlib:] The \emph{Matplotlib} module is for all plotting of the computed reachable sets. Kaa utilizes the library's animation features to even animate the evolution of the parallelotope bundle as the reachable set computation proceeds.
+  %
+  \item[Multiprocessing:] The \emph{multiprocessing} module parallelizes all the non-linear optimization procedures required to compute the new upper and lower offsets of all the template directions of the parallelotope bundle. This is expressed by lines 13,14 in Algorithm \ref{alg:old}.
+  %
+  \item[Swiglpk:] The \emph{swiglpk} module is a simple Python wrapper over the C library, \emph{GLPK} (GNU Linear Programming Kit). Kaa uses swiglpk for all LP problems, such as those which arise from computing the support points over a bundle (see Equation \ref{eq:support}).
+\end{description}
+
+The original version of Kaa was created to compactify and simplify \emph{Sapo}, a previous tool exploring reachability computation with static parallelotope bundles \cite{dreossi2017sapo}.
+%
+Through the expressiveness and terseness of Python, Algorithm \ref{alg:old} was implemented in only $650$ lines of code.
+%
+We released as a pedagogical tool to allow practitioners and students to easily experiment with parallelotopes-based reachability and understand the effects of choosing different template directions \cite{kim2020kaa}.
+
+To extend Kaa to handle dynamic parallelotope bundles, we replaced the original optimization procedure leveraging Bernstein polynomials (see Section \ref{sec:bernstein}) to \emph{Kodiak}.
+%
+% FIX KODIAK CITATIONS IN THESIS.BIB
+%
+Kodiak is an optimization library implemented in C\texttt{++} that implements a branch-and-bound algorithm for numerical approximations. It uses a combination of interval arithmetric and Bernstein enclosure to approximate solutions to optimization problems of the form shown in Equation \ref{eq:maxsup}.
+%
+The optimization procedure for finding the direction offets is performed through Kodiak.
+%
+We decided to use Kodiak primarily for two reasons:
+%
+\begin{enumerate}
+  \item Kodiak is very fast as a Python wrapper over the original C\texttt{++} implementation. It is much faster than Kaa's original procedure of computing all Bernstein coefficients.
+  \item Kodiak can handle a wider variety of dynamics, including those which feature trigonometric terms and square root terms. This allows us to generalize beyond the polynomial dynamcis first considered by \cite{dreossi2016parallelotope}.
+\end{enumerate}
+%
+
+To estimate volume of reachable sets, we employ two techniques for estimating volume of individual parallelotope bundles. For systems of dimension fewer than or equal to three, we utilize Scipy's convex hull routine.
 %
 For higher-dimensional systems, we employ the volume of the tightest enveloping box around the parallelotope bundle.
 %
-The total volume estimate of the overapproximation will be the sum of all the bundles' volume estimates.
+The total volume estimate of the over-approximation will be the sum of all the computed bundles' volume estimates.
+%
+To be specific, if \texttt{ApproxVol} is the routine used to approximate the volume of a bundle, then by utilizing the notion of line 22 of Algorithm \ref{algo:new}:
+%
+\begin{equation}
+  \texttt{ApproxVol}(\overline\Theta) = \sum_{k} \texttt{ApproxVol}(\overline\Theta_k)
+\end{equation}
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Benchmarks}
 \label{sec:benchmarks}
 For benchmarking, we select six non-linear models with polynomial dynamics.
 %
-Many of these models are also implemented in \emph{Sapo} \cite{dreossi2017sapo}, a previous tool exploring reachability with {\bf static} parallelotope bundles.
+Since many of these models are also implemented in Sapo, we choose benchmarks with polynomial dynamics to directly compare the performance of our dynamic strategies with the Sapo's static parallelotopes. To provide meaningful comparisions, we set the number of dynamic parallelotopes to be equal to the number of static ones excluding the initial box.
 %
-We choose benchmarks with polynomial dynamics to directly compare the performance of our dynamic strategies with the Sapo's static parallelotopes. To provide meaningful comparisions, we set the number of dynamic parallelotopes to be equal to the number of static ones excluding the initial box. Here, {\bf diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other.
+Recall through the discussion in Example \ref{ex:simple_diag_ptope} that we refer to parallelotopes defined only by axis-aligned and diagonal directions as \emph{diagonal parallelotopes}.
 %
-By {\bf diagonal parallelotopes}, we refer to parallelotopes defined only by axis-aligned and diagonal directions. Similarly, {\bf diagonal parallelotope bundles} are parallelotope bundles solely consisting of diagonal parallelotopes. Sapo primarily utilizes {\bf static diagonal parallelotope bundles} to perform its reachability computation.
+Similarly, \emph{diagonal parallelotope bundles} are parallelotope bundles solely consisting of diagonal parallelotopes. Sapo primarily utilizes \emph{static diagonal parallelotope bundles} to perform its reachability computation.
+%
 Note that the initial box, which is defined only through the axis-aligned directions, is contained in every bundle.
 %
-For our experiments, we are concerned with the effects of additional static or dynamic parallelotopes added alongside the initial box. We refer to these parallelotopes as {\bf non-axis-aligned parallelotopes}.
+For our experiments, we are concerned with the effects of additional static or dynamic parallelotopes added alongside the initial box. We refer to these parallelotopes \emph{non-axis-aligned parallelotopes}.
 
 Table \ref{tab:modeldyns} summarizes five standard benchmarks used for experimentation. The last seven-dimensional COVID supermodel is explained in the subsequent section below.
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-\section{COVID19 Supermodel}
-\label{sec:covid}
-We benchmark our dynamic strategies with the recently introduced COVID supermodel \cite{ansumali2020modelling}, \cite{indiansuper2020supermodel}. This model is a modified SIR model accounting for the possibility of \emph{asymptomatic} patients. These patients can infect susceptible members with a fixed probability. The dynamics account for this new group and its interactions with the traditional SIR groups.
 
-\begin{align}
-  \begin{split}
-   S_A' & = S_A  -(\beta S_A(A+I))\cdot \Delta \\
-   S_I' & = S_I  -(\beta S_I (A + I))\cdot \Delta \\
-   A' & = A + (\beta S_I(A+I) - \gamma I)\cdot \Delta \\
-   I' & = I + (\beta S_I (A+I) - \gamma I)\cdot  \Delta \\
-   R_A' & = R_A + (\gamma A)\cdot \Delta \\
-   R_I' & = R_I + (\gamma I)\cdot \Delta \\
-   D' & = D + (\eta I)\cdot \Delta
-  \end{split}
-\end{align}
-where the variables denote the fraction of a population of individuals designated as \emph{Susceptible to Asymptomatic $(S_A)$}, \emph{Susceptible to Symptomatic $(S_I)$}, \emph{Asymptomatic (A)}, \emph{Symptomatic (I)}, \emph{Removed from Asymptomatic $(R_A)$}, \emph{Removed from Symptomatic $(R_I)$}, and \emph{Deceased (D)}. We choose the parameters ($\beta = 0.25, \gamma=0.02, \eta=0.02$) where $\beta$ is the probablity of infection, $\gamma$ is the removal rate, and $\eta$ is the mortality rate. The parameters are set based on figures shown in \cite{ansumali2020modelling}. The discretization step is chosen to be $\Delta = 0.1$ and the initial box is set to be following dimensions: $S_A  \in [0.69, 0.7], \, S_I \in [0.09, 0.1], \, A \in [0.14, 0.15], \, I \in [0.04, 0.05], \, R_A  = 0,\, R_I  = 0, \, D  = 0$.
-
-
+\input{covid19}
 
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -87,7 +122,7 @@ A cursory analysis shows that the number of possible templates with diagonal dir
 
 From our experiments, we conclude there is no universal optimal ratio between the number of dynamic parallelotopes defined by PCA and Linear Approxiation directions which perform well on all benchmarks. In Figure \ref{fig:PCALinAppRatio}, we demonstrate two cases where varying the ratio imparts differing effects. Observe that using parallelotopes defined by linear approximation directions is more effective than those defined by PCA directions in the Vanderpol model whereas the Neuron model shows the opposite trend.
 
-%\input{voltable}
+\input{voltable}
 
 %\input{comp_temp_fig}
 
@@ -98,7 +133,7 @@ From our experiments, we conclude there is no universal optimal ratio between th
 
 A key advantage of our dynamic strategies is the improved ability to control the wrapping error naturally arising from larger initial sets. Figure \ref{fig:InitVolReachComp} presents charts showcasing the effect of increasing initial sets on the total flowpipe volume. We vary the initial box dimensions to gradually increase the box's volume. We then plot the total flowpipe volume after running the benchmark. The same initial boxes are also used in computations using Sapo's static parallelotopes. The number of parallelotopes defined by PCA and Linear Approximation directions were chosen based on best performance as seen in Table \ref{tab:voltable}. We remark that our dynamic strategies perform better than static ones in controlling the total flowpipe volume as the initial set becomes larger. On the other hand, the performance of static parallelotopes tends to degrade rapidly as we increase the volume of the initial box.
 
-%\input{initvolreachtab}
+\input{initvolreachcomp}
 
 
 \subsection{Performance against Random Static Templates}
@@ -106,4 +141,4 @@ A key advantage of our dynamic strategies is the improved ability to control the
 
 We additionally benchmark our dynamic strategies against static random parallelotope bundles. We sample such parallelotopes in $n$ dimensions by first sampling a set of $n$ directions uniformly on the surface of the unit $(n-1)$-sphere, then defining our parallelotope using these sampled directions. We sample twenty of these parallelotopes for each trial and average the total flowpipe volumes. As shown in Figure \ref{fig:RanStaticStratComp}, our best-performing dynamic strategies consistently outperform static random strategies for all tested benchmarks.
 
-%\input{randomstaticstrattab}
+\input{ranstaticstratcomp}
