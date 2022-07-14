@@ -1,50 +1,74 @@
 \chapter{Preliminaries}
 \label{chap:prelim}
 
-We begin with some basic definitions pertaining to reachability and parallelotopes. The definition of Bernstein polynomials and the reachable set computaion algorithm will be defined. Finally, an outline of the reachability algorithm given by \cite{dreossi2016parallelotope} for polynomial dynamical systems will be presented.
+We begin with some basic definitions pertaining to reachability and parallelotopes. The definition of Bernstein polynomials and their enclosure properties will be stated. Finally, an outline of the reachability algorithm given by \cite{dreossi2016parallelotope} for polynomial dynamical systems will be presented.
 
 \section{Basic Definitions}
 \label{sec:definitions}
 
-As stated in the previous sections, this thesis pertains to the reachability analysis of dynamical systems. Roughly speaking, a dynamical system is governed by a set of differential equations such that the states of the system evolve according the solutions of the said differential equations.
+As stated in the previous section, this thesis pertains to the reachability analysis of dynamical systems. Roughly speaking, a dynamical system describes the behavior of states in space which is governed by a set of differential equations. The states of the system evolve according to the flow of time and the vector field induced by the governing differential equations.
+
+Towards introducing more terminology, the \emph{state} of a system, denoted as $x$, lies in a domain $D \subseteq \reals^n$ where the solutions to the differential equations are defined.
 %
-The state of a system, denoted as $x$, lies in a domain $D \subseteq \reals^n$ where the solution to the differential equations is defined.
+In the reachability analysis literature, there are several definitions for dynamical systems which appear depending on the authors' taste of formalizations. Here is a more rigorous definition appearing in \cite{dang1998reachability}:
+\begin{definition}
+\label{def:diff_dyna_sys}
+A \emph{continuous dynamical system} is a tuple $\langle X, f \rangle$ where $X = \reals^n$ is finite-dimensional Euclidean space and $f$ is a continuous function on $X$. A point (state) of $x_0 \in X$ evolves according to a tracjectory $\xi(t): \reals^+ \rightarrow X$ such that the following hold:
 %
-We restrict our attention to a specific definition of these dynamical systems:
+\begin{equation}
+  \label{eq:diff_dyna_sys}
+  \begin{split}
+    \xi(0) & = x_0 \\
+    \frac{d \xi(t)}{dt} & = f(\xi(t)) \quad \forall t \in \reals^+
+  \end{split}
+\end{equation}
+\end{definition}
+%
+\noindent Note that, by a simple separation of variables argument and an initial value of $\xi(0) = x_0$, Equation \ref{eq:diff_dyna_sys} yields the following form for $\xi$:
+\begin{equation}
+\xi(t) = x_0 + \int_0^t f(\xi(\tau)) d\tau
+\end{equation}
+%
+\noindent However, many members of the research community choose to simply express the system as:
+\begin{equation}
+\label{eq:cont_dynas}
+x' = f(x)
+\end{equation}
+for a continuous function $f:\reals^n \rightarrow \reals^n$. We restrict our attention to a discretized version of this definition for this thesis:
 %
 \begin{definition}
-A discrete-time nonlinear system is denoted as
+A \emph{discrete-time dynamical system} is denoted as
 \begin{equation}
   x^{+} = f(x)
 \label{eq:sys}
 \end{equation}
-where $f: \reals^{n} \rightarrow \reals^{n}$ is a nonlinear function.
+where $f: \reals^{n} \rightarrow \reals^{n}$ is a function and $x^{+}$ denotes the evolved output state.
 \end{definition}
 %
- Intuitively, the function $f$ takes input a state of the system and outputs the next step of the system evolved according to the non-linear dynamics.
+ In other words, the function $f$ takes input a state of the system and outputs the next step of the system evolved according to the dynamics.
 %
-Here, the function $f$ generally represents some discretized version of some specified continuous non-linear dynamical systems. Recall that a dynamical system is considered \emph{linear} if its dynamics can be expressed as
+Intuitively speaking, the function $f$ generally represents a discretized version of some specified continuous dynamical system. Here, a discrete-time dynamical system is considered \emph{linear} if its dynamics can be expressed as
 
 $$
-x' = Ax, \quad A \in \reals^{n \times n}
+x^{+} = Ax, \quad A \in \reals^{n \times n}
 $$
 %
-Otherwise, we deem the system to be \emph{nonlinear}.
+Otherwise, we deem the system to be \emph{non-linear}.
 %
-Hence, in particular, the function $f$ cannot be expressed as some matrix $A \in \reals^{n \times n}$.
+Hence, in particular, a non-linear function $f$ cannot be expressed as some matrix $A \in \reals^{n \times n}$.
 
-Examples of prominent non-linear dynamical systems include the Lotka-Volterra predator-prey model \cite{wangersky1978lotka}, FitzHugh Neuron model \cite{fitzhugh1961impulses}, and recently introduced COVID19 disease model \cite{indiansuper2020supermodel}. Throughout this thesis, we discretize any continuous dynamics through the well-known Euler method. Thus, up to some error term of bounded degree, we can turn any non-linear system into the form given by Equation~\ref{eq:sys}.
+Examples of prominent non-linear dynamical systems include the Lotka-Volterra predator-prey model \cite{wangersky1978lotka}, the Fitz-Hugh Neuron model \cite{fitzhugh1961impulses}, and the recently introduced COVID19 disease model \cite{indiansuper2020supermodel}. Throughout this thesis, we discretize any continuous dynamics through the well-known Euler method. Thus, up to some error term of bounded degree, we can turn any non-linear system into the form given by Equation~\ref{eq:sys}.
 %
 \begin{example}
 The SIR Epidemic model is a 3-dimensional dynamical system governed by the following continuous dynamics:
 \begin{align} \label{eqn:sir}
     \begin{split}
-        s' &= \beta \cdot s_k i_k \\
-        i' &= \beta \cdot s_k i_k - \gamma \cdot i_k \\
-        r' &= \gamma \cdot i_k
+        s' &= \beta \cdot s i \\
+        i' &= \beta \cdot s i - \gamma \cdot i \\
+        r' &= \gamma \cdot i
     \end{split}
 \end{align}
-where $s,i,r$ represent the fractions of a population of individuals designated as \textit{susceptible}, \textit{infected}, and \textit{recovered} respectively. There are two parameters, namely $\beta$ and $\gamma$, which influence the evolution of the system. $\beta$ is labeled as the contraction rate and $1/\gamma$ is the mean infective period.
+where $s,i,r$ represent the fractions of a population of individuals designated as \textit{susceptible}, \textit{infected}, and \textit{recovered} respectively. There are two parameters, namely $\beta$ and $\gamma$, which influence the evolution of the system. $\beta$ is labeled as the \emph{contraction rate} and $1/\gamma$ is the \emph{mean infective period}.
 %
 Discretizing Equation~\ref{eqn:sir} according the Euler method yields the dynamics:
 %
@@ -61,14 +85,14 @@ Discretizing Equation~\ref{eqn:sir} according the Euler method yields the dynami
 Note the non-linear terms $s_ki_k$ which precludes the expression of the dynamics as a linear transformation.
 \end{example}
 
-The trajectory of a system that evolves according to Equation~\ref{eq:sys}, denoted as $\xi(x_0)$ is a sequence $x_0, x_1, \ldots $ where $x_{i+1} = f(x_i)$.
+We can now give a discretized version of a trajectory as presented in Definition \ref{def:diff_dyna_sys}. The trajectory of a system that evolves according to Equation~\ref{eq:sys}, denoted as $\xi_{x_0}$, is a sequence $x_0, x_1, \ldots $ where $x_{i+1} = f(x_i)$.
 %
-The $k^{th}$ element in this sequence $x_k$ is denoted as $\xi(x_0,k)$.
+The $k^{th}$ element in this sequence $x_k$ is denoted as $\xi_{x_0}(k)$.
 
 \begin{definition}
 Given an initial set $\Theta \subseteq \reals^n$, the \emph{reachable set at step $k$}, denoted as $\Theta_k$ is defined as
 \begin{equation}
-  \Theta_k = \{ \xi(x,k)\: | \: x \in \Theta\}
+  \Theta_k = \{ \xi_x(k)\: | \: x \in \Theta\}
 \label{eq:reachset}
 \end{equation}
 If we set the number of steps to be some $n \in \mathbb{N}$, we say the \emph{reachable set} is
@@ -81,15 +105,20 @@ If we set the number of steps to be some $n \in \mathbb{N}$, we say the \emph{re
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Parallelotope-based Reachability}
-
 \subsection{Parallelotopes}
 \label{sec:parallelotope}
-A parallelotope $P$ is a set of states in $\mathbb{R}^{n}$ captured by the tuple $\langle \Lambda, c\rangle$ where $\Lambda \in \mathbb{R}^{2n \times n}$ is a matrix and $ç$ is a column vector. We impose the condition that $\Lambda_{i+n} = -\Lambda_{i}$ for all $i \in \{1, \ldots, n\}$ such that
+The heart of our reachability algorithm relies on geometric objects called \emph{parallelotopes}. In this section, we define parallelotopes and two representations for them.
+
+\begin{definition}
+\label{def:ptope}
+A \emph{parallelotope} $P \subset \mathbb{R}^{n}$ is captured by the tuple $\langle \Lambda, c\rangle$ where $\Lambda \in \mathbb{R}^{2n \times n}$ is a matrix and $c \in \reals^{2n}$ is a column vector. We impose the condition that $\Lambda_{i+n} = -\Lambda_{i}$ for all $i \in \{1, \ldots, n\}$ such that
 %
 \begin{equation}
 \label{eq:halfspace}
 x \in P \mbox{ if and only if } \Lambda x \leq c.
 \end{equation}
+\end{definition}
+%
 We deem $\Lambda$ as the \emph{template direction matrix} where $\Lambda_i$ denotes the $i^{th}$ row of $\Lambda$ called the \emph{$i^{th}$ template direction}. The column vector $c$ is called the \emph{offset vector} with $c(i)$ denoting the $i^{th}$ element of $c$.
 %
 If we unpack Equation~\ref{eq:halfspace}, we can re-express the inequalities as a conjunction of half-space constraints. If we define $c_{u} = [c(1), c(2), \cdots, c(n)]^T$ and $c_{l} = [c(n+1), c(n+2), \cdots, c(2n)]^T$, then Equation~\ref{eq:halfspace} tells us that:
@@ -99,13 +128,13 @@ If we unpack Equation~\ref{eq:halfspace}, we can re-express the inequalities as 
   -& \Lambda_i x \leq c_l(i) \label{eq:lower_ineq}
 \end{align}
 %
-Additionally, the definition of the paralleotope above requires that for each of $n$ ``postive" directions, there must exist a corresponding ``negative" direction. This is encoded into the template matrix $\Lambda$ by the condition $\Lambda_{i+n} = -\Lambda_{i}$. However, by the observation made above, we only need to keep the positive directions and divide our offset vector into equal components with the top half encoding the offsets for the positive directions and the bottom half encoding the offsets for the negative directions. The bottom half must be multiplied by a negative sign to account for Inequality \ref{eq:lower_ineq}.
+Additionally, the definition of the paralleotope above requires that for each of $n$ ``positive" directions, there must exist a corresponding ``negative" direction. This is encoded into the template matrix $\Lambda$ by the condition $\Lambda_{i+n} = -\Lambda_{i}$. However, by the observation made above, we only need to keep the positive directions and divide our offset vector into equal components with the top half encoding the offsets for the positive directions and the bottom half encoding the offsets for the negative directions. The bottom half must be multiplied by a negative sign to account for Inequality \ref{eq:lower_ineq}.
 %
-Combining these remarks yields the \emph{half-space representation} of parallelotope $P$.
+Combining these remarks yields the half-space representation of parallelotope $P$.
 %
 \begin{definition}
 \label{def:halfspace_def}
-The half-space representation of parallelotope $P$ is tuple  $\langle \Lambda, c_l, c_u \rangle$ where $\Lambda \in \mathbb{R}^{n \times n}$ and $c_l, c_u \in \reals^n$
+The \emph{half-space representation} of parallelotope $P$ is tuple  $\langle \Lambda, c_l, c_u \rangle$ where $\Lambda \in \mathbb{R}^{n \times n}$ and $c_l, c_u \in \reals^n$
 such that
 \begin{equation}
 \label{eq:halfspaceconst}
@@ -128,11 +157,26 @@ We see that our template directions will be the vectors $[1,0]^T, [0,1]^T$. Supp
 \begin{equation}
   c_l = [1,1]^T, \quad c_u = [2,2]^T
 \end{equation}
-Then by Definition \ref{def:halfspace_def}, the bounded region in space will be the intersection of the following linear constraints:
+Then by Definition \ref{def:halfspace_def}, the half-space representation is given by:
+\begin{equation}
+\begin{bmatrix}
+  1 \\ 1
+\end{bmatrix} \leq \begin{bmatrix}
+    1 & 0 \\ 0 & 1
+  \end{bmatrix}\begin{bmatrix}
+   x \\ y
+  \end{bmatrix} \leq \begin{bmatrix}
+    2 \\ 2
+  \end{bmatrix}
+\end{equation}
+%
+Accordingly, the bounded region in space will be the intersection of the following linear constraints:
 %
 \begin{align}
+  \begin{split}
   1 \leq x \leq 2 \\
   1 \leq y \leq 2
+  \end{split}
 \end{align}
 This is exactly the shifted unitbox $[1,2] \times [1,2]$. In fact, we can easily generalize this a general $n$-dimensional system by considering the template direction matrix $\Lambda = I_n$ where $I_n$ is the $n \times n$ identity matrix and two offset vectors $c_l, c_u$ of length $n$. This would yield the shifted $n$-dimensional unitbox:
 
@@ -166,12 +210,30 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
 
 \begin{example}
   \label{ex:simple_diag_ptope}
-  We can also consider the axis-aligned directions rotated $45^\circ$ counter-clockwise. This would yield the two diagonal directions $[1,1]^T, [-1,1]$. Suppose we set the upper and lower offsets to be $c_u = [1,1]^T$ and $c_l = [-1,-1]^T$ respectively, then once again by Definition \ref{def:halfspace_def}, the bounded region in $\reals^2$ will be the conjunction of the linear inequalities:
+  We can also consider the axis-aligned directions rotated $45^\circ$ counter-clockwise. This would yield the two diagonal directions $[1,1]^T, [-1,1]^T$. Suppose we set the upper and lower offsets to be $c_u = [1,1]^T$ and $c_l = [-1,-1]^T$ respectively, then once again by Definition \ref{def:halfspace_def}:
+  %
+  \begin{equation}
+  \begin{bmatrix}
+    -1 \\ -1
+  \end{bmatrix} \leq \begin{bmatrix}
+      1 & 1 \\ -1 & 1
+    \end{bmatrix}\begin{bmatrix}
+     x \\ y
+    \end{bmatrix} \leq \begin{bmatrix}
+      2 \\ 2
+    \end{bmatrix}
+  \end{equation}
+  %
+  The bounded region in $\reals^2$ will be the conjunction of the linear inequalities:
+  %
   \begin{align}
-    -1 \leq x - y \leq 1 \\
+    \begin{split}
+    -1 \leq x + y \leq 1 \\
     -1 \leq y - x \leq 1
+    \end{split}
   \end{align}
-  In general, we define \emph{diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other. As a matter of convenience however, we refer to \emph{diagonal parallelotopes} as those defined by a combination of axis-aligned and diagonal directions. This definition will be useful when we consider parallelotopes defined by unconventional directions (i.e those which are neither axis-aligned nor diagonal). To see a visual plot of the diagonal parallelotope, see Figure \ref{fig:diagonal_ptope}.
+  %
+  In general, we define \emph{diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other. As a matter of convenience however, we refer to \emph{diagonal parallelotopes} as those defined by a combination of axis-aligned and diagonal directions. This definition will be useful when we consider parallelotopes defined by unconventional directions (i.e those template directions which are neither axis-aligned nor diagonal). To see a visual plot of the diagonal parallelotope, see Figure \ref{fig:diagonal_ptope}.
 
   \begin{figure}
     \centering
@@ -182,11 +244,11 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
 \end{example}
 
 
-\noindent Alternatively, a parallelotope can also be represented in a \emph{generator representation}.
+\noindent Alternatively, a parallelotope can also be represented in a generator representation.
 %
 \begin{definition}
 \label{def:generator_def}
-The generator representation of a parallelotope $P$ is a tuple of vectors $\langle v, g_1, \ldots, g_n\rangle$ such that $v,g_1, \cdots g_n \in \reals^n$. The vector  $v \in \mathbb{R}^n$ is called the \emph{anchor} and the $g_i \in \mathbb{R}^n$, are called the \emph{generators}. The parallelotope is defined as the set:
+The \emph{generator representation}of a parallelotope $P$ is a tuple of vectors $\langle v, g_1, \ldots, g_n\rangle$ such that $v,g_1, \cdots g_n \in \reals^n$. The vector  $v \in \mathbb{R}^n$ is called the \emph{anchor} and the $g_i \in \mathbb{R}^n$, are called the \emph{generators}. The parallelotope is defined as the set:
 $$
 P := \{ x ~|~ \exists \alpha_1, \ldots, \alpha_n \in [0,1], \; x = v + \sum_{i=1}^n \alpha_i g_i \}
 $$
@@ -208,7 +270,7 @@ There is a simple method to convert from the half-space representation of $P$ to
 \end{enumerate}
 \end{tcolorbox}
 %
-There is a procedure to perform the reverse direction, namely to convert from the generator representation to the half-space representation. However, we will not need this procedure for this thesis. Refer to \cite{dang2014parameter} for a more detailed exposition.
+\noindent There also exists a procedure to perform the reverse direction, namely to convert from the generator representation to the half-space representation. However, we will not need this procedure for this thesis. Refer to \cite{dang2014parameter} for a more detailed exposition.
 
 As a final remark, notice that for a parallelotope $P$, the generator representation also defines an affine transformation that maps $[0,1]^{n}$ to $P$.
 %
@@ -314,7 +376,7 @@ Let $p: \reals^n \rightarrow \reals$ of be a real polynomial of degree at most $
 \[
 p(\boldx) = \sum_{\boldi \leq \boldd} a_\boldi \cdot \boldx^\boldi
 \]
-where $\boldx^\boldi$ represents the monomial $x_1^{i_1}x_2^{i_2}\cdots x_n^{i_n}$. Every such real polynomial $p$ can be represented as linear combination of Bernstein basis polynomials of of degree $\boldd$:
+where $\boldx^\boldi$ represents the monomial $x_1^{i_1}x_2^{i_2}\cdots x_n^{i_n}$. Every such real polynomial $p$ of degree at most $\boldd$ can be represented as linear combination of Bernstein basis polynomials of of degree $\boldd$:
 %
 \begin{equation}
   p(\boldx) = \sum_{\boldi \leq \boldd} b_{\boldi} \cdot \mathcal{B}_{(\boldi,\boldd)}(\boldx)
@@ -326,6 +388,12 @@ b_{\boldi} = \sum_{\boldj \leq \boldi} \frac{\binom{\boldi}{\boldj}}{\binom{\bol
 \end{equation}
 %
 \noindent In other words, given a polynomial $p(x_1,\ldots,x_n) = \sum_{j \in J} a_j {\bf x}_{j}$ where $J$ is a set of multi-indices iterating through the degrees found in $p$ with $a_j \in \mathbb{R}$, then $p(x_1,\ldots,x_n)$ can be converted into its counterpart under the Bernstein basis, $p(x_1,\ldots,x_n) = \sum_{j \in J} b_j \mathcal{B}_j $ where $b_j$ are the corresponding Bernstein coefficients.
+%
+%\begin{property}
+%\label{prop:basis_property}
+
+%The Bernstein basis polynomials $\$
+%\end{property}
 
 The primary advantage of the Bernstein representation of a polynomial $p(x_1,...,x_n)$ is that an upper bound on the supremum and lower bound on the infimum of $p(x_1,...,x_n)$ in $[0,1]^{n}$ can be computed purely by observing the coefficients of the polynomial in the Bernstein basis. Specifically, the upper and lower bounds of $p(x_1,\ldots,x_n)$ over $[0,1]^n$ are bounded by the Bernstein coefficients. We state this as a property without proof.
 %
