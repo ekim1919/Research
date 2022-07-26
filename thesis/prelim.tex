@@ -252,26 +252,32 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
 %
 \begin{definition}
 \label{def:generator_def}
-The \emph{generator representation}of a parallelotope $P$ is a tuple of vectors $\langle v, g_1, \ldots, g_n\rangle$ such that $v,g_1, \cdots g_n \in \reals^n$. The vector  $v \in \mathbb{R}^n$ is called the \emph{anchor} and the $g_i \in \mathbb{R}^n$, are called the \emph{generators}. The parallelotope is defined as the set:
+The \emph{generator representation} of a parallelotope $P$ is a tuple of vectors $\langle v, g_1, \ldots, g_n\rangle$ such that $v,g_1, \cdots g_n \in \reals^n$. The vector  $v \in \mathbb{R}^n$ is called the \emph{anchor} and the $g_i \in \mathbb{R}^n$, are called the \emph{generators}. The parallelotope is defined as the set:
 $$
 P := \{ x ~|~ \exists \alpha_1, \ldots, \alpha_n \in [0,1], \; x = v + \sum_{i=1}^n \alpha_i g_i \}
 $$
 \end{definition}
 %
-\noindent This is esstentially a convex reprsentation of the parallelotope, which shares many similarities to Zonotopes~\cite{girard2005reachability,althoff2010computing} and Star sets~\cite{duggirala2016parsimonious}.
+\begin{remark}
+  \noindent This is esstentially a convex reprsentation of the parallelotope, which shares many similarities to Zonotopes~\cite{girard2005reachability,althoff2010computing} and Star sets~\cite{duggirala2016parsimonious}.
+  %
+  In particular, a parallelotope is a special case of a zonotope where the number of generators is exactly the dimension of the system $n$.
+\end{remark}
 %
-In particular, a parallelotope is a special case of a zonotope where the number of generators is exactly the dimension of the system $n$.
+There is a simple method to convert from the half-space representation of $P$ to its equivalent generator representation. The algorithm is sketched in Algorithm \ref{alg:rep_conversion}.
+%
+The first line ascertains the lower-most vertex of the input parallelotope. This vertex will be our anchor. The first loop starting at line two finds all of the vertices which are incident to the lower-most vertex through an edge. Finally, the second loop starting at line eight calculates the generator vectors which will span the paralleltope through a convex combination $\bar{\alpha} \in [0,1]^n$. Note that the anchor is simply shifting the  generator vectors $g_i$ from the origin to the point required to properly span $P$.
 
-There is a simple method to convert from the half-space representation of $P$ to its equivalent generator representation:
-%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-\input{ptope_rep_convert_alg}
-%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-\noindent There also exists a procedure to perform the reverse direction, namely to convert from the generator representation to the half-space representation. However, we will not need this procedure for this thesis. Refer to \cite{dang2014parameter} for a more detailed exposition of these conversions.
+There also exists a procedure to perform the reverse direction, namely to convert from the generator representation to the half-space representation. However, we will not need this procedure for this thesis. Refer to \cite{dang2014parameter} for a more detailed exposition of these conversions.
 
 As a final remark, notice that for a parallelotope $P$, the generator representation also defines an affine transformation that maps $[0,1]^{n}$ to $P$.
 %
 We refer to this affine transformation associated to $P$ as $T_P:[0,1]^n \rightarrow P$ when necessary.
-%
+
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+\input{ptope_rep_convert_alg}
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 \begin{example}
 Let us return to the axis-aligned box considered in Example \ref{ex:simple_ptope}.
 %

@@ -18,7 +18,7 @@ First, a small remark on the template matrix of the parallelotopes $P_i$ contain
 %
 Thus, a more compact method of encoding the bundle is by taking the \emph{distinct} template directions as rows of a new template matrix $\Lambda^Q$ along with its corresponding offset vector $c^Q$.
 %
-To distinguish between the distinct parallelotopes contained in the bundle, we add a new matrix called $\T^Q \in \mathbb{N}^{p \times n}$ such that $\T^Q_i$ is a vector of row indices of $\Lambda^Q$ which specify the template directions defining parallelotope $P_i \in \ptopeset{Q}$.
+To distinguish between the distinct parallelotopes contained in the bundle, we add a new matrix called the \emph{bundle index matrix}, $\T^Q \in \mathbb{N}^{p \times n}$, such that $\T^Q_i$ is a vector of row indices of $\Lambda^Q$ which specify the template directions defining parallelotope $P_i \in \ptopeset{Q}$.
 %
 The number of rows will thus be the number of distinct parallelotopes contained in the bundle $p = |\ptopeset{Q}|$.
 %
@@ -30,7 +30,7 @@ If none of the paralleotopes $P_i \in \ptopeset{Q}$ share common template direct
 
 \end{example}
 
-Another input to the algorithm is the initial set, given as a parallelotope $P_0$. When the initial set is a box, $P_0$ will be defined by the axis-aligned template directions.
+Another input to the algorithm is the initial parallelotope bundle, given as $Q$. When the initial set is a box, $P_0$ will be defined by the axis-aligned template directions.
 
 The output of the algorithm is, for each step $k$, the set $\overline\Theta_k$, which is an overapproximation of the reachable set at step $k$, $\Theta_k \subseteq \overline\Theta_k$. The total overapproximation of the reachable set for a finite number of steps $n$ will be $\Theta = \cup_{k=1}^n \Theta_k$.
 %
@@ -40,7 +40,7 @@ The algorithm simply calls $\tbundle$ for each step, producing a new paralleloto
 %
 To compute the image of $Q$, the algorithm computes the upper and lower bounds of $f(x)$ with respect to each template direction $\Lambda_i^Q$.
 %
-Since computing the maximum value of $f(x)$ along each template direction on the $Q$ in one-shot is computationally difficult, the algorithm instead computes the maximum value over each of the constituent parallelotopes and uses the minimum of all these maximum values.
+Since computing the maximum value of $f(x)$ along each template direction on the $Q$ in one shot is computationally difficult, the algorithm instead computes the maximum value over each of the constituent parallelotopes and uses the minimum of all these maximum values.
 
 The $\tbundle$  operation works as follows.
 %
@@ -78,7 +78,7 @@ To compute the upper and lower bounds of each template direction $\Lambda_{i} f(
 \noindent Note that $\Lambda_i^{P} \cdot f(x)$ is a dot product between the row vector $\Lambda_i^{P}$ and the component-wise dynamics of $f(x)$. This is similar to the method of computing support functions over convex sets \cite{boyd2004convex}.
 
 
-Given that $P$ is a parallelotope, all the states in $P$ can be expressed as a vector summation of an anchor and a convex combination of generators.
+By , all the states in $P$ can be expressed as a vector summation of an anchor and a convex combination of generators.
 %
 Let  $\langle v, g_1, \cdots, g_n \rangle$ be the generator representation of $P$.
 %
@@ -105,6 +105,8 @@ Therefore, the tightest upper bound on $\Lambda^Q_{i}\cdot f(x)$ over $Q$ is the
 A similar argument holds for lower bounds of $\Lambda^Q_{i}\cdot f(x)$ over $Q$.
 %
 Therefore, the image of the bundle $Q$ will be the bundle $Q'$ where the upper and lower bounds for templates directions are obtained by solving a series of non-linear optimization problems of the form presented in Equation~\ref{eq:maxf}.
+
+% TODO: Expound more on the menaings of constructing ptopes from the bundle index matrix.
 
 Finally, once the loop on step two of Algorithm~\ref{alg:old} halts at step $S$, the outputted reachable set will be the computed over-approximations $\overline\Theta_1, \cdots, \overline\Theta_S$. As step four within the loop implies, this is simply the image bundles $Q'$ returned by our $\tbundle$ procedure.
 
