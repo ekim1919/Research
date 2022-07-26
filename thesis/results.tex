@@ -46,13 +46,13 @@ We decided to use Kodiak primarily for two reasons:
 \end{enumerate}
 %
 
-To estimate volume of reachable sets, we employ two techniques for estimating volume of individual parallelotope bundles. For systems of dimension fewer than or equal to three, we utilize Scipy's convex hull routine.
+To estimate volume of reachable sets, we employ two techniques for estimating the volume of individual parallelotope bundles. For systems of dimension fewer than or equal to three, we utilize Scipy's convex hull routine, .
 %
 For higher-dimensional systems, we employ the volume of the tightest enveloping box around the parallelotope bundle.
 %
 The total volume estimate of the over-approximation will be the sum of all the computed bundles' volume estimates.
 %
-To be specific, if \texttt{ApproxVol} is the routine used to approximate the volume of a bundle, then by utilizing the notion of line 22 of Algorithm \ref{algo:new}:
+To be specific, if \texttt{ApproxVol} is the routine used to approximate the volume of a bundle, then by the notation introduced in line 22 of Algorithm \ref{algo:new}:
 %
 \begin{equation}
   \texttt{ApproxVol}(\overline\Theta) = \sum_{k} \texttt{ApproxVol}(\overline\Theta_k)
@@ -78,26 +78,26 @@ Table \ref{tab:modeldyns} summarizes five standard benchmarks used for experimen
 
 \input{covid19}
 
+\def \voltablespace {-0.8cm}
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-\begin{table}
-%\hspace{-5em}
-  \centering
-\begin{tabular}{|p{1.5cm}|c|p{1.7cm}|c|c|p{5cm}|}
+\begin{table}[t!]
+\centering
+\begin{tabular}{|>{\centering}m{1.5cm}|>{\centering}c|m{1.6cm}|c|c|>{\centering\arraybackslash}m{5cm}|}
 \hline
-Model & Dimension & Parameters & \# steps & $\Delta$ & \hspace{1.5cm}Initial Box \\
+Model & Dimension & Parameters & \# steps & $\Delta$ & Initial Box \\
 \hline
-Vanderpol & 2 & \quad \quad \; - & 70 steps & 0.08 & $x \in [0,0.1], y \in [1.99,2]$ \\
+Vanderpol & 2 & \centering -- & 70  & 0.08 & {\vspace{\voltablespace}\begin{align*} x &\in [0,0.1] \\ y &\in [1.99,2] \end{align*}\vspace{\voltablespace}} \\
 \hline
-Jet Engine& 2 & \quad \quad \; - & 100 steps & 0.2 & $x \in [0.8,1.2], y \in [0,8,1.2]$ \\
+Jet Engine & 2 & \centering -- & 100 & 0.2 &  {\vspace{\voltablespace}\begin{align*} x &\in [0.8,1.2] \\ y &\in [0,8,1.2] \end{align*}\vspace{\voltablespace}} \\
 \hline
-Neuron \cite{fitzhugh1961impulses}& 2 & \quad \quad \; - & 200 steps & 0.2 & $x \in [0.9,1.1], y \in [2.4,2.6]$ \\
+Neuron & 2 & \centering -- & 200 & 0.2 & {\vspace{\voltablespace}\begin{align*} x &\in [0.9,1.1] \\ y &\in [2.4,2.6] \end{align*}\vspace{\voltablespace}} \\
 \hline
-SIR& 3 & $\beta=0.05$ \newline $\gamma=0.34$ & 150 steps & 0.1 & $s \in [0.79,0.8], i \in [0.19,0.2], r = 0$ \\
+SIR& 3 & $\beta=0.05$ \newline $\gamma=0.34$ & 150  & 0.1 & {\vspace{\voltablespace}\begin{align*} & s \in [0.79,0.8] \\ & i \in [0.19,0.2] \\ & r = 0 \end{align*}\vspace{\voltablespace}} \\
 \hline
-Coupled \newline Vanderpol & 4 & \quad \quad \; - & 40 steps & 0.08 & $x1 \in [1.25, 2.25], y1 \in [1.25, 2.25]$ \newline $x2 \in [1.25, 2.25], y2 \in [1.25, 2.25]$ \\
+Coupled \newline Vanderpol & 4 & \centering  -- & 40 & 0.08 & {\vspace{\voltablespace}\begin{align*} &x_1 \in [1.25, 2.25] \\ & y_1 \in [1.25, 2.25] \\ &x_2 \in [1.25, 2.25] \\ & y_2 \in [1.25, 2.25] \end{align*}\vspace{\voltablespace}} \\
 \hline
-COVID & 7 & $\beta=0.05$ \newline $\gamma=0.0$ \newline $\eta=0.02$ & 200 steps & 0.08 & \quad \quad \quad \; \; Stated Below\\
+COVID & 7 & $\beta=0.05$ \newline $\gamma=0.0$ \newline $\eta=0.02$ & 200 & 0.08 & Stated in Section \ref{sec:covid} \\
 \hline
 \end{tabular}
 \caption{Benchmark models and relevant information}
@@ -106,8 +106,6 @@ COVID & 7 & $\beta=0.05$ \newline $\gamma=0.0$ \newline $\eta=0.02$ & 200 steps 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Comparison of Template Generation Techniques}
 \label{sec:compare}
-%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 
 \subsection{Accuracy of Dynamic Strategies}
 \label{sec:dynamic_accuracy}
@@ -120,9 +118,16 @@ A cursory analysis shows that the number of possible templates with diagonal dir
 
 % are $2{n \choose 2}$ diagonal directions for an $n$-dimensional system, giving a total of $n + 2 {n \choose 2}$ axis-aligned and diagonal directions. Thus, there are ${n + 2 {n \choose 2} \choose n} = {n^2 \choose n}$ possible diagonal parallelotopes for an $n$-dimensional system. This explosive growth in search space size compelled us to proceed by sampling the search space instead.
 
-From our experiments, we conclude there is no universal optimal ratio between the number of dynamic parallelotopes defined by PCA and Linear Approxiation directions which perform well on all benchmarks. In Figure \ref{fig:PCALinAppRatio}, we demonstrate two cases where varying the ratio imparts differing effects. Observe that using parallelotopes defined by linear approximation directions is more effective than those defined by PCA directions in the Vanderpol model whereas the Neuron model shows the opposite trend.
+From our experiments, we conclude there is no universal optimal ratio between the number of dynamic parallelotopes defined by PCA and Linear Approximation directions which perform well on all benchmarks. In Figure \ref{fig:PCALinAppRatio}, we demonstrate two cases where varying the ratio imparts differing effects. Observe that using parallelotopes defined by linear approximation directions is more effective than those defined by PCA directions in the Vanderpol model whereas the Neuron model shows the opposite trend.
 
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+\input{pcalinratio}
+
+
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \input{voltable}
+%-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 %\input{comp_temp_fig}
 

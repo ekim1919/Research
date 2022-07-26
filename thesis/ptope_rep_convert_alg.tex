@@ -1,0 +1,9 @@
+\begin{tcolorbox}
+\centering \textbf{Half-Space to Generator Representation Conversion Procedure}
+\begin{enumerate}
+
+  \item Obtain vertex $v_1$ by solving the linear equation $\Lambda x = c_{l}$.
+  \item The $j+1$ vertex is obtained by solving the linear equation $\Lambda x = \mu_{j}$ where $\mu_{j}[i] = c_{l}[i]$ when $i \neq j$ and $\mu_{j}[j] = c_{u}[j]$.
+  \item The anchor $v$ of the parallelotope is the vertex $v_1$ and the generators will be $g_{i} = v_{i+1} - v_{1}$.
+\end{enumerate}
+\end{tcolorbox}

@@ -78,7 +78,7 @@ To compute the upper and lower bounds of each template direction $\Lambda_{i} f(
 \noindent Note that $\Lambda_i^{P} \cdot f(x)$ is a dot product between the row vector $\Lambda_i^{P}$ and the component-wise dynamics of $f(x)$. This is similar to the method of computing support functions over convex sets \cite{boyd2004convex}.
 
 
-Given that $P$ is a parallelotope, all the states in $P$ can be expressed as a vector summation of anchor and scaled generators.
+Given that $P$ is a parallelotope, all the states in $P$ can be expressed as a vector summation of an anchor and a convex combination of generators.
 %
 Let  $\langle v, g_1, \cdots, g_n \rangle$ be the generator representation of $P$.
 %
@@ -140,41 +140,30 @@ Finally, once the loop on step two of Algorithm~\ref{alg:old} halts at step $S$,
   \end{itemize}
 
   There a few points worth noting here. First, by the discussion leading to Definition~\ref{def:halfspace_def}, the initial set would be the box $[0.79,0.8] \times [0.19, 0.2] \times 0$. This can be interpreted as initializing the model such that $79-80\%$ of the population is susceptible (not yet infected) with $19-20\%$ of the population is infected. As the simulation is beginning, no percentage of the population has recovered from the disease. Hence, the third parameter $r$ is set to zero.
-
+  %
   Second, since we only have the axis-aligned parallelotope in our initial bundle, the matrix $\T^Q$ will consist of only one row indicing the axis-aligned directions expressed as distinct rows in $\Lambda^Q$.
-
-  \begin{figure}
-  \label{fig:kaa_sir}
-    \hspace*{-2.3cm}
-    \includegraphics[width=1.3\textwidth]{figures/SIRProj.png}
-    \caption{Projection of Reachable Set of SIR propagated 300 steps in time.}
-  \end{figure}
 \end{example}
 
 \begin{example}
+To include an example of a higher-dimensional non-linear system, we introduce the Phosporaley model. The Phosphoraley model describes a certain cellular regulatory system. It is captured by seven variables governed by the discretized dynamics stated in Figure \ref{fig:phos_dynamics}:
 
-To include an example of a higher-dimensional non-linear system, we introduce the Phosporaley model. The Phosphoraley model describes a certain cellular regulatory system. It is captured by seven variables governed by the following discretized dynamics:
-\begin{align}
-  \begin{split}
-      x^1_{k+1} &= x^1_k + ( -\alpha \cdot x^1_k + \beta \cdot x^3_k x^4_k)\cdot \Delta \\
-      x^2_{k+1} &= x^2_k + (  \alpha\cdot  x^1_k - x^2_k)\cdot \Delta \\
-      x^3_{k+1} &= x^3_k + ( x^2_k - \beta \cdot x^3_k x^4_k)\cdot \Delta \\
-      x^4_{k+1} &= x^4_k + ( \beta \cdot x^5_k x^6_k - \beta \cdot x^3_k x^4_k)\cdot \Delta \\
-      x^5_{k+1} &= x^5_k + ( -\beta \cdot x^5_k x^6_k + \beta \cdot x^3_k x^4_k)\cdot \Delta \\
-      x^6_{k+1} &= x^6_k + ( \alpha\cdot  x^7_k - \beta \cdot x^5_k x^6_k)\cdot \Delta \\
-      x^7_{k+1} &= x^7_k + ( -\alpha\cdot  x^7_k + \beta \cdot  x^5_k x^6_k)\cdot \Delta
-  \end{split}
-\end{align}
-Here, we set the two parameters $\alpha,\beta$ as $\alpha=0.5$ and $\beta=5$. The discretization step is set to $\Delta =0.01$ and we propagate the reachble set for $S=300$ time steps. Additionally, the initial box is set to be $[1.00,1.01]^7 \times [-100, 100]$.
+\begin{center}
+  \begin{equation*}
+    \begin{split}
+        x^1_{k+1} &= x^1_k + ( -\alpha \cdot x^1_k + \beta \cdot x^3_k x^4_k)\cdot \Delta \\
+        x^2_{k+1} &= x^2_k + (  \alpha\cdot  x^1_k - x^2_k)\cdot \Delta \\
+        x^3_{k+1} &= x^3_k + ( x^2_k - \beta \cdot x^3_k x^4_k)\cdot \Delta \\
+        x^4_{k+1} &= x^4_k + ( \beta \cdot x^5_k x^6_k - \beta \cdot x^3_k x^4_k)\cdot \Delta \\
+        x^5_{k+1} &= x^5_k + ( -\beta \cdot x^5_k x^6_k + \beta \cdot x^3_k x^4_k)\cdot \Delta \\
+        x^6_{k+1} &= x^6_k + ( \alpha\cdot  x^7_k - \beta \cdot x^5_k x^6_k)\cdot \Delta \\
+        x^7_{k+1} &= x^7_k + ( -\alpha\cdot  x^7_k + \beta \cdot  x^5_k x^6_k)\cdot \Delta
+    \end{split}
+  \end{equation*}
+  \label{fig:phos_dynamics}
+  \captionof{figure}{Discretized Dynamics of Phosphorlay Model.}
+\end{center}
 %
-\begin{figure}[t!]
-\label{fig:kaa_phos}
-  \hspace*{-2.3cm}
-  \includegraphics[width=1.3\textwidth]{figures/PhosporlayProjOn X_1, X_2, X_3.png}
-  \caption{Projection of Reachable Set of the Phosporaley model propagated 300 steps in time.}
-\end{figure}
-%
-Figure \ref{fig:kaa_phos} depicts the projection of the reachable set on the first three variables $x_1, x_2, x_3$. The relevant matrices are defined as:
+Here, we set the two parameters $\alpha,\beta$ as $\alpha=0.5$ and $\beta=5$. The discretization step is set to $\Delta =0.01$ and we propagate the reachble set for $S=300$ time steps. Additionally, the initial box is set to be $[1.00,1.01]^7 \times [-100, 100]$. Under these parameters, Figure \ref{fig:kaa_phos} depicts the projection of the reachable set on the first three variables $x_1, x_2, x_3$. The relevant matrices are defined as:
 
 \begin{equation}
   \Lambda^Q = \begin{bmatrix}
@@ -192,5 +181,21 @@ Figure \ref{fig:kaa_phos} depicts the projection of the reachable set on the fir
         0 & 1 & 2 & 4 & 5 & 6 & 7
         \end{bmatrix}
 \end{equation}
-$\T^Q$ tells us that the bundle consists of the axis-aligned parallelotope (the first row $\T^Q_1$) and another diagonal parallelotope (the second row $\T^Q_2$). 
+$\T^Q$ tells us that the bundle consists of the axis-aligned parallelotope (the first row $\T^Q_1$) and another diagonal parallelotope (the second row $\T^Q_2$).
 \end{example}
+
+\def \reachplotwidth {1.3}
+
+\begin{figure}[h!]
+  \hspace*{-2.4cm}
+  \includegraphics[width=\reachplotwidth\textwidth]{figures/SIRProj.png}
+  \caption{Projection of Reachable Set of SIR propagated 300 steps in time.}
+  \label{fig:kaa_sir}
+\end{figure}
+
+\begin{figure}[h!]
+  \hspace*{-2.4cm}
+  \includegraphics[width=\reachplotwidth\textwidth]{figures/PhosporlayProjOn X_1, X_2, X_3.png}
+  \caption{Projection of Reachable Set of the Phosporaley model propagated 300 steps in time.}
+  \label{fig:kaa_phos}
+\end{figure}

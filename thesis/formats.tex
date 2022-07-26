@@ -33,11 +33,9 @@ That is the support points are the set of points $x_i$ such that:
 x_i = \max_{x \in Q} \Lambda^Q_i\cdot x
 \end{equation}
 %
-for all tempalte direcitons of the bundle $\Lambda^Q_i$. These are all found by a straightforward linear program.
+for all template directions of the bundle $\Lambda^Q_i$. We use the support points as a data-driven approach to find the best-fit linear function to use. These are all found by a straightforward linear program.
 %
 %In this case, for small time steps a nonlinear function can be approximated fairly accurately by a linear transformation.
-%
-We use the support points as a data-driven approach to find the best-fit linear function to use.
 %
 To find the approximate linear transformation, let $x_i$ denote the support points calculated by Equation \ref{eq:support}. We perform the following least-squares procedure: the objective would be to find an linear transformation $A$ such that it minimizes the following objective function:
 \begin{equation}
@@ -64,7 +62,7 @@ Since the covariance matrix is symmetric (i.e $A = A^T$), the eigenvectors of th
 %
 Using PCA is a reasonable choice as it produces orthonormal directions that can construct a rotated box for bounding the points.
 %
-
+% Give a very light sketch of the procedure here.
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \section{The Dynamic Algorithm}

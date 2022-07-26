@@ -2,8 +2,8 @@
 \label{sec:covid}
 We benchmark our dynamic strategies with the recently introduced COVID supermodel \cite{ansumali2020modelling}, \cite{indiansuper2020supermodel}. This model is a modified SIR model accounting for the possibility of \emph{asymptomatic} patients. These patients can infect susceptible members with a fixed probability. The dynamics account for this new group and its interactions with the traditional SIR groups.
 
-\begin{align}
-  \label{eq:covid19_dynamics}
+\begin{center}
+\begin{equation*}
   \begin{split}
    S_A' & = S_A  -(\beta S_A(A+I))\cdot \Delta \\
    S_I' & = S_I  -(\beta S_I (A + I))\cdot \Delta \\
@@ -13,8 +13,12 @@ We benchmark our dynamic strategies with the recently introduced COVID supermode
    R_I' & = R_I + (\gamma I)\cdot \Delta \\
    D' & = D + (\eta I)\cdot \Delta
   \end{split}
-\end{align}
-where the variables denote the fraction of a population of individuals designated as \emph{Susceptible to Asymptomatic $(S_A)$}, \emph{Susceptible to Symptomatic $(S_I)$}, \emph{Asymptomatic (A)}, \emph{Symptomatic (I)}, \emph{Removed from Asymptomatic $(R_A)$}, \emph{Removed from Symptomatic $(R_I)$}, and \emph{Deceased (D)}. We choose the parameters ($\beta = 0.25, \gamma=0.02, \eta=0.02$) where $\beta$ is the probablity of infection, $\gamma$ is the removal rate, and $\eta$ is the mortality rate. The parameters are set based on figures shown in \cite{ansumali2020modelling}. The discretization step is chosen to be $\Delta = 0.1$ and the initial box is set to be following dimensions: $S_A  \in [0.69, 0.7], \, S_I \in [0.09, 0.1], \, A \in [0.14, 0.15], \, I \in [0.04, 0.05], \, R_A  = 0,\, R_I  = 0, \, D  = 0$.
+\end{equation*}
+\captionof{figure}{Dynamics for the COVID19 Supermodel.}
+\label{fig:covid19_dynamics}
+\end{center}
+
+where the variables denote the fraction of a population of individuals designated as \emph{Susceptible to Asymptomatic $(S_A)$}, \emph{Susceptible to Symptomatic $(S_I)$}, \emph{Asymptomatic (A)}, \emph{Symptomatic (I)}, \emph{Removed from Asymptomatic $(R_A)$}, \emph{Removed from Symptomatic $(R_I)$}, and \emph{Deceased (D)}. We choose the parameters ($\beta = 0.25, \gamma=0.02, \eta=0.02$) where $\beta$ is the probablity of infection, $\gamma$ is the removal rate, and $\eta$ is the mortality rate. The parameters are set based on figures shown in \cite{ansumali2020modelling}. The discretization step is chosen to be $\Delta = 0.1$ and the initial box is set to be following dimensions: $S_A  \in [0.69, 0.7], \, S_I \in [0.09, 0.1], \, A \in [0.14, 0.15], \, I \in [0.04, 0.05], \, R_A  = 0,\, R_I  = 0, \, D  = 0$. The discretized dynamics are given in Figure \ref{fig:covid19_dynamics}.
 
 Plots of the reachable set for this model tuned to specific values of parameters $\beta, \gamma, \eta$ were published in an ACM Sigbed Blogpost detailing applications of Formal methods for simulating disease dynamics \cite{bak2021covid}.
 %

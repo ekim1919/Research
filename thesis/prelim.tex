@@ -71,18 +71,22 @@ The SIR Epidemic model is a 3-dimensional dynamical system governed by the follo
 where $s,i,r$ represent the fractions of a population of individuals designated as \textit{susceptible}, \textit{infected}, and \textit{recovered} respectively. There are two parameters, namely $\beta$ and $\gamma$, which influence the evolution of the system. $\beta$ is labeled as the \emph{contraction rate} and $1/\gamma$ is the \emph{mean infective period}.
 %
 Discretizing Equation~\ref{eqn:sir} according the Euler method yields the dynamics:
-%
-\begin{align} \label{eqn:discrete_sir}
-    \begin{split}
-        s_{k+1} &= s_k - (\beta \cdot s_k i_k)\cdot\Delta \\
-        i_{k+1} &= i_k + (\beta \cdot s_k i_k - \gamma \cdot i_k)\cdot\Delta \\
-        r_{k+1} &= r_k + (\gamma\cdot i_k)\cdot\Delta
-    \end{split}
-\end{align}
+
+\begin{center}
+\label{fig:discrete_sir}
+  \begin{equation*}
+      \begin{split}
+          s_{k+1} &= s_k - (\beta \cdot s_k i_k)\cdot\Delta \\
+          i_{k+1} &= i_k + (\beta \cdot s_k i_k - \gamma \cdot i_k)\cdot\Delta \\
+          r_{k+1} &= r_k + (\gamma\cdot i_k)\cdot\Delta
+      \end{split}
+  \end{equation*}
+  \captionof{figure}{Discretized Dynamics of SIR model}
+\end{center}
  Here, $\Delta$ is the discretization step and the index $k \in \mathbb{N}$ simply represents the current step.
 %For the benchmarks, we set $\beta = 0.34$, $\gamma=0.05$, and $\Delta=0.5$.
 %
-Note the non-linear terms $s_ki_k$ which precludes the expression of the dynamics as a linear transformation.
+Note the non-linear terms $s_ki_k$ which preclude the expression of the dynamics as a linear transformation.
 \end{example}
 
 We can now give a discretized version of a trajectory as presented in Definition \ref{def:diff_dyna_sys}. The trajectory of a system that evolves according to Equation~\ref{eq:sys}, denoted as $\xi_{x_0}$, is a sequence $x_0, x_1, \ldots $ where $x_{i+1} = f(x_i)$.
@@ -101,7 +105,7 @@ If we set the number of steps to be some $n \in \mathbb{N}$, we say the \emph{re
 \end{equation}
 \end{definition}
 %
-\noindent We will see in a future section an example of the reachable set of the discretized SIR model presented in Equation~\ref{eqn:discrete_sir}.
+\noindent We will see in a future section an example of the reachable set of the discretized SIR model presented in Figure~\ref{fig:discrete_sir}.
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Parallelotope-based Reachability}
@@ -258,19 +262,11 @@ $$
 %
 In particular, a parallelotope is a special case of a zonotope where the number of generators is exactly the dimension of the system $n$.
 
-There is a simple method to convert from the half-space representation of $P$ to its generator representation:
-
-\begin{tcolorbox}
-\hspace{1.5cm} \textbf{Half-Space Representation to Generator Representation Conversion}
-\begin{enumerate}
-
-  \item Obtain vertex $v_1$ by solving the linear equation $\Lambda x = c_{l}$.
-  \item The $j+1$ vertex is obtained by solving the linear equation $\Lambda x = \mu_{j}$ where $\mu_{j}[i] = c_{l}[i]$ when $i \neq j$ and $\mu_{j}[j] = c_{u}[j]$.
-  \item The anchor $v$ of the parallelotope is the vertex $v_1$ and the generators will be $g_{i} = v_{i+1} - v_{1}$.
-\end{enumerate}
-\end{tcolorbox}
-%
-\noindent There also exists a procedure to perform the reverse direction, namely to convert from the generator representation to the half-space representation. However, we will not need this procedure for this thesis. Refer to \cite{dang2014parameter} for a more detailed exposition.
+There is a simple method to convert from the half-space representation of $P$ to its equivalent generator representation:
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+\input{ptope_rep_convert_alg}
+%------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+\noindent There also exists a procedure to perform the reverse direction, namely to convert from the generator representation to the half-space representation. However, we will not need this procedure for this thesis. Refer to \cite{dang2014parameter} for a more detailed exposition of these conversions.
 
 As a final remark, notice that for a parallelotope $P$, the generator representation also defines an affine transformation that maps $[0,1]^{n}$ to $P$.
 %
@@ -303,11 +299,11 @@ This is a parallelotope with vertices at $(0,0)$, $(1,0)$, $(2,1)$, and $(1,1)$.
 In the half-space representation, the template directions of the parallelotope $P$ are given by the directions $[1, -1]$ and $[0, 1]$.
 %
 The half-space representation in matrix form is given as follows:
-
+%
 \begin{equation}
   \begin{bmatrix} 0 \\ 0 \end{bmatrix} \leq \begin{bmatrix}  1 & -1 \\ 0 &  1 \end{bmatrix}  \begin{bmatrix} x \\ y \end{bmatrix} \leq \begin{bmatrix} 1 \\ 1 \end{bmatrix}. \label{eq:ptopeexample}
 \end{equation}
-
+%
 To compute the generator representation of $P$, we need to compute the \emph{anchor} and the \emph{generators}.
 %
 The anchor is obtained by solving the linear equations $x-y = 0, y = 0$.
