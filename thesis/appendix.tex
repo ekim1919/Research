@@ -1,0 +1,50 @@
+\appendix
+
+\chapter{Benchmark Model Definitions}
+\label{app:benchmark}
+
+\section{Vanderpol Oscillator}
+The Vanderpol Oscillator is a classical two-dimensional non-linear dynamical system governed by the following dynamics:
+\begin{equation}
+  \begin{cases}
+  x' = y \\
+  y' = \mu \cdot(1 - x^2)\cdot y - x
+  \end{cases}
+ \end{equation}
+
+ We set $\mu = 1$ in our experiments. The dynamics were gathered from \cite{aachen}.
+
+
+\section{Jet Engine}
+The Jet Engine model is specifically the Moore-Greitzer model. The dynamics are given as follows:
+\begin{equation}
+  \begin{cases}
+  x' = -y - 1.5\cdot x^2 - 0.5\cdot x^3 - 0.5 \\
+  y' = 3\cdot x - y
+  \end{cases}
+ \end{equation}
+
+\noindent These dynamics were studied in \cite{aylward2008stability}, and the dynamics were gathered from \cite{aachen}.
+
+\section{Coupled Vanderpol}
+This model couples two Vanderpol Oscillators together, resulting in an non-linear ODE of four variables
+\begin{equation}
+  \begin{cases}
+  x_1' = y_1\\
+  y_1' = (1-x_1^2)\cdot y_1 - x_1 + (x_2 - x_1) \\
+  x_2 ' = y_2 \\
+  y_2' = (1-x_2^2)\cdot y_2 - x_2 + (x_1 - x_2)
+  \end{cases}
+ \end{equation}
+\noindent This model was investigated in \cite{rand1980bifurcation}, and the dynamics were gathered from \cite{aachen}
+
+\section{Neuron Model}
+The FitzHugh-Nagumo Model describes the electrical activity of a neuron. The dynamics are given by the two-dimensional non-linear ODE:
+\begin{equation}
+  \begin{cases}
+  x' = x - x^3 - y + 7/8 \\
+  y' = 0.08\cdot(x + 0.7 - 0.8\cdot y)
+  \end{cases}
+ \end{equation}
+
+\noindent The model was first studiend in \cite{fitzhugh1961impulses} and its reachability analysis using Bernstein expansion is studied in \cite{dang2012reachability}.

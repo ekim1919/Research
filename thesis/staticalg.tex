@@ -27,7 +27,35 @@ If none of the paralleotopes $P_i \in \ptopeset{Q}$ share common template direct
 \end{remark}
 %
 \begin{example}
-
+Set our space to be $\reals^2$. Consider the parallelotope bundle $Q$ containing three individual parallelotopes $P_0, P_1, P_2$ with the following template direction matrices:
+  \begin{equation*}
+    \Lambda^{P_0}  = \begin{bmatrix}
+                  1 & 0 \\
+                  0 & 1
+                  \end{bmatrix}, \quad
+    \Lambda^{P_1}  = \begin{bmatrix}
+                    1 & 0 \\
+                    1 & 1
+                    \end{bmatrix}, \quad
+    \Lambda^{P_2} = \begin{bmatrix*}[r]
+                    0 & 1 \\
+                   -1 & 1
+                    \end{bmatrix*}
+  \end{equation*}
+  The associated template direction matric and bundle index matrix for $Q$ will then be defined as follows:
+  \begin{equation*}
+    \Lambda^{Q} = \begin{bmatrix*}[r]
+                  1 & 0 \\
+                  0 & 1 \\
+                  1 & 1 \\
+                  -1 & 1
+                  \end{bmatrix*}, \quad
+                  \T^Q = \begin{bmatrix}
+                          0 & 1 \\
+                          0 & 2 \\
+                          1 & 3
+                         \end{bmatrix}
+  \end{equation*}
 \end{example}
 
 Another input to the algorithm is the initial parallelotope bundle, given as $Q$. When the initial set is a box, $P_0$ will be defined by the axis-aligned template directions.
@@ -104,6 +132,21 @@ Therefore, the tightest upper bound on $\Lambda^Q_{i}\cdot f(x)$ over $Q$ is the
 %
 A similar argument holds for lower bounds of $\Lambda^Q_{i}\cdot f(x)$ over $Q$.
 %
+\begin{figure}
+\subfloat[A single ptope]{
+  \begin{tikzpicture}
+    \draw (0,0) -- (-1,2) -- (3,2) -- (4,0) -- cycle;
+    \node at (1.5,1) {$P$};
+    \draw[->, very thick] (5,1) -- (7,1) node[above, midway] {$f$};
+    \draw (10,0) .. controls (7,1) ..(9,2) .. controls (10, 1).. (11,2) .. controls (14,1) .. (14,0) .. controls (11,-1) .. cycle;
+    \node at (11,0.75) {$f(P)$};
+  \end{tikzpicture}
+
+}
+
+\caption{Diagrams for the effect of the non-linear optimization procedure.}
+\end{figure}
+%
 Therefore, the image of the bundle $Q$ will be the bundle $Q'$ where the upper and lower bounds for templates directions are obtained by solving a series of non-linear optimization problems of the form presented in Equation~\ref{eq:maxf}.
 
 % TODO: Expound more on the menaings of constructing ptopes from the bundle index matrix.
@@ -151,7 +194,7 @@ To include an example of a higher-dimensional non-linear system, we introduce th
 
 \begin{center}
   \begin{equation*}
-    \begin{split}
+    \begin{cases}
         x^1_{k+1} &= x^1_k + ( -\alpha \cdot x^1_k + \beta \cdot x^3_k x^4_k)\cdot \Delta \\
         x^2_{k+1} &= x^2_k + (  \alpha\cdot  x^1_k - x^2_k)\cdot \Delta \\
         x^3_{k+1} &= x^3_k + ( x^2_k - \beta \cdot x^3_k x^4_k)\cdot \Delta \\
@@ -159,7 +202,7 @@ To include an example of a higher-dimensional non-linear system, we introduce th
         x^5_{k+1} &= x^5_k + ( -\beta \cdot x^5_k x^6_k + \beta \cdot x^3_k x^4_k)\cdot \Delta \\
         x^6_{k+1} &= x^6_k + ( \alpha\cdot  x^7_k - \beta \cdot x^5_k x^6_k)\cdot \Delta \\
         x^7_{k+1} &= x^7_k + ( -\alpha\cdot  x^7_k + \beta \cdot  x^5_k x^6_k)\cdot \Delta
-    \end{split}
+    \end{cases}
   \end{equation*}
   \label{fig:phos_dynamics}
   \captionof{figure}{Discretized Dynamics of Phosphorlay Model.}

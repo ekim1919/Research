@@ -296,7 +296,7 @@
 
 \newtheorem{xxdefinition}{Definition}[chapter]
 \newtheorem{property}{Property}[chapter]
-\newtheorem{remark}{Remark}[chapter]
+\newtheorem{xxremark}{Remark}[chapter]
 \newtheorem{xxexample}{Example}[chapter]
 %%
 \newenvironment{definition}{
@@ -305,6 +305,15 @@
 \rightparend{$\Diamond$}
 \end{xxdefinition}
 }
+
+\newenvironment{remark}{
+\begin{xxremark}
+}
+{\rightparend{$\Diamond$}
+\end{xxremark}
+}
+
+
 %% "inherent" from xxexample, but place box at the end of example.
 \newenvironment{example}{
 \begin{xxexample}

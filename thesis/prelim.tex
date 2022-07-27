@@ -62,11 +62,11 @@ Examples of prominent non-linear dynamical systems include the Lotka-Volterra pr
 \begin{example}
 The SIR Epidemic model is a 3-dimensional dynamical system governed by the following continuous dynamics:
 \begin{align} \label{eqn:sir}
-    \begin{split}
+    \begin{cases}
         s' &= \beta \cdot s i \\
         i' &= \beta \cdot s i - \gamma \cdot i \\
         r' &= \gamma \cdot i
-    \end{split}
+    \end{cases}
 \end{align}
 where $s,i,r$ represent the fractions of a population of individuals designated as \textit{susceptible}, \textit{infected}, and \textit{recovered} respectively. There are two parameters, namely $\beta$ and $\gamma$, which influence the evolution of the system. $\beta$ is labeled as the \emph{contraction rate} and $1/\gamma$ is the \emph{mean infective period}.
 %
@@ -75,11 +75,11 @@ Discretizing Equation~\ref{eqn:sir} according the Euler method yields the dynami
 \begin{center}
 \label{fig:discrete_sir}
   \begin{equation*}
-      \begin{split}
+      \begin{cases}
           s_{k+1} &= s_k - (\beta \cdot s_k i_k)\cdot\Delta \\
           i_{k+1} &= i_k + (\beta \cdot s_k i_k - \gamma \cdot i_k)\cdot\Delta \\
           r_{k+1} &= r_k + (\gamma\cdot i_k)\cdot\Delta
-      \end{split}
+      \end{cases}
   \end{equation*}
   \captionof{figure}{Discretized Dynamics of SIR model}
 \end{center}
@@ -121,6 +121,7 @@ A \emph{parallelotope} $P \subset \mathbb{R}^{n}$ is captured by the tuple $\lan
 \label{eq:halfspace}
 x \in P \mbox{ if and only if } \Lambda x \leq c.
 \end{equation}
+%
 \end{definition}
 %
 We deem $\Lambda$ as the \emph{template direction matrix} where $\Lambda_i$ denotes the $i^{th}$ row of $\Lambda$ called the \emph{$i^{th}$ template direction}. The column vector $c$ is called the \emph{offset vector} with $c(i)$ denoting the $i^{th}$ element of $c$.
@@ -140,10 +141,12 @@ Combining these remarks yields the half-space representation of parallelotope $P
 \label{def:halfspace_def}
 The \emph{half-space representation} of parallelotope $P$ is tuple  $\langle \Lambda, c_l, c_u \rangle$ where $\Lambda \in \mathbb{R}^{n \times n}$ and $c_l, c_u \in \reals^n$
 such that
-\begin{equation}
+\begin{align}
 \label{eq:halfspaceconst}
-P =\{x ~|~ c_l \leq \Lambda x \leq c_u\}
-\end{equation}
+P & =\{x ~|~ c_l \leq \Lambda x \leq c_u\}
+\intertext{In a more explicit form:}
+P & = \bigwedge_{i=1}^n \left[c_l(i) \leq \Lambda_i\cdot x \leq c_u(i) \right]
+\end{align}
 \end{definition}
 %
 \noindent In particular, as a bounded intersection of pairs of parallel half-spaces, it is convex.
@@ -159,18 +162,18 @@ Consider the 2D plane, namely $\reals^2$. We can construct a couple of simple ex
 We see that our template directions will be the vectors $[1,0]^T, [0,1]^T$. Suppose now we set our upper and lower offsets to be:
 %
 \begin{equation}
-  c_l = [1,1]^T, \quad c_u = [2,2]^T
+  c_l = [-1,-1]^T, \quad c_u = [1,1]^T
 \end{equation}
 Then by Definition \ref{def:halfspace_def}, the half-space representation is given by:
 \begin{equation}
 \begin{bmatrix}
-  1 \\ 1
+  -1 \\ -1
 \end{bmatrix} \leq \begin{bmatrix}
     1 & 0 \\ 0 & 1
   \end{bmatrix}\begin{bmatrix}
    x \\ y
   \end{bmatrix} \leq \begin{bmatrix}
-    2 \\ 2
+    1 \\ 1
   \end{bmatrix}
 \end{equation}
 %
@@ -178,11 +181,11 @@ Accordingly, the bounded region in space will be the intersection of the followi
 %
 \begin{align}
   \begin{split}
-  1 \leq x \leq 2 \\
-  1 \leq y \leq 2
+  -1 \leq x \leq 1 \\
+  -1 \leq y \leq 1
   \end{split}
 \end{align}
-This is exactly the shifted unitbox $[1,2] \times [1,2]$. In fact, we can easily generalize this a general $n$-dimensional system by considering the template direction matrix $\Lambda = I_n$ where $I_n$ is the $n \times n$ identity matrix and two offset vectors $c_l, c_u$ of length $n$. This would yield the shifted $n$-dimensional unitbox:
+This is exactly the shifted unitbox $[-1,1] \times [-1,1]$. In fact, we can easily generalize this a general $n$-dimensional system by considering the template direction matrix $\Lambda = I_n$ where $I_n$ is the $n \times n$ identity matrix and two offset vectors $c_l, c_u$ of length $n$. This would yield the shifted $n$-dimensional unitbox:
 
 \begin{equation}
 [c_l(1), \;c_u(1)] \times [c_l(2),\; c_u(2)] \times \cdots \times [c_l(n), \; c_u(n)]
@@ -190,23 +193,30 @@ This is exactly the shifted unitbox $[1,2] \times [1,2]$. In fact, we can easily
 %
 It is worth noting that axis-aligned box on the 2D plane above would give the representation:
 \begin{align}
-  \Lambda = \begin{bmatrix}
+  \Lambda = \begin{bmatrix*}[r]
             1 & 0 \\
             0 & 1 \\
             -1 & 0 \\
             0 & -1 \\
-            \end{bmatrix} , \quad c = [2,2,-1,-1]^T
+            \end{bmatrix*} , \quad c = [2,2,-1,-1]^T
 \end{align}
 if we were to convert the half-space representation above into the form defined in Equation \ref{eq:halfspace}.
 %
 From here on out, we refer to parallelotopes defined by the $n$ axis-aligned directions as the \emph{axis-aligned} parallelotopes.
 %
-For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_align_ptope}
+For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_align_ptope}.
 
-\begin{figure}
+\begin{figure}[h!]
   \centering
-  \includegraphics{example-image-a}
-  \caption{Plot of the axis-aligned parallelotope of Example \ref{ex:simple_ptope}.}
+  \begin{tikzpicture}
+    \draw[step=1cm,gray,very thin, style=help lines] (-3,-3) grid (3,3);
+    \fill[blue!40!white, opacity=0.4] (-1,-1) rectangle (1,1);
+    \draw[->, thick](0,1) -- (0,2) node[above] (0,2) {$[0,1]$};
+    \draw[->, thick](1,0) -- (2,0) node[right] (2,0) {$[1,0]$};
+    \draw[->, thick](-1,0) -- (-2,0) node[left] (-2,0) {$[-1,0]$};
+    \draw[->, thick](0,-1) -- (0,-2) node[below] (0,-2) {$[0,-1]$};
+  \end{tikzpicture}
+  \caption{Plot of the axis-aligned parallelotope of Example \ref{ex:simple_ptope}. The template directions are displayed as normal vectors to the pairs of parallel planes defining the parallelotope.}
   \label{fig:axis_align_ptope}
 \end{figure}
 
@@ -219,12 +229,12 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
   \begin{equation}
   \begin{bmatrix}
     -1 \\ -1
-  \end{bmatrix} \leq \begin{bmatrix}
+  \end{bmatrix} \leq \begin{bmatrix*}[r]
       1 & 1 \\ -1 & 1
-    \end{bmatrix}\begin{bmatrix}
+    \end{bmatrix*}\begin{bmatrix}
      x \\ y
     \end{bmatrix} \leq \begin{bmatrix}
-      2 \\ 2
+      1 \\ 1
     \end{bmatrix}
   \end{equation}
   %
@@ -239,10 +249,20 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
   %
   In general, we define \emph{diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other. As a matter of convenience however, we refer to \emph{diagonal parallelotopes} as those defined by a combination of axis-aligned and diagonal directions. This definition will be useful when we consider parallelotopes defined by unconventional directions (i.e those template directions which are neither axis-aligned nor diagonal). To see a visual plot of the diagonal parallelotope, see Figure \ref{fig:diagonal_ptope}.
 
-  \begin{figure}
+  \begin{figure}[h!]
     \centering
-    \includegraphics{example-image-b}
-    \caption{Plot of the rotated parallelotope of Example \ref{ex:simple_diag_ptope}.}
+    \begin{tikzpicture}
+      \draw[step=1cm,gray,very thin, style=help lines] (-3,-3) grid (3,3);
+      \draw[fill=blue!40!white, opacity=0.4] (1,0) -- (0,1) -- (-1,0) -- (0,-1) -- cycle;
+      \draw[->, thick] (0.5,0.5) -- (1,1) node[above] {$[1,1]$};
+      \draw[->, thick] (-0.5,-0.5) -- (-1,-1) node[below] {$[-1,-1]$};
+      \draw[->, thick] (-0.5,0.5) -- (-1,1) node[above] {$[-1,1]$};
+      \draw[->, thick] (0.5,-0.5) -- (1,-1) node[below] {$[1,-1]$};
+
+
+
+    \end{tikzpicture}
+    \caption{Plot of the rotated parallelotope of Example \ref{ex:simple_diag_ptope}. Once again, note the manner in which the template directions and their negative counterparts define parallel planes and the parallelotope's definition as the intersection of the postive and negative half-spaces of all pairs of parallel planes.}
     \label{fig:diagonal_ptope}
   \end{figure}
 \end{example}
@@ -261,7 +281,16 @@ $$
 \begin{remark}
   \noindent This is esstentially a convex reprsentation of the parallelotope, which shares many similarities to Zonotopes~\cite{girard2005reachability,althoff2010computing} and Star sets~\cite{duggirala2016parsimonious}.
   %
-  In particular, a parallelotope is a special case of a zonotope where the number of generators is exactly the dimension of the system $n$.
+  %In particular, a parallelotope is a special case of a zonotope where the number of generators is exactly the dimension of the system $n$.
+  %
+  The most general definition of so-called \emph{template polyhedra} in $\reals^n$ is a tuple $\langle \Lambda, c \rangle$ such that $\Lambda \in \reals^{m \times n}$ for some $m \in \mathbb{N}$ and $c \in \reals^n$. The polyhedron is defined by the conjunction of linear
+ inequalities:
+%
+ \begin{equation}
+  \bigwedge_{i=1}^m \Lambda_i \cdot x \leq c_i
+ \end{equation}
+ %
+It follows that parallelotopes are template polyhedra with $m=2n$ and the constraint that $\Lambda_{i+n} = -\Lambda_{i}$ for $1 \leq i \leq n$. Several verification tasks of hybrid automata have been investigated in the reachability literature. See \cite{dang2011template, gronski2019template, sankaranarayanan2008symbolic} for on related topics.
 \end{remark}
 %
 There is a simple method to convert from the half-space representation of $P$ to its equivalent generator representation. The algorithm is sketched in Algorithm \ref{alg:rep_conversion}.
@@ -307,7 +336,7 @@ In the half-space representation, the template directions of the parallelotope $
 The half-space representation in matrix form is given as follows:
 %
 \begin{equation}
-  \begin{bmatrix} 0 \\ 0 \end{bmatrix} \leq \begin{bmatrix}  1 & -1 \\ 0 &  1 \end{bmatrix}  \begin{bmatrix} x \\ y \end{bmatrix} \leq \begin{bmatrix} 1 \\ 1 \end{bmatrix}. \label{eq:ptopeexample}
+  \begin{bmatrix} 0 \\ 0 \end{bmatrix} \leq \begin{bmatrix*}[r]  1 & -1 \\ 0 &  1 \end{bmatrix*}  \begin{bmatrix} x \\ y \end{bmatrix} \leq \begin{bmatrix} 1 \\ 1 \end{bmatrix}. \label{eq:ptopeexample}
 \end{equation}
 %
 To compute the generator representation of $P$, we need to compute the \emph{anchor} and the \emph{generators}.

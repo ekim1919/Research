@@ -4,7 +4,7 @@ We benchmark our dynamic strategies with the recently introduced COVID supermode
 
 \begin{center}
 \begin{equation*}
-  \begin{split}
+  \begin{cases}
    S_A' & = S_A  -(\beta S_A(A+I))\cdot \Delta \\
    S_I' & = S_I  -(\beta S_I (A + I))\cdot \Delta \\
    A' & = A + (\beta S_I(A+I) - \gamma I)\cdot \Delta \\
@@ -12,7 +12,7 @@ We benchmark our dynamic strategies with the recently introduced COVID supermode
    R_A' & = R_A + (\gamma A)\cdot \Delta \\
    R_I' & = R_I + (\gamma I)\cdot \Delta \\
    D' & = D + (\eta I)\cdot \Delta
-  \end{split}
+  \end{cases}
 \end{equation*}
 \captionof{figure}{Dynamics for the COVID19 Supermodel.}
 \label{fig:covid19_dynamics}
