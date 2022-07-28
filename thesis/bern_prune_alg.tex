@@ -1,0 +1,106 @@
+\begin{figure}[t!]
+\begin{algorithm}[H]
+  \SetKwInput{KwInput}{Input}
+  \SetKwInput{KwOutput}{Output}
+  \SetKwFunction{ComputeGrid}{ComputeGridCells}
+  \SetKwFunction{BernInterval}{ComputeBernsteinCoeffIntervals}
+  \SetKwFunction{ComputeMaxInter}{ComputeMaxIntervalMonomials}
+  \SetKwFunction{ComputeMinInter}{ComputeMinIntervalMonomials}
+  \SetKwFunction{ComputeGenRep}{ComputeGridGeneratorRep}
+  \SetKwFunction{TransformBund}{TransformBundle}
+  \SetKwFunction{BernsteinCoeff}{BernsteinCoeffIntervals}
+  \SetKwProg{Fun}{Proc}{:}{}
+
+
+  \SetAlgoLined
+  \DontPrintSemicolon
+
+  \KwInput{Total Domain $D$, Number of grid cells $G$, Dynamics $f$, Template Direction Matrix $\Lambda$}
+  \KwOutput{$G$ sets of monomials each indiced by a grid cell}
+  \tcp{Partition domain into equally-sized $G$ grid cells}
+  $\mathfrak{G} \gets $\ComputeGrid($D, G$) \;
+
+  \For{grid cell $g \in \mathfrak{G}$}{
+    $R_g \gets $ \ComputeGenRep($f,g$)\;
+    \For{template direction $\Lambda_i$ in $\Lambda$}{
+      $\mathfrak{B_{g,i}} \gets $\BernInterval($\Lambda_i$, $R_g$)\;
+      \;
+      \tcp{Find the max/min intervals and any overlaps}
+      $m_{g,\Lambda_i,\max} \gets $ \ComputeMaxInter($\mathfrak{B_{g,i}}$)\;
+      $m_{g,\Lambda_i,\min} \gets $ \ComputeMinInter($\mathfrak{B_{g,i}}$)\;
+    }
+  }
+  $\mathcal{M} = \{m_{g,\Lambda_i,\max} \}_{g \in G, i} \cup \{m_{g,\Lambda_i,\min} \}_{g \in G, i}$\;
+  \Return{$\mathcal{M}$} \;
+  \;
+  \Fun{\BernInterval($\Lambda_i$, $R_g$)}{
+    $\mathcal{P} \gets \Lambda_i \cdot R_g$ \tcp{Compute predicate (Eq \ref{eq:maxalpha})}
+    \Return{\BernsteinCoeff($\mathcal{P}$)} \;
+  }
+  \;
+  \Fun{\ComputeGenRep($f$,$g$)}{
+
+  %$(\ell_1,u_1) \times (\ell_2,u_2) \times \cdots \times (\ell_n, u_n) \gets g$ \tcp{Set intervals which define the grid cell.}\;
+  $a \gets g$ \;
+  \For{$i \gets 1$ \KwTo $n$}{
+    $g_i \gets g$ \;
+  }
+
+  \Return{$a + \sum_{i=1}^n \alpha_ig_i$} \tcp{Generator Representation where coefficients are instead intervals spanning grid cell} \;
+  }
+\end{algorithm}
+\caption{Bernstein coefficient interval pre-computation algorithm.}
+\label{alg:bern_prune}
+\end{figure}
+
+\begin{figure}[t!]
+\begin{algorithm}[H]
+\SetKwFunction{TransformBund}{TransformBundle}
+\SetKwFunction{RetMaxMonom}{RetreiveMaxMonomials}
+\SetKwFunction{RetMinMonom}{RetreiveMinMonomials}
+\SetKwFunction{ComputeGenRep}{ComputeGeneratorRepresentation}
+\SetKwFunction{FindOverlap}{FindOverlapsWithGrid}
+\SetKwProg{Fun}{Proc}{:}{}
+
+\SetAlgoLined
+\DontPrintSemicolon
+
+\SetKwInput{KwInput}{Input}
+\SetKwInput{KwOutput}{Output}
+
+\KwInput{Dynamics $f$, Bundle $Q$, Template Directions Matrix $\Lambda^Q$, Max/Min Monomial Lookup Table $\mathcal{M}$, Grid Partition $G$}
+\KwOutput{New parallelotope bundle $Q'$}
+\Fun{\TransformBund{$f$, $Q$, $\Lambda^Q$, $\mathcal{M}$, $G$}}{
+  $Q' \gets \{\}$; $c_{u} \gets +\infty$; $c_{l} \gets -\infty$\;
+  \For{$P \in \ptopeset{Q}$}{
+    $\langle a, g_1, \cdots, g_n \rangle \gets $ \ComputeGenRep($P$)\;
+    \For{each $\Lambda_i^Q$ in $\Lambda^Q$ }{
+      $c_{u}'[i] \gets \mathsf{min}\{$\RetMaxMonom($P, \mathcal{M}), \  c_{u}'[i] \}$\;
+      $c_{l}'[i] \gets \mathsf{max}\{$\RetMinMonom($P, \mathcal{M}), \  c_{l}'[i]\}$\;
+    }
+  }
+  Construct parallelotopes $P_{1}', \ldots, P_{k}'$ from $\Lambda^Q, c_{l}', c_{u}'$ and indexes from $\T^Q$ \;
+
+  $Q' \gets \{P_{1}', \ldots, P_{k}'\}$ \;
+  \Return{$Q'$}}
+  \;
+  \Fun{\RetMaxMonom($P,\ \mathcal{M},\ G$)}{
+    $\mathcal{O} \gets $ \FindOverlap($P,G$)\;
+    $\mathcal{P}_{\max} \gets \emptyset$ \;
+    \For{grid cell $g \in \mathcal{O}$}{
+      $\mathcal{P}_{\max} \gets \mathcal{P} \cup \{m_{g,\Lambda_i, \max} \}_{i}$\;
+    }
+    \Return{$\mathcal{P}_{\max}$}
+  }
+  \;  \Fun{\RetMinMonom($P,\ \mathcal{M},\ G$)}{
+      $\mathcal{O} \gets $ \FindOverlap($P,G$)\;
+      $\mathcal{P}_{\min} \gets \emptyset$ \;
+      \For{grid cell $g \in \mathcal{O}$}{
+        $\mathcal{P}_{\min} \gets \mathcal{P} \cup \{m_{g,\Lambda_i, \min} \}_{i}$\;
+      }
+      \Return{$\mathcal{P_{\min}}$}
+    }
+\end{algorithm}
+\caption{Modified Reachability Algorithm}
+\label{alg:modified_reach}
+\end{figure}

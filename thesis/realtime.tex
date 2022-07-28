@@ -1,0 +1,174 @@
+\newcommand{\barb}{\overline{b}}
+
+\newcommand{\ComputeBern}{\texttt{ComputeBernsteinCoeffIntervals}}
+\newcommand{\FindOverlaps}{\texttt{FindOverlapsWithGrid}}
+\newcommand{\ComputeGridRep}{\texttt{ComputeGridGeneratorRep}}
+
+
+
+\chapter{Applications to Real-time Reachability}
+%
+In this chapter, we briefly present some experimental results on an application of the Bernstein expansion on the realm of real-time reachability. First, we outline a few motivating factors as well as our proposed reachability algorithm. Second, we expound on some observations and negative experimental results as well as some early obstacles in the efficacy of our proposed algorithm.
+%
+\section{Motivation and Algorithm}
+The context of these experiments is focused towards the perspectives of real-time reachability. Roughly speaking, the objective of an effective real-time reachability algorithm can be described as covering two criteria:
+%
+\begin{enumerate}
+  \item The computed reachable set must be within some $\epsilon$ distance of the exact reachable set. We can think of this as the constraint dictating that the computed reachable set lies within an $\epsilon$ bloat of the exact reachable set (i.e if $\Theta$ denotes the exact reachable set and $\overline{\Theta}$ its computed over-approximation, then
+    $ \overline{\Theta} \subset B_\epsilon(\Theta)$
+    where
+    $B_\epsilon(\Theta) = \bigcup_{x \in \Theta} B_{\epsilon}(x)$.)
+  \item The running time to compute the over-approximation $\overline{\Theta}$ must be strictly upper-bounded by some ``reasonable" time period. Here, by reasonable, we generally speak of a time constraint imposed on real-time systems where predictable running is required for proper functionality.
+\end{enumerate}
+
+Recall from Sections \ref{sec:bernstein} and \ref{sec:static} that computing the Bernstein coefficients and taking their maximum and minimum coefficients is tantamount to bounding the solutions to non-linear optimization problems of the form presented in Equation \ref{eq:maxalpha}. As the degrees of the polynomial predicates and dimensions of the system grow, the number of Bernstein coefficients also grows in exponential order. This is evident from the Bernstein coefficient formula defined in Equation \ref{eq:bernstein_coeff}.
+
+To mitigate this explosive growth in coefficients, we can pose the following question: Is there a method for ascertaining a small subset of the basis monomials such that the correct maximum and minimum coefficients can be computed from this subset rather the entire set of Bernstein basis monomials?
+%
+Towards this end, we propose the following algorithm outlined in Algorithm \ref{alg:bern_prune} and elaborate on individual subroutines. In the context of these experiments, we assume the dynamics $f$ are polynomial. This is to ensure we have a Bernstein expansion of the composed dynamics $f \circ T_p$.
+
+\input{bern_prune_alg}
+
+\begin{description}
+\item[Parition Domain into Grid:] We first partition the domain into grid cells of equal dimension. Naturally the entire domain is infinite, so we must restrict the domain into bounded box of sufficiently large dimensions. This box must bound the reachable set computed for a finite number of steps forward. These grid cells will act as constraints to feed into our generator representation.
+\item[Initialize Generator Representation:] For each of the cells computed in the previous step, we set the anchor vertex and generator vector components to their corresponding grid cell dimension. In other words, we constrain the parallelotope to be contained within the cell through the generator representation. Formally speaking, suppose we have a grid cell $G$ in $n$-dimensional real vector space $\reals^n$ of the form $G = [l_1,u_1] \times [l_2, u_2] \times \cdots [l_n \times u_n]$. To constrain our parallelotope $P = \langle a, g_1, \cdots, g_n\rangle$ to be contained within $g$, it suffices to set the component variables such that $a, g_1, \cdots, g_n \in G$. For example, to set $a \in G$, the constraints should be initialized as below:
+\begin{align}
+\label{eq:gen_var_interval}
+  a_1 \gets [l_1,u_1] & & a_2 \gets [l_2, u_2] & & \cdots & & a_n \gets [l_n,u_n]
+\end{align}
+%
+%\begin{align*}
+%  a_1 & \in [l_1,u_1] & a_1 & \in [l_2, u_2] & \cdots & & a_n \in [l_n,u_n] \\
+%  g_{11} & \in [l_1,u_1] & g_{12} & \in [l_2, u_2] & \cdots&   & g_{1n} \in [l_n,u_n] \\
+%  & \vdots & & \vdots &
+%\end{align*}
+%
+In Algorithm \ref{alg:bern_prune}, the procedure responsible returning this assignment is $\ComputeGridRep$.
+
+\item[Perform the Functional Composition:] As stated in Equation \ref{eq:maxalpha}, the non-linear optimization predicate should be $\Lambda_i\cdot f$ for fixed template direction $\Lambda_i$. Under the assignments of the variables according to Equation \ref{eq:gen_var_interval} and interval arithmetic, we have the polynomial $\Lambda_i\cdot(f \circ T_p)$ where the coefficients are \emph{intervals} rather than real values.
+
+\item[Compute Bernstein Coefficient Intervals:] Now with our computed polynomial with interval coefficients, we can compute the Bernstein coefficient intervals using the formula displayed in Equation \ref{eq:bernstein_coeff}. By our initialization scheme above, this computation will yield intervals such that the Bernstein coefficients computed from any parallelotope contained in grid cell $P \subseteq G$ should lie within their respective coefficient intervals. Let $\{\barb_{\boldi}\}_{\boldi \in I_{G,\Lambda_i}}$ be the set of computed coefficient intervals where $I_{G,\Lambda_i}$ is an index of degrees which depend on the grid cell $G$ and template direction $\Lambda_i$. For the sake of clarity, we shall just denote this index set as $I$.
+
+\item[Find the Maximum/Minimum Interval:] Using $\{\barb_{\boldi}\}$, we find the maximum and minimum interval by simply finding the interval which has the largest upper-bound and the interval which has the smallest lower-bound. If $\barb_{\boldi} = [l_\boldi, u_\boldi]$, then
+%
+\begin{align}
+  \mathfrak{I}_{G,\Lambda_i, \max} & = \argmax_{\boldi \in I} u_\boldi \\
+  \mathfrak{I}_{G,\Lambda_i, \min} & = \argmin_{\boldi \in I} u_\boldi
+\end{align}
+%
+Note that $\mathfrak{I}_{\max}, \mathfrak{I}_{\min}$ are the degrees of the Bernstein basis monomials whose intervals dominate the others. Additionally, we add all the intervals which overlap with the maximum and minimum intervals:
+%
+\begin{align}
+  \begin{split}
+      m_{G,\Lambda_i,\max} & = \{\boldi \in I ~|~ \barb_{\boldi} \cap \barb_{\mathfrak{I}_{\max}} \neq \emptyset \}\\
+      m_{G,\Lambda_i,\min} & = \{\boldi \in I ~|~ \barb_{\boldi} \cap \barb_{\mathfrak{I}_{\min}} \neq \emptyset \}
+  \end{split}
+\end{align}
+
+\item[Store into Lookup Table:] The maximum and minimum intervals and their associated degrees are stored into a lookup table indiced by each grid cell and template direction $\Lambda_i$ in $\Lambda$.
+\end{description}
+
+The required modifications to the reachability algorithm now turn out to be simple. Instead of computing all of the Bernstein coefficients, the algorithm first determines the grid cells with non-empty overlap with the parallelotope in question ($\FindOverlaps$). It then queries the monomials stored for each overlapping grid cell $G$: $ m_{G,\Lambda_i\max}, m_{G,\Lambda_i \min}$ in respect to the template direction $\Lambda_i$. This retrival is executed on lines 6,7 of Algorithm \ref{alg:bern_prune}. The rest of the reachability algorithm follows exactly as the logic of Algorithm \ref{alg:old}.
+
+\section{Experimental Results}
+We move onwards to the experimental results and observations. Our experiments were limited to the Vanderpol Model (Appendix Section \ref{sec:vdp}) and the SIR model (Example \ref{ex:sir}). A few parameters are required to be stated for posterity:
+
+\begin{itemize}
+  \item For both models, we attempted to run the modified reachability algorithm for seven steps.
+  \item For both models, we partition the domain and fix the initial set for each model according to the below inputs:
+
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+  Model & Domain & Initial Set & \# of Grid Cells \\
+  \hline
+  Vanderpol & $[-3, 3] \times [-3, 3]$ & $[0.001, 0.005]\times [1.995, 2]$ & 1600 \\
+  \hline
+  SIR & $[0, 1]^3$ & $[0.799,0.8] \times [0.199,0.2] \times 0$ & 100 \\
+  \hline
+  \end{tabular}
+\end{itemize}
+
+\subsection{Discrepancy of Degrees}
+This issue arises when we compute the actual maximum and minimum intervals during the pre-computation step. We will demonstrate this phenomenon with the Vanderpol System:
+
+Recall that the generator representation for ptope $P$ would yield the linear transformation $T:[0,1] \rightarrow P$ which looks like $$ T(x,y) = q + g_0*x + g_1*y$$ for an anchor (base) vertex $q$ and two generator vectors $g_0,g_1$.
+%
+The functional composition with the generator representation would be substituting the symbolic expressions as follows:
+%
+\begin{align} x & \leftarrow q_0 + g_{00}*x + g_{01}*y \\  y & \leftarrow q_1 + g_{01}*x + g_{11}*y\end{align}
+%
+The composed polynomial $f \circ T$ will look as follows:
+%
+\begin{align} (f \circ T)_0 & = (q_1 + g_{01}*x + g_{11}*y \\ (f \circ T)_1 & = (1 - (q_0 + g_{00}*x + g_{01}*y)^2) * (q_1 + g_{01}*x + g_{11}*y) - (q_0 + g_{00}*x + g_{01}*y) \end{align}
+
+If you inspect the polynomial $(f \circ T)_1$, the square times another linear factor of $x,y$ gives us a polynomial of degree $(3,3)$. If calculate the non-linear optimization objective function as: $\Lambda \cdot (f \circ T_P)$ where we set $\Lambda = [0,1]^T$ (i.e the y-axis aligned vector), then the polynomial will be precisely be $(f \circ T)_1$, which has degree $(3,3)$.
+
+However, the following occurs during the reachability algorithm: the actual polynomial computed (that is the polynomial computed naturally during the parallelotope reachability algorithm) actually has lower degree than $(3,3)$. Consider the output below computed with just the axis-aligned parallelotope over the VanderPol model with a grid parition of $40 \times 40$:
+
+%-------------------------
+%\input{bern_prune_deg_output}
+%-------------------------
+
+We could execute an additional pruning method where we simply discard all of the irrelevant monomial degrees that do not show up during the reachability computation. For instance, we can simply remove all the monomial terms if the term has higher degree than $(2,1)$.
+
+
+However, we run into a subsequent problem of the following sort: if the grid is fine enough to extract a single dominant maximum or minimum coefficient interval and its corresponding monomial, then this may show up as a degree larger than the relevant total degree. In the first above, the maximum degree is a lone monomial:
+%
+\begin{verbatim}
+      Returned set of Maximum Monom from Lookup Table:
+
+      [((3, 3), 2.18359741950000)]
+\end{verbatim}
+%
+This means that the actual monomial with the maximum Bernstein coefficient:
+\begin{verbatim}
+        Actual Max Monom Deg: (2, 0)
+\end{verbatim}
+%
+was actually pruned out during the pre-computation phase.
+%
+What seems to happen quite frequently is that the maximum or minimum intervals and their associated overlaps domaintes the actual degree of the ``true" polynomial computed after functional composition during the reachability computation. For instance,
+
+This poses the issue of having to know what the degrees supplied to the algorithm are before it even begins. In other words, we don't exactly know how the functional composition with the generator representation affects the degree of the resulting polynomial. If the degree is actually smaller than that of the monomial with the maximum/minimum coefficient interval (or its overlaps), then it will never show up during our reachability algorithm. This results in either a gross conservative error or an exception indicting that we pruned out too many monomials.
+%
+This error becomes further compounded if higher degree terms are wiped out by the 0 factors in the computed generator or if the wrapping error becomes worse.
+
+One immediate thought could be to add templates which have non-axis-aligned template directions like $[-1,1]^T$. However, due to the ways higher degree terms can cancel each other out when simplifying after the functional composition, the degree of the polynomial after the composition could still be smaller than that of the maximum and minimum monomial and its overlaps.
+
+To summarize, it appears that pre-computing the Bernstein coefficients and the subsequent analysis on their outputted intervals can overly skew the effect of ``non-relevant coefficients". These coefficients can only be pruned once the generator representation of the specific parallelotope is computed and the exact degree of the composed polynomial is determined.
+
+\subsection{Obstacles to Speedups}
+Another issue that seems to occur is that parallelotopes which have great overlap with many grid cells yield the full list of Bernstein coefficients. Hence, there is no speedup gained in these cases. Consider the following output for Steps $3-5$:
+%-------------------------
+%\input{bern_prune_wrapping_error}
+%-------------------------
+
+The main point to take here are the printed values of returned set of monomials from the lookup table:
+%
+\begin{verbatim}
+Returned set of Maximum Monom from lookup_table:
+
+         [((0, 1), 2.48598940176842),
+         ((1, 2), 2.13075300161303),
+         ((2, 1), 2.49645813555339),
+         ((3, 1), 2.50156197271691),
+         ((0, 2), 2.12608267690468),
+         ((2, 2), 2.13534845254406),
+         ((1, 0), 2.85178155552809),
+         ((3, 2), 2.13986902969777),
+         ((1, 3), 1.77023872465550),
+         ((1, 1), 2.49126727857056),
+         ((0, 3), 1.76617595204093),
+         ((2, 0), 2.85756781856273),
+         ((3, 0), 2.86325491573606),
+         ((2, 3), 1.77423876953473),
+         ((3, 3), 1.77817608667862)]
+\end{verbatim}
+%
+From Step 4 onwards, the Lookup table returns the full list of monomials of degree less than $(3,3)$ i.e all the relevant monomials during the pre-computation stage.
+%
+We tested this even for reachability computations lasting more than 5 steps. The full set of Bernstein coefficients are always returned after a certain step. This is case it would be around step $4$ or $5$.
+
+As the wrapping error becomes worse, so does the utility of our Lookup table and the monomials it returns. A guess is that as the conservativeness of our reachable becomes greater, it overlaps with more cells. Hence, we need to take into account more and more monomials as the reachability algorithm progresses.
+
+Hence, we speculate that the utility of our pruning method hinges on the careful control of the reachable set error. If the error becomes too great, we end of computing all of the coefficients in the end.

@@ -60,6 +60,7 @@ Hence, in particular, a non-linear function $f$ cannot be expressed as some matr
 Examples of prominent non-linear dynamical systems include the Lotka-Volterra predator-prey model \cite{wangersky1978lotka}, the Fitz-Hugh Neuron model \cite{fitzhugh1961impulses}, and the recently introduced COVID19 disease model \cite{indiansuper2020supermodel}. Throughout this thesis, we discretize any continuous dynamics through the well-known Euler method. Thus, up to some error term of bounded degree, we can turn any non-linear system into the form given by Equation~\ref{eq:sys}.
 %
 \begin{example}
+\label{ex:sir}
 The SIR Epidemic model is a 3-dimensional dynamical system governed by the following continuous dynamics:
 \begin{align} \label{eqn:sir}
     \begin{cases}
@@ -410,6 +411,7 @@ p(\boldx) = \sum_{\boldi \leq \boldd} a_\boldi \cdot \boldx^\boldi
 where $\boldx^\boldi$ represents the monomial $x_1^{i_1}x_2^{i_2}\cdots x_n^{i_n}$. Every such real polynomial $p$ of degree at most $\boldd$ can be represented as linear combination of Bernstein basis polynomials of of degree $\boldd$:
 %
 \begin{equation}
+  \label{eq:bernstein_coeff}
   p(\boldx) = \sum_{\boldi \leq \boldd} b_{\boldi} \cdot \mathcal{B}_{(\boldi,\boldd)}(\boldx)
 \end{equation}
 where $b_\boldi$ denotes the \emph{$\boldi^{th}$ Bernstein Coefficient}:
