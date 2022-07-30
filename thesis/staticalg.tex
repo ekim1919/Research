@@ -121,33 +121,36 @@ Equation~\ref{eq:maxalpha} is a form of $\mathsf{optBox(\Lambda_{i} \cdot f)}$ o
 %
 One can compute an upper-bound to this non-linear optimization by computing the Bernstein coefficients of $\Lambda_i \cdot f(a + \Sigma_{i=1}^{n} \alpha_i g_i)$ and taking the maximum and minimum coefficients as shown in Property~\ref{prop:bern_enclosure}.
 %
-Similarly, we compute the lower-bound of $\Lambda_{i}\cdot f(x)$ for all $x \in P$ by computing the upperbound of $-1 \times \Lambda_{i}\cdot f(x)$.
+Similarly, we compute the lower-bound of $\Lambda_{i}\cdot f(x)$ for all $x \in P$ by computing the upper-bound of $-1 \times \Lambda_{i}\cdot f(x)$.
 %
+\begin{remark}
+The original algorithm using Bernstein expansion proposed by \cite{dreossi2016parallelotope} assumed polynomial dynamics i.e $f$ is polynomial in the system variables.
+%
+This is to ensure that a $\Lambda_{i}\cdot f(x)$ is a polynomial after the composition shown in Equation \ref{eq:maxalpha}. Proper Bernstein expansion of this polynomial allows us to exploit the enclosure property of Bernstein coefficients. However, the use of other non-linear optimization solvers, such as Kodiak \cite{kodiak}, allows us to use more general dynamics involving trigonometric and root functions. A Taylor expansion of any analytic function can also be truncated to some suffciently large degree to admit a power series expansion.
+\end{remark}
 
 We iterate this process (i.e., computing the upper and lower bound of $\Lambda^Q_{i}\cdot f(x)$) for each parallelotope in the bundle $Q$ according to Equation \ref{eq:max_over_ptopes} and Equation \ref{eq:min_over_ptopes}).
 %
 % Observe that the role of the parallelotopes in the bundle is to compute an upper bound on the maximum value of $T_{i}f(x)$ by expanding the domain from $Q$ to the corresponding parallelotope $P$.
 %
-Therefore, the tightest upper bound on $\Lambda^Q_{i}\cdot f(x)$ over $Q$ is the least of the upper bounds computed from each of the parallelotopes.
+Therefore, the tightest upper bound on $\Lambda^Q_{i}\cdot f(x)$ over $Q$ is the least of the upper-bounds computed from each of the parallelotopes.
 %
 A similar argument holds for lower bounds of $\Lambda^Q_{i}\cdot f(x)$ over $Q$.
 %
-\begin{figure}
-\subfloat[A single ptope]{
-  \begin{tikzpicture}
-    \draw (0,0) -- (-1,2) -- (3,2) -- (4,0) -- cycle;
-    \node at (1.5,1) {$P$};
-    \draw[->, very thick] (5,1) -- (7,1) node[above, midway] {$f$};
-    \draw (10,0) .. controls (7,1) ..(9,2) .. controls (10, 1).. (11,2) .. controls (14,1) .. (14,0) .. controls (11,-1) .. cycle;
-    \node at (11,0.75) {$f(P)$};
-  \end{tikzpicture}
-
-}
-
-\caption{Diagrams for the effect of the non-linear optimization procedure.}
-\end{figure}
+%\begin{figure}
+%\subfloat[A single ptope]{
+%  \begin{tikzpicture}
+%    \draw (0,0) -- (-1,2) -- (3,2) -- (4,0) -- cycle;
+%    \node at (1.5,1) {$P$};
+%    \draw[->, very thick] (5,1) -- (7,1) node[above, midway] {$f$};
+%    \draw (10,0) .. controls (7,1) ..(9,2) .. controls (10, 1).. (11,2) .. controls (14,1) .. (14,0) .. controls (11,-1) .. cycle;
+%    \node at (11,0.75) {$f(P)$};
+%  \end{tikzpicture}
+%}
+%\caption{Diagrams for the effect of the non-linear optimization procedure.}
+%\end{figure}
 %
-Therefore, the image of the bundle $Q$ will be the bundle $Q'$ where the upper and lower bounds for templates directions are obtained by solving a series of non-linear optimization problems of the form presented in Equation~\ref{eq:maxf}.
+Therefore, the image of the bundle $Q$ will be the bundle $Q'$ where the upper and lower-bounds for templates directions are obtained by solving a series of non-linear optimization problems of the form presented in Equation~\ref{eq:maxf}.
 
 % TODO: Expound more on the menaings of constructing ptopes from the bundle index matrix.
 

@@ -1,11 +1,24 @@
 \chapter{Conclusion}
 \label{chap:conclusion}
-In this paper, we investigated two techniques for generating templates dynamically: first using linear approximation of the dynamics, and second using PCA.
+In this thesis, we covered a specific technique to perform reachability analysis over non-linear dynamical systems by leveraging parallelotope bundles and a specific non-linear optimization problem whose solutions determine certain template directions' offsets required to express the reachable set.
+%
+We presented the original algorithm utilizing static template directions.
+%
+We then investigated two techniques for generating templates \emph{dynamically}: first using linear approximation of the dynamics, and second using PCA.
 %
 We demonstrated that these techniques improve the accuracy of reachable set by an order of magnitude when compared to static or random template directions.
 %
 We also observed that both these techniques improve the accuracy of the reachable sets for different benchmarks.
 %
-In future, we intend to investigate Koopman linearization techniques for computing alternative linear approximation template directions \cite{bak2021reachability}.
+Finally, we experimented with potential applications of the Bernstein expansion technique to real-time reachability. We found that several hurdles and barriers arise to effectively utilizing the pruning method developed in the pre-computation phase.
 %
-We also wish to investigate the use of a massively-parallel implementation using HPC hardware such as GPUs for optimizing over an extremely large number of parallelotopes and their template directions. This is inspired by the approach behind the recent tool \emph{PIRK} \cite{devonport2020pirk}.
+Several remarks on ideas towards improvement of the methods we developed are listed below:
+\begin{enumerate}
+  \item Koopman linearization techniques for computing alternative linear approximation template directions with alternative optimization methods could yield interesting modifications to Algorithms \ref{alg:old} and \ref{alg:new} \cite{bak2021reachability}.
+
+  \item The use of a massively-parallel implementation using HPC hardware, such as GPUs, for optimizing over an extremely large number of parallelotopes and their template directions is also an immediate extension. This is inspired by the approach behind the recent tool \emph{PIRK} \cite{devonport2020pirk}.
+
+  \item Step five of the pre-computation algorithm, where it simply takes the intervals which dominate all the other intervals, may be too crude to properly yield a proper speed-up. Are there any other methods of adding basis monomials to the lookup table which take into account the degree discrepancies outlined in Section \ref{sec:deg_disc}?
+\end{enumerate}
+
+%
