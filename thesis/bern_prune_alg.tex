@@ -15,35 +15,35 @@
   \SetAlgoLined
   \DontPrintSemicolon
 
-  \KwInput{Total Domain $D$, Number of grid cells $G$, Dynamics $f$, Template Direction Matrix $\Lambda$}
+  \KwInput{Total Domain $D$, Number of grid cells $g$, Dynamics $f$, Template Direction Matrix $\Lambda$}
   \KwOutput{$G$ sets of monomials each indiced by a grid cell}
   \tcp{Partition domain into equally-sized $G$ grid cells}
-  $\mathfrak{G} \gets $\ComputeGrid($D, G$) \;
+  $\mathfrak{G} \gets $\ComputeGrid($D, g$) \;
 
-  \For{grid cell $g \in \mathfrak{G}$}{
-    $R_g \gets $ \ComputeGenRep($f,g$)\;
+  \For{grid cell $G \in \mathfrak{G}$}{
+    $R_G \gets $ \ComputeGenRep($f,G$)\; \label{ln:compute_gen}
     \For{template direction $\Lambda_i$ in $\Lambda$}{
-      $\mathfrak{B_{g,i}} \gets $\BernInterval($\Lambda_i$, $R_g$)\;
+      $\mathfrak{B}_{G,i} \gets $\BernInterval($\Lambda_i$, $R_G$)\;
       \;
       \tcp{Find the max/min intervals and any overlaps}
-      $m_{g,\Lambda_i,\max} \gets $ \ComputeMaxInter($\mathfrak{B_{g,i}}$)\;
-      $m_{g,\Lambda_i,\min} \gets $ \ComputeMinInter($\mathfrak{B_{g,i}}$)\;
+      $m_{G,\Lambda_i,\max} \gets $ \ComputeMaxInter($\mathfrak{B}_{G,i}$)\;
+      $m_{G,\Lambda_i,\min} \gets $ \ComputeMinInter($\mathfrak{B}_{G,i}$)\;
     }
   }
-  $\mathcal{M} = \{m_{g,\Lambda_i,\max} \}_{g \in G, i} \cup \{m_{g,\Lambda_i,\min} \}_{g \in G, i}$\;
+  $\mathcal{M} = \{m_{G,\Lambda_i,\max} \}_{G \in \mathfrak{G}, i} \cup \{m_{G,\Lambda_i,\min} \}_{G \in \mathfrak{G}, i}$\;
   \Return{$\mathcal{M}$} \;
   \;
-  \Fun{\BernInterval($\Lambda_i$, $R_g$)}{
-    $\mathcal{P} \gets \Lambda_i \cdot R_g$ \tcp{Compute predicate (Eq \ref{eq:maxalpha})}
+  \Fun{\BernInterval($\Lambda_i$, $R_G$)}{
+    $\mathcal{P} \gets \Lambda_i \cdot R_G$ \tcp{Compute predicate (Eq \ref{eq:maxalpha})}
     \Return{\BernsteinCoeff($\mathcal{P}$)} \;
   }
   \;
-  \Fun{\ComputeGenRep($f$,$g$)}{
+  \Fun{\ComputeGenRep($f$,$G$)}{
 
   %$(\ell_1,u_1) \times (\ell_2,u_2) \times \cdots \times (\ell_n, u_n) \gets g$ \tcp{Set intervals which define the grid cell.}\;
-  $a \gets g$ \;
+  $a \gets G$ \;
   \For{$i \gets 1$ \KwTo $n$}{
-    $g_i \gets g$ \;
+    $g_i \gets G$ \;
   }
 
   \Return{$a + \sum_{i=1}^n \alpha_ig_i$} \tcp{Generator Representation where coefficients are instead intervals spanning grid cell} \;
@@ -68,15 +68,15 @@
 \SetKwInput{KwInput}{Input}
 \SetKwInput{KwOutput}{Output}
 
-\KwInput{Dynamics $f$, Bundle $Q$, Template Directions Matrix $\Lambda^Q$, Max/Min Monomial Lookup Table $\mathcal{M}$, Grid Partition $G$}
+\KwInput{Dynamics $f$, Bundle $Q$, Template Directions Matrix $\Lambda^Q$, Max/Min Monomial Lookup Table $\mathcal{M}$, Grid Partition $\mathfrak{G}$}
 \KwOutput{New parallelotope bundle $Q'$}
-\Fun{\TransformBund{$f$, $Q$, $\Lambda^Q$, $\mathcal{M}$, $G$}}{
+\Fun{\TransformBund{$f$, $Q$, $\Lambda^Q$, $\mathcal{M}$, $\mathfrak{G}$}}{
   $Q' \gets \{\}$; $c_{u} \gets +\infty$; $c_{l} \gets -\infty$\;
   \For{$P \in \ptopeset{Q}$}{
     $\langle a, g_1, \cdots, g_n \rangle \gets $ \ComputeGenRep($P$)\;
     \For{each $\Lambda_i^Q$ in $\Lambda^Q$ }{
-      $c_{u}'[i] \gets \mathsf{min}\{$\RetMaxMonom($P, \mathcal{M}), \  c_{u}'[i] \}$\;
-      $c_{l}'[i] \gets \mathsf{max}\{$\RetMinMonom($P, \mathcal{M}), \  c_{l}'[i]\}$\;
+      $c_{u}'[i] \gets \mathsf{min}\{$\RetMaxMonom($P, \mathcal{M},\mathfrak{G}), \  c_{u}'[i] \}$\; \label{ln:retrieve_max}
+      $c_{l}'[i] \gets \mathsf{max}\{$\RetMinMonom($P, \mathcal{M},\mathfrak{G}), \  c_{l}'[i]\}$\; \label{ln:retrieve_min}
     }
   }
   Construct parallelotopes $P_{1}', \ldots, P_{k}'$ from $\Lambda^Q, c_{l}', c_{u}'$ and indexes from $\T^Q$ \;
@@ -84,19 +84,21 @@
   $Q' \gets \{P_{1}', \ldots, P_{k}'\}$ \;
   \Return{$Q'$}}
   \;
-  \Fun{\RetMaxMonom($P,\ \mathcal{M},\ G$)}{
-    $\mathcal{O} \gets $ \FindOverlap($P,G$)\;
+  \Fun{\RetMaxMonom($P,\ \mathcal{M},\ \mathfrak{G}$)}{
+    $\mathcal{O} \gets $ \FindOverlap($P,\mathfrak{G}$)\;
     $\mathcal{P}_{\max} \gets \emptyset$ \;
-    \For{grid cell $g \in \mathcal{O}$}{
-      $\mathcal{P}_{\max} \gets \mathcal{P} \cup \{m_{g,\Lambda_i, \max} \}_{i}$\;
+    \For{grid cell $G \in \mathcal{O}$}{
+      $\{m_{G,\Lambda_i, \max} \}_{i} = \mathcal{M}.\mathsf{lookup}(G)$ \; \label{ln:max_lookup}
+      $\mathcal{P}_{\max} \gets \mathcal{P}_{\max} \cup \{m_{G,\Lambda_i, \max} \}_{i} $\;
     }
     \Return{$\mathcal{P}_{\max}$}
   }
-  \;  \Fun{\RetMinMonom($P,\ \mathcal{M},\ G$)}{
-      $\mathcal{O} \gets $ \FindOverlap($P,G$)\;
+  \;  \Fun{\RetMinMonom($P,\ \mathcal{M},\ \mathfrak{G}$)}{
+      $\mathcal{O} \gets $ \FindOverlap($P,\mathfrak{G}$)\;
       $\mathcal{P}_{\min} \gets \emptyset$ \;
-      \For{grid cell $g \in \mathcal{O}$}{
-        $\mathcal{P}_{\min} \gets \mathcal{P} \cup \{m_{g,\Lambda_i, \min} \}_{i}$\;
+      \For{grid cell $G \in \mathcal{O}$}{
+        $\{m_{G,\Lambda_i, \min} \}_{i} = \mathcal{M}.\mathsf{lookup}(G)$ \; \label{ln:min_lookup}
+        $\mathcal{P}_{\min} \gets \mathcal{P}_{\min} \cup \{m_{G,\Lambda_i, \min} \}_{i}$\;
       }
       \Return{$\mathcal{P_{\min}}$}
     }

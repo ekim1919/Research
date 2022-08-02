@@ -1,40 +1,35 @@
 \chapter{Introduction}
 \label{sec:intro}
 
-
-% Introduction from previous works, sources (ARCH, Formats)_
-% Related works from same papers.
-
-
-One of the most widely-used techniques for performing safety analysis of non-linear dynamical systems is reachable set computation
+One of the most widely-used techniques for performing safety analysis of non-linear dynamical systems is reachable set computation.
 %
-For example, reachability analysis has found many applications in formally verifying the safety properties of Cyber-physical Systems, such as autonomous vehicles \cite{althoff2010reachability}, F-16 aircraft \cite{heidlauf2018verification}, and those governed by Neural Network Controllers \cite{tran2019star, fan2020reachnn, bak2021nnenum}.
+For instance, reachability analysis has found a panoply of applications in formally verifying the safety properties of Cyber-physical Systems (CPS), such as autonomous vehicles \cite{althoff2010reachability}, F-16 aircraft \cite{heidlauf2018verification}, and CPS systems governed by Neural Network Controllers \cite{tran2019star, fan2020reachnn, bak2021nnenum}.
 %
-The reachable set is defined to be the set of states visited by at least one of the trajectories of the system starting from an initial set and propagated forward in time by a finite fixed number of steps.
+The reachable set is defined to be the set of states visited by at least one of the trajectories of the system starting from an initial set and propagated forward in time by a fixed number of steps.
 %
 Computing the exact reachable set for non-linear systems is challenging due to several reasons:
 %
-First, unlike linear dynamical systems whose solutions can be expressed as closed form, non-linear dynamical systems generally do not admit such a nice form.
+First, unlike linear dynamical systems whose solutions can be expressed in closed form, non-linear dynamical systems generally do not admit such a nice form.
 %
 Second, computationally speaking, current tools for performing non-linear reachability analysis are not very scalable. This is also in stark contrast to several scalable approaches developed for linear dynamical systems \cite{duggirala2016parsimonious, bak2017simulation}.
 %
 Finally, computing the reachable set using various set representations involves wrapping error which may be too conservative for practical use.
 %
-That is, the overapproximation acquired at a given step would increase the conservativeness of the overapproximation for all future steps.
+That is, the over-approximation acquired at a given step would increase the conservativeness of the over-approximation for all future steps.
 
-One of the several techniques for computing the overapproximation of reachable sets for discrete non-linear systems is to encode the reachable set through parallelotope bundles.
+One of the several techniques for computing the over-approximation of reachable sets for discrete non-linear systems is encoding the reachable set through parallelotope bundles.
 %
 Here, the reachable set is represented as a parallelotope bundle, an geometric data structure representing an intersection of several simpler objects called parallelotopes.
 %
-One of the advantages of this technique is its exploitation of a special form of non-linear optimization problem to overapproximate the reachable set.
+One of the advantages of this technique is its exploitation of a special form of non-linear optimization problem to over-approximate the reachable set.
 %
 The usage of a specific form of non-linear optimization mitigates many drawbacks involved with the scalability of non-linear analysis.
 
 However, wrapping error still remains to be a problem for reachability using parallelotope bundles.
 %
-An immediate reason stems from the responsbility of the practitioner to define the template directions specifiying the parallelotopes.
+An immediate reason stems from the responsibility of the practitioner to define the template directions specifiying the parallelotopes.
 %
-Often, these template directions are selected to be either the cardinal axis directions or some directions from octahedral domains.
+Often times these template directions are selected to be either the cardinal axis directions or some directions from octahedral domains.
 %
 However, it is not certain that the axis-aligned and octagonal directions are optimal for computing reachable sets over general non-linear dynamics.
 %
@@ -56,8 +51,15 @@ We observe that the accuracy of the reachable set can be drastically improved by
 %
 To address scalability, we demonstrate that even when the size of the initial set increases, our template generation algorithm returns more accurate reachable sets than both manually-specified and random template directions.
 %
-Finally, we experiment with our dynamic template generation algorithm's effectiveness on approximating the reachable set of high-dimensional COVID19 dynamics proposed by the Indian Supermodel Committee \cite{indiansuper2020supermodel}. The results were published in an ACM blogpost detailing the utility of reachable set computation in modeling disease dynamics \cite{bak2021covid}.
+We experiment with our dynamic template generation algorithm's effectiveness on approximating the reachable set of high-dimensional COVID19 dynamics proposed by the Indian Supermodel Committee \cite{indiansuper2020supermodel}. The results were published in an ACM blogpost detailing the utility of reachable set computation in modeling disease dynamics \cite{bak2021covid}.
 
+Finally, we investigate an application of Bernstein expansion-based reachability to the real-time domain.
+%
+We attempt to pre-compute the relevant Bernstein coefficients over the entire domain and prune the coefficients which do not appear as either a maximum or minimum coefficient.
+%
+The idea is to decrease the total number of coefficients the reachability algorithm has to compute in order to gain a speedup.
+%
+However, we show that there are several obstacles which hinder the utility of our pre-processing step.
 % [Introduction para]asdf
 % \begin{itemize}
 % \item Reachable set computation.
@@ -87,7 +89,7 @@ Finally, we experiment with our dynamic template generation algorithm's effectiv
 \section{Related Work}
 \label{sec:related}
 
-Reachable set computation of non-linear systems using template polyhedra and Bernstein polynomials has been first proposed in~\cite{dang2009image}.
+Reachable set computation of non-linear systems using template polyhedra and Bernstein polynomials was first proposed in~\cite{dang2009image}.
 %
 In~\cite{dang2009image}, Bernstein polynomial representation is used to compute an upper bound of a special type of non-linear optimization problem.
 %
@@ -105,7 +107,7 @@ In other words, the user must specify the template directions before the reachab
 
 Using template directions for reachable set has been proposed in~\cite{sankaranarayanan2008symbolic} and later improved in~\cite{dang2011template}.
 %
-Leveraging the principal component analysis of sample trajectories for computing reachable set has been proposed in~\cite{stursberg2003efficient,chen2011choice,seladji2017finding}.
+Leveraging the Principal Component Analysis of sample trajectories for computing reachable set has been proposed in~\cite{stursberg2003efficient,chen2011choice,seladji2017finding}.
 %
 More recently, connections between optimal template directions for reachability of linear dynamical systems and bilinear programming have been highlighted in~\cite{gronski2019template}.
 %

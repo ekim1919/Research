@@ -14,31 +14,13 @@ We benchmark our dynamic strategies with the recently introduced COVID supermode
    D' & = D + (\eta I)\cdot \Delta
   \end{cases}
 \end{equation*}
-\captionof{figure}{Dynamics for the COVID19 Supermodel.}
+\captionof{figure}{Dynamics for the Discretized COVID19 Supermodel.}
 \label{fig:covid19_dynamics}
 \end{center}
 
-where the variables denote the fraction of a population of individuals designated as \emph{Susceptible to Asymptomatic $(S_A)$}, \emph{Susceptible to Symptomatic $(S_I)$}, \emph{Asymptomatic (A)}, \emph{Symptomatic (I)}, \emph{Removed from Asymptomatic $(R_A)$}, \emph{Removed from Symptomatic $(R_I)$}, and \emph{Deceased (D)}. We choose the parameters ($\beta = 0.25, \gamma=0.02, \eta=0.02$) where $\beta$ is the probablity of infection, $\gamma$ is the removal rate, and $\eta$ is the mortality rate. The parameters are set based on figures shown in \cite{ansumali2020modelling}. The discretization step is chosen to be $\Delta = 0.1$ and the initial box is set to be following dimensions: $S_A  \in [0.69, 0.7], \, S_I \in [0.09, 0.1], \, A \in [0.14, 0.15], \, I \in [0.04, 0.05], \, R_A  = 0,\, R_I  = 0, \, D  = 0$. The discretized dynamics are given in Figure \ref{fig:covid19_dynamics}.
+The system variables denote the fraction of a population of individuals designated as \emph{Susceptible to Asymptomatic $(S_A)$}, \emph{Susceptible to Symptomatic $(S_I)$}, \emph{Asymptomatic (A)}, \emph{Symptomatic (I)}, \emph{Removed from Asymptomatic $(R_A)$}, \emph{Removed from Symptomatic $(R_I)$}, and \emph{Deceased (D)}. We choose the parameters ($\beta = 0.25, \gamma=0.02, \eta=0.02$) where $\beta$ is the probablity of infection, $\gamma$ is the removal rate, and $\eta$ is the mortality rate. The parameters are fixed based on figures shown in \cite{ansumali2020modelling}. The discretization step is chosen to be $\Delta = 0.1$ and the initial box is set to be following dimensions: $S_A  \in [0.69, 0.7], \, S_I \in [0.09, 0.1], \, A \in [0.14, 0.15], \, I \in [0.04, 0.05], \, R_A  = 0,\, R_I  = 0, \, D  = 0$. The discretized dynamics are given in Figure \ref{fig:covid19_dynamics}.
 
-Plots of the reachable set for this model tuned to specific values of parameters $\beta, \gamma, \eta$ were published in an ACM Sigbed Blogpost detailing applications of Formal methods for simulating disease dynamics \cite{bak2021covid}.
-%
-The main theme of the blogpost revolved around the difficulty of extracting accurate parameters from real-world data samples.
-%
-Certainly we can estimate the parameters by analyzing real-world data. However, minute changes in the parameters could yield estimates which would vastly overestimate or underestimate the true population of infected or asymptomatic patients.
-%
-This error is further compounded as our time horizon increases due to many of the issues pertaining to wrapping error, as discussed in the Introduction of this thesis (see Section \ref{sec:intro}).
-%
-Reachability analysis provides not only a method of simulating the disease dynamics in order to provide illuminating information for policy decisions but also to demonstrate the effect of slight changes in the parameters on the conservativeness of the outputted reachable set.
-%
-See Figure \ref{fig:covid_plots} for the two plots published in the blogpost. The Confirmed population is the sum of the number of Symptomatic ($I$) and Asymptomatic ($A$) populations of the dynamics presented in Equation \ref{eq:covid19_dynamics}. The plots were created by dividing the total period into two separate periods.
-%
-We decided to separate the periods as the parameters presented in the original paper \cite{ansumali2020modelling} were estimated separately according to these exact periods. Furthermore, we wished to control the conservativeness of the over-approximation of the reachable set.
-%
-The red line represents the real data gathered from India during the prescribed time periods with the light-blue region representing the predicted region based on the parameters given in \cite{ansumali2020modelling}.
-%
-Several lines representing trajectories generated according to specific parameters are also plotted in order to convey the effect of changes in the population under slight perturbations of the underlying parameters.
-%
-\begin{figure}
+\begin{figure}[b!]
   \centering
   % First COVID plot.
   \subfloat[Confirmed population from 06/21/20-08/22/20, ]{
@@ -51,3 +33,21 @@ Several lines representing trajectories generated according to specific paramete
 \caption{Reachable Sets for India's COVID19 Confirmed Population for the period 06/21/20-10/01/20}
 \label{fig:covid_plots}
 \end{figure}
+
+Plots of the reachable set for this model tuned to specific values of parameters $\beta, \gamma, \eta$ were published in an ACM Sigbed Blogpost detailing applications of formal methods for simulating disease dynamics \cite{bak2021covid}.
+%
+The main theme revolved around the difficulty of extracting accurate parameters from real-world data samples.
+%
+Certainly we could attempt to estimate the parameters by analyzing real-world data. However, minute changes in the parameters could yield estimates which would vastly overestimate or underestimate the true population of infected or asymptomatic patients.
+%
+This error is further compounded as our time horizon increases, due to many issues pertaining to wrapping error as discussed in the introduction of this thesis (see Section \ref{sec:intro}).
+%
+Reachability analysis provides not only a method of simulating the disease dynamics in order to provide illuminating information for policy decisions but also to demonstrate the effect of slight changes in the parameters on the conservativeness of the outputted reachable set.
+%
+See Figure \ref{fig:covid_plots} for the two plots published in the blogpost. The Confirmed population is the sum of the number of Symptomatic ($I$) and Asymptomatic ($A$) populations of the dynamics presented in Equation \ref{fig:covid19_dynamics}. The plots were created by dividing the total period into two separate periods.
+%
+We decided to separate the periods as the parameters presented in the original paper \cite{ansumali2020modelling} were estimated separately according to these exact periods. Furthermore, we wished to control the conservativeness of the over-approximation of the reachable set.
+%
+The red line represents the real data gathered from India during the prescribed time periods with the light blue region representing the predicted region based on the parameters given in \cite{ansumali2020modelling}.
+%
+Several lines representing trajectories generated according to specific parameter values are also plotted in order to convey the effect on the confirmed population under slight perturbations of the underlying parameters.

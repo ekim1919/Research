@@ -30,8 +30,8 @@ $\Lambda^{accum} \gets I_n$ \tcp{Set to Identity Matrix} \;
 $\Lambda^{Q_0} \gets \Lambda^{P_0}$ \tcp{Init Template Directions}
 
  \For{$k \gets 1$ \KwTo $S$}{
-    $P_{supp} \gets $\GetSupp($Q_{k-1}$) (support points of $Q_{k-1}$) \;
-    $P_{prop} \gets $ \PropPoints($P_{supp}$, $f$) (image of support points) \;
+    $P_{supp} \gets $\GetSupp($Q_{k-1}$) \tcp{Support points of $Q_{k-1}$} \;
+    $P_{prop} \gets $ \PropPoints($P_{supp}$, $f$) \tcp{Image of support points} \;
 
     $A \gets$  \ApproxLinearTrans($P_{supp}$, $P_{prop}$) \; \label{ln:linearapprox}
     $\Lambda^{accum} \gets \Lambda^{accum} \cdot A^{-1}$ \;
@@ -46,7 +46,7 @@ $\Lambda^{Q_0} \gets \Lambda^{P_0}$ \tcp{Init Template Directions}
     $Q_k \gets $ \TransformBund($f$, $Q_{k-1}, \Lambda_k$) \;
    $\overline\Theta_k \gets Q_k$ \;
  }
- \Return{$\overline\Theta_1 \ldots \overline\Theta_S$} \;
+ \Return{$\overline\Theta_1 \ldots \overline\Theta_S$} \; \label{ln:theta}
  %
  \;
    \Fun{\GetSupp{$Q$}}{

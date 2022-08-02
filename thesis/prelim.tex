@@ -1,19 +1,19 @@
 \chapter{Preliminaries}
 \label{chap:prelim}
 
-We begin with some basic definitions pertaining to reachability and parallelotopes. The definition of Bernstein polynomials and their enclosure properties will be stated. Finally, an outline of the reachability algorithm given by \cite{dreossi2016parallelotope} for polynomial dynamical systems will be presented.
+We begin with some preliminaries pertaining to reachability and parallelotopes. The definition of Bernstein polynomials and their enclosure properties will be stated. Finally, an outline of the reachability algorithm given by \cite{dreossi2016parallelotope} for polynomial dynamical systems will be presented.
 
 \section{Basic Definitions}
 \label{sec:definitions}
 
-As stated in the previous section, this thesis pertains to the reachability analysis of dynamical systems. Roughly speaking, a dynamical system describes the behavior of states in space which is governed by a set of differential equations. The states of the system evolve according to the flow of time and the vector field induced by the governing differential equations.
+As stated in the previous section, this thesis pertains to the reachability analysis of dynamical systems. Roughly speaking, a dynamical system describes the behavior of states governed by a set of differential equations. The states of the system evolve according to the flow of time and the vector field induced by the governing differential equations.
 
 Towards introducing more terminology, the \emph{state} of a system, denoted as $x$, lies in a domain $D \subseteq \reals^n$ where the solutions to the differential equations are defined.
 %
-In the reachability analysis literature, there are several definitions for dynamical systems which appear depending on the authors' taste of formalizations. Here is a more rigorous definition appearing in \cite{dang1998reachability}:
+In the reachability analysis literature, there are several definitions for dynamical systems which appear depending on the authors' taste for formalisms. Here is a more rigorous definition appearing in \cite{dang1998reachability}:
 \begin{definition}
 \label{def:diff_dyna_sys}
-A \emph{continuous dynamical system} is a tuple $\langle X, f \rangle$ where $X = \reals^n$ is finite-dimensional Euclidean space and $f$ is a continuous function on $X$. A point (state) of $x_0 \in X$ evolves according to a tracjectory $\xi(t): \reals^+ \rightarrow X$ such that the following hold:
+A \emph{continuous dynamical system} is a tuple $\langle X, f \rangle$ where $X = \reals^n$ is finite-dimensional Euclidean space and $f$ is a continuous function on $X$. A point (state) of $x_0 \in X$ evolves according to a trajectory $\xi(t): \reals^+ \rightarrow X$ such that the following hold:
 %
 \begin{equation}
   \label{eq:diff_dyna_sys}
@@ -26,7 +26,7 @@ A \emph{continuous dynamical system} is a tuple $\langle X, f \rangle$ where $X 
 %
 \noindent Note that, by a simple separation of variables argument and an initial value of $\xi(0) = x_0$, Equation \ref{eq:diff_dyna_sys} yields the following form for $\xi$:
 \begin{equation}
-\xi(t) = x_0 + \int_0^t f(\xi(\tau)) d\tau
+\xi(t) = x_0 + \int_0^t f(\xi(\tau))\; d\tau
 \end{equation}
 %
 \noindent However, many members of the research community choose to simply express the system as:
@@ -47,7 +47,7 @@ where $f: \reals^{n} \rightarrow \reals^{n}$ is a function and $x^{+}$ denotes t
 %
  In other words, the function $f$ takes input a state of the system and outputs the next step of the system evolved according to the dynamics.
 %
-Intuitively speaking, the function $f$ generally represents a discretized version of some specified continuous dynamical system. Here, a discrete-time dynamical system is considered \emph{linear} if its dynamics can be expressed as
+ The function $f$ generally represents a discretized version of some specified continuous dynamical system. Here, a discrete-time dynamical system is considered to be \emph{linear} if its dynamics can be expressed as
 
 $$
 x^{+} = Ax, \quad A \in \reals^{n \times n}
@@ -87,7 +87,7 @@ Discretizing Equation~\ref{eqn:sir} according the Euler method yields the dynami
  Here, $\Delta$ is the discretization step and the index $k \in \mathbb{N}$ simply represents the current step.
 %For the benchmarks, we set $\beta = 0.34$, $\gamma=0.05$, and $\Delta=0.5$.
 %
-Note the non-linear terms $s_ki_k$ which preclude the expression of the dynamics as a linear transformation.
+Note the non-linear terms $s_ki_k$, which preclude the expression of the dynamics as a linear transformation.
 \end{example}
 
 We can now give a discretized version of a trajectory as presented in Definition \ref{def:diff_dyna_sys}. The trajectory of a system that evolves according to Equation~\ref{eq:sys}, denoted as $\xi_{x_0}$, is a sequence $x_0, x_1, \ldots $ where $x_{i+1} = f(x_i)$.
@@ -106,17 +106,18 @@ If we set the number of steps to be some $n \in \mathbb{N}$, we say the \emph{re
 \end{equation}
 \end{definition}
 %
-\noindent We will see in a future section an example of the reachable set of the discretized SIR model presented in Figure~\ref{fig:discrete_sir}.
+\noindent Example \ref{ex:sir_kaa} gives the plot of the reachable set of the discretized SIR model presented in Figure~\ref{fig:discrete_sir}.
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 \section{Parallelotope-based Reachability}
 \subsection{Parallelotopes}
 \label{sec:parallelotope}
+%
 The heart of our reachability algorithm relies on geometric objects called \emph{parallelotopes}. In this section, we define parallelotopes and two representations for them.
 
 \begin{definition}
 \label{def:ptope}
-A \emph{parallelotope} $P \subset \mathbb{R}^{n}$ is captured by the tuple $\langle \Lambda, c\rangle$ where $\Lambda \in \mathbb{R}^{2n \times n}$ is a matrix and $c \in \reals^{2n}$ is a column vector. We impose the condition that $\Lambda_{i+n} = -\Lambda_{i}$ for all $i \in \{1, \ldots, n\}$ such that
+A \emph{parallelotope} $P \subset \mathbb{R}^{n}$ is captured by the tuple $\langle \Lambda, c\rangle$ where $\Lambda \in \mathbb{R}^{2n \times n}$ is a matrix and $c \in \reals^{2n}$ is a column vector. We impose the condition that $\Lambda_{i+n} = -\Lambda_{i}$ for all $1 \leq i \leq n$ such that
 %
 \begin{equation}
 \label{eq:halfspace}
@@ -127,7 +128,7 @@ x \in P \mbox{ if and only if } \Lambda x \leq c.
 %
 We deem $\Lambda$ as the \emph{template direction matrix} where $\Lambda_i$ denotes the $i^{th}$ row of $\Lambda$ called the \emph{$i^{th}$ template direction}. The column vector $c$ is called the \emph{offset vector} with $c(i)$ denoting the $i^{th}$ element of $c$.
 %
-If we unpack Equation~\ref{eq:halfspace}, we can re-express the inequalities as a conjunction of half-space constraints. If we define $c_{u} = [c(1), c(2), \cdots, c(n)]^T$ and $c_{l} = [c(n+1), c(n+2), \cdots, c(2n)]^T$, then Equation~\ref{eq:halfspace} tells us that:
+If we unpack Equation~\ref{eq:halfspace}, we can re-express the inequalities as a conjunction of half-space constraints. If we define $c_{u} = [c(1), c(2), \cdots, c(n)]^T$ and $c_{l} = [c(n+1), c(n+2), \cdots, c(2n)]^T$, then Equation~\ref{eq:halfspace} tells us that, for $1 \leq i \leq n$:
 %
 \begin{align}
   & \Lambda_i x \leq c_u(i)  \label{eq:upper_ineq}\\
@@ -146,15 +147,15 @@ such that
 \label{eq:halfspaceconst}
 P & =\{x ~|~ c_l \leq \Lambda x \leq c_u\}
 \intertext{In a more explicit form:}
-P & = \bigwedge_{i=1}^n \left[c_l(i) \leq \Lambda_i\cdot x \leq c_u(i) \right]
+P & = \bigwedge_{i=1}^n \left[c_l(i) \leq \Lambda_i\cdot x \leq c_u(i) \right]\label{eq:halfspace_ineq}
 \end{align}
 \end{definition}
 %
-\noindent In particular, as a bounded intersection of pairs of parallel half-spaces, it is convex.
+\noindent In particular, as a bounded intersection of $n$ pairs of parallel half-spaces, it is convex.
 %
 \begin{example}
 \label{ex:simple_ptope}
-Consider the 2D plane, namely $\reals^2$. We can construct a couple of simple examples of parallelotopes. First, if we define our parallelotope's template direction matrix to be the rows of the matrix:
+Consider the 2D plane, namely $\reals^2$. We can construct a two simple examples of parallelotopes. First, if we define our parallelotope's template directions to be the rows of the matrix:
 %
 \begin{equation}
   \Lambda = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}
@@ -178,7 +179,7 @@ Then by Definition \ref{def:halfspace_def}, the half-space representation is giv
   \end{bmatrix}
 \end{equation}
 %
-Accordingly, the bounded region in space will be the intersection of the following linear constraints:
+Accordingly, by Equation \ref{eq:halfspace_ineq}, the bounded region in space will be the intersection of the following linear constraints:
 %
 \begin{align}
   \begin{split}
@@ -186,7 +187,7 @@ Accordingly, the bounded region in space will be the intersection of the followi
   -1 \leq y \leq 1
   \end{split}
 \end{align}
-This is exactly the shifted unitbox $[-1,1] \times [-1,1]$. In fact, we can easily generalize this a general $n$-dimensional system by considering the template direction matrix $\Lambda = I_n$ where $I_n$ is the $n \times n$ identity matrix and two offset vectors $c_l, c_u$ of length $n$. This would yield the shifted $n$-dimensional unitbox:
+This is exactly the scaled unitbox $[-1,1] \times [-1,1]$. In fact, we can easily generalize this to a general $n$-dimensional system by considering the template direction matrix $\Lambda = I_n$ where $I_n$ is the $n \times n$ identity matrix and two offset vectors $c_l, c_u$ of length $n$. This would yield the shifted $n$-dimensional unitbox:
 
 \begin{equation}
 [c_l(1), \;c_u(1)] \times [c_l(2),\; c_u(2)] \times \cdots \times [c_l(n), \; c_u(n)]
@@ -216,8 +217,13 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
     \draw[->, thick](1,0) -- (2,0) node[right] (2,0) {$[1,0]$};
     \draw[->, thick](-1,0) -- (-2,0) node[left] (-2,0) {$[-1,0]$};
     \draw[->, thick](0,-1) -- (0,-2) node[below] (0,-2) {$[0,-1]$};
+    \draw[fill] (0,0) circle [radius=1pt];
+    \node[above] (0,0) {$\mathcal{O}$};
+    %\foreach \i in {-3,-2,...,3} \node[below] at (\i,0) {\scriptsize \i};
+    %\foreach \i in {-3,-2,...,3} \node[right] at (0,\i) {\scriptsize \i};
   \end{tikzpicture}
-  \caption{Plot of the axis-aligned parallelotope of Example \ref{ex:simple_ptope}. The template directions are displayed as normal vectors to the pairs of parallel planes defining the parallelotope.}
+
+  \caption{Plot of the axis-aligned parallelotope of Example \ref{ex:simple_ptope}. The template directions are displayed as normal vectors to the pairs of parallel planes defining the parallelotope. $\mathcal{O}$ represents the origin $(0,0)$ and each side of a grid cell represents one unit of distance.}
   \label{fig:axis_align_ptope}
 \end{figure}
 
@@ -225,7 +231,7 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
 
 \begin{example}
   \label{ex:simple_diag_ptope}
-  We can also consider the axis-aligned directions rotated $45^\circ$ counter-clockwise. This would yield the two diagonal directions $[1,1]^T, [-1,1]^T$. Suppose we set the upper and lower offsets to be $c_u = [1,1]^T$ and $c_l = [-1,-1]^T$ respectively, then once again by Definition \ref{def:halfspace_def}:
+  We can also consider the axis-aligned directions rotated $45^\circ$ counter-clockwise. This would yield the two diagonal directions $[1,1]^T, [-1,1]^T$. Suppose we set the upper and lower offsets to be $c_u = [1,1]^T$ and $c_l = [-1,-1]^T$ respectively. Then once again by Definition \ref{def:halfspace_def}:
   %
   \begin{equation}
   \begin{bmatrix}
@@ -248,7 +254,7 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
     \end{split}
   \end{align}
   %
-  In general, we define \emph{diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other. As a matter of convenience however, we refer to \emph{diagonal parallelotopes} as those defined by a combination of axis-aligned and diagonal directions. This definition will be useful when we consider parallelotopes defined by unconventional directions (i.e those template directions which are neither axis-aligned nor diagonal). To see a visual plot of the diagonal parallelotope, see Figure \ref{fig:diagonal_ptope}.
+  In general, we define \emph{diagonal directions} are defined to be vectors created by adding and subtracting distinct pairs of unit axis-aligned vectors from each other. As a matter of convenience however, we refer to \emph{diagonal parallelotopes} as those defined by a combination of axis-aligned \emph{and} diagonal directions. This definition will be useful when we consider parallelotopes defined by unconventional directions (i.e those template directions which are neither axis-aligned nor diagonal). To see a visual plot of the diagonal parallelotope, see Figure \ref{fig:diagonal_ptope}.
 
   \begin{figure}[h!]
     \centering
@@ -259,11 +265,10 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
       \draw[->, thick] (-0.5,-0.5) -- (-1,-1) node[below] {$[-1,-1]$};
       \draw[->, thick] (-0.5,0.5) -- (-1,1) node[above] {$[-1,1]$};
       \draw[->, thick] (0.5,-0.5) -- (1,-1) node[below] {$[1,-1]$};
-
-
-
+      \draw[fill] (0,0) circle [radius=1pt];
+      \node[above] {$\mathcal{O}$};
     \end{tikzpicture}
-    \caption{Plot of the rotated parallelotope of Example \ref{ex:simple_diag_ptope}. Once again, note the manner in which the template directions and their negative counterparts define parallel planes and the parallelotope's definition as the intersection of the postive and negative half-spaces of all pairs of parallel planes.}
+    \caption{Plot of the rotated parallelotope of Example \ref{ex:simple_diag_ptope}. Once again, note the manner in which the template directions and their negative counterparts define parallel planes and the parallelotope's definition as the intersection of the postive and negative half-spaces of all pairs of parallel planes. Once again, $\mathcal{O}$ represents the origin $(0,0)$ and each side of a grid cell represents one unit of distance.}
     \label{fig:diagonal_ptope}
   \end{figure}
 \end{example}
@@ -273,14 +278,14 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
 %
 \begin{definition}
 \label{def:generator_def}
-The \emph{generator representation} of a parallelotope $P$ is a tuple of vectors $\langle v, g_1, \ldots, g_n\rangle$ such that $v,g_1, \cdots g_n \in \reals^n$. The vector  $v \in \mathbb{R}^n$ is called the \emph{anchor} and the $g_i \in \mathbb{R}^n$, are called the \emph{generators}. The parallelotope is defined as the set:
+The \emph{generator representation} of a parallelotope $P$ is a tuple of vectors $\langle v, g_1, \ldots, g_n\rangle$ such that $v,g_1, \cdots g_n \in \reals^n$. The vector  $v$ is called the \emph{anchor} and the $g_i$ are called the \emph{generators}. The parallelotope is defined as the set:
 $$
 P := \{ x ~|~ \exists \alpha_1, \ldots, \alpha_n \in [0,1], \; x = v + \sum_{i=1}^n \alpha_i g_i \}
 $$
 \end{definition}
 %
 \begin{remark}
-  \noindent This is esstentially a convex reprsentation of the parallelotope, which shares many similarities to Zonotopes~\cite{girard2005reachability,althoff2010computing} and Star sets~\cite{duggirala2016parsimonious}.
+  \noindent This is esstentially a convex representation of the parallelotope, which shares many similarities to Zonotopes~\cite{girard2005reachability,althoff2010computing} and Star sets~\cite{duggirala2016parsimonious}.
   %
   %In particular, a parallelotope is a special case of a zonotope where the number of generators is exactly the dimension of the system $n$.
   %
@@ -291,14 +296,38 @@ $$
   \bigwedge_{i=1}^m \Lambda_i \cdot x \leq c_i
  \end{equation}
  %
-It follows that parallelotopes are template polyhedra with $m=2n$ and the constraint that $\Lambda_{i+n} = -\Lambda_{i}$ for $1 \leq i \leq n$. Several verification tasks of hybrid automata have been investigated in the reachability literature. See \cite{dang2011template, gronski2019template, sankaranarayanan2008symbolic} for on related topics.
+It follows that parallelotopes are template polyhedra with $m=2n$ such that $\Lambda_{i+n} = -\Lambda_{i}$ for $1 \leq i \leq n$. Several verification tasks of hybrid automata with template polyhedra have been investigated in the reachability literature. See \cite{dang2011template, gronski2019template, sankaranarayanan2008symbolic} for more on related topics.
 \end{remark}
 %
 There is a simple method to convert from the half-space representation of $P$ to its equivalent generator representation. The algorithm is sketched in Algorithm \ref{alg:rep_conversion}.
 %
-The first line ascertains the lower-most vertex of the input parallelotope. This vertex will be our anchor. The first loop starting at line two finds all of the vertices which are incident to the lower-most vertex through an edge. Finally, the second loop starting at line eight calculates the generator vectors which will span the paralleltope through a convex combination $\bar{\alpha} \in [0,1]^n$. Note that the anchor is simply shifting the  generator vectors $g_i$ from the origin to the point required to properly span $P$.
+Line \ref{ln:find_anchor} ascertains the lower-most corner vertex of the input parallelotope. This vertex will be our anchor. The first loop starting at Line \ref{ln:first_loop} finds all of the vertices which are incident to the lower-most vertex through an boundary edge. There will be exactly $n$ of these incident vertices. The $i^{th}$ incident vertex can be computed by replacing the value stored in index $i$ of the lower offset vector $c_l$ with the value stored in the corresponding index $i$ of upper offset vector $c_u$.
+%
+\begin{figure}[h!]
+  \centering
+  \begin{tikzpicture}
+    \draw[step=1cm,gray,very thin, style=help lines] (-3,-3) grid (3,3);
+    \draw[fill=blue!40!white, opacity=0.4] (1,0) -- (0,1) -- (-1,0) -- (0,-1) -- cycle;
+    \draw[fill] (0,0) circle [radius=1pt];
+    \node[above] {$\mathcal{O}$};
 
-There also exists a procedure to perform the reverse direction, namely to convert from the generator representation to the half-space representation. However, we will not need this procedure for this thesis. Refer to \cite{dang2014parameter} for a more detailed exposition of these conversions.
+    \draw[fill] (0,-1) circle [radius=1.5pt];
+    \node[below] at (0,-1) {$v$};
+
+    \draw[->, very thick, draw=red] (0,-1) -- (-1,0) node[midway, left] {$g_1$};
+    \draw[->, very thick, draw=red] (0,-1) -- (1,0) node[midway, right] {$g_2$};
+  \end{tikzpicture}
+  \caption{Plot of the generator representation for Example \ref{ex:simple_diag_ptope}. The vertex $v$ represents the anchor while the two vectors $g_1,g_2$ are the generator vectors.}
+  \label{fig:axis_align_gen}
+\end{figure}
+%
+Intuively, this process can be visualized as following the lower half-space boundary for each pair of parallel planes until we reach the intersection of the boundary with several other upper half-space boundaries.
+%
+See Figure \ref{fig:axis_align_gen} for a plot of this on the diagonal example considered in Example \ref{ex:simple_diag_ptope}.
+%
+Finally, the second loop starting at line eight calculates the generator vectors which will span the paralleltope through a convex combination $\bar{\alpha} \in [0,1]^n$. Note that the anchor is simply shifting the  generator vectors $g_i$ from the origin to the point required to properly span $P$.
+
+There also exists a procedure to perform the reverse direction, namely to convert from the generator representation to the half-space representation. However, we will not require this procedure for this thesis. Refer to \cite{dang2014parameter} for a more detailed exposition of these conversions.
 
 As a final remark, notice that for a parallelotope $P$, the generator representation also defines an affine transformation that maps $[0,1]^{n}$ to $P$.
 %
@@ -311,7 +340,7 @@ We refer to this affine transformation associated to $P$ as $T_P:[0,1]^n \righta
 \begin{example}
 Let us return to the axis-aligned box considered in Example \ref{ex:simple_ptope}.
 %
-To obtain the anchor, we end up with the trivial solution $x = 1, y=1$ by adhering to Step 1. Hence, the anchor is set to $v = (1,1)$
+To obtain the anchor, we end up with the trivial solution $x = 1, y=1$ by adhering to Step 1. Hence, the anchor is set to $v = (1,1)$.
 %
 Subsequently, we solve for the two other vertices by following Step 2 to obtain $x=2, y= 1$ and $x=1,y=2$.
 %
@@ -363,10 +392,10 @@ The generator $g_2$ is the vector $v_2 - a$, that is $(1,1) - (0,0) = (1,1)$.
 Therefore, all the points in the paralellotope can be written as $(x,y) = (0,0) + \alpha_1 \cdot (1,0) + \alpha_2\cdot (1,1)$, $\alpha_1, \alpha_2 \in [0,1]$.
 \end{example}
 %
-%We denote this affine transformation as $T_{p}$.
+The reachable set will be expressed an intersection of parallelotopes. These parallelotopes will be encoded into a parallelotope bundle.
 %
 \begin{definition}
-A parallelotope bundle $Q$ is a set of parallelotopes $\{P_0, \ldots, P_m\}$ such that
+A \emph{parallelotope bundle} $Q$ is a set of parallelotopes $\{P_0, \ldots, P_m\}$ such that
   $$ Q = \bigcap_{i=1}^{m}P_i $$.
 \end{definition}
 
@@ -378,7 +407,7 @@ $$
 \end{remark}
 
 %
-\noindent This parallelotope bundle will be the geometric data structure which will enclose the region we compute to be the approximation of the exact reachable set. Observe that $Q$ can be expressed as the conjunction of all the linear constraints defining each parallelotope $P_i \in \ptopeset{Q}$.
+\noindent This parallelotope bundle will be the geometric data structure enclosing the region we compute to be the over-approximation of the exact reachable set. Observe that $Q$ can be expressed as the conjunction of all the linear constraints defining each parallelotope $P_i \in \ptopeset{Q}$.
 
 %--------------------------------------------------------------------------------------------------------------------------------------------------------- --------
 \subsection{Bernstein Polynomials}
@@ -387,7 +416,7 @@ In this section, we define Bernstein polynomials and state some of their enclosu
 \[
   {\bf i} \leq {\bf j} \iff i_k \leq j_k, \quad 1 \leq  k \leq n
 \]
-Finally, we generalize the product of binomial coefficients as:
+Finally, we generalize the product of binomial coefficients over multi-indices as:
 \[
   \binom{\boldi}{\boldj} := \prod_{k=1}^n \binom{i_k}{j_k}
 \]
@@ -398,13 +427,13 @@ Given two multi-indices $\boldi$ and $\boldd$ of size $n$, where $\boldi \leq \b
 \mathcal{B}_{(\boldi,\boldd)}(\boldx) = \beta_{i_1,d_1}(x_1) \beta_{i_2,d_2}(x_2)\ldots \beta_{i_n,d_n}(x_n).
 \end{equation}
 %
-where for $i,d,x \in \reals$:
+where for $i,d \in \mathbb{N}$ and $x \in \reals$:
 %
 \begin{equation}
 \beta_{i,d}(x) = \binom{d}{i}x^{i}(1-x)^{d - i}
 \end{equation}
 %
-Let $p: \reals^n \rightarrow \reals$ of be a real polynomial of degree at most $\boldd$. We can express $p$ as a linear combination of monomials of degree at most $\boldd$:
+Let $p: \reals^n \rightarrow \reals$ be a real polynomial of degree at most $\boldd$. We can express $p$ as a linear combination of monomials of degree at most $\boldd$:
 \[
 p(\boldx) = \sum_{\boldi \leq \boldd} a_\boldi \cdot \boldx^\boldi
 \]
@@ -444,7 +473,7 @@ Therefore, upper bounds on the suprenum of a polynomial function $p$ over $P$ is
 %
 A similar argument follows for the lower bound on the infimum.
 %
-The crux of the reachability algorithm involves exploiting this property of Bernstein polynomials to approximate the solution of certain non-linear optimization problem invovilng polynomial predicates over the unitbox, $[0,1]^n$.
+The crux of the reachability algorithm involves exploiting this property of Bernstein polynomials to approximate the solution of certain non-linear optimization problem involving polynomial predicates over the unitbox, $[0,1]^n$.
 %
 We will cover this algorithm in the upcoming section.
 %

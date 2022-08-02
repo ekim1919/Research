@@ -10,8 +10,8 @@
 
 \KwInput{Parallelotope $P = \langle \Lambda, c_l, c_u \rangle$ in Half-Space Representation}
 \KwOutput{Generator Representation of $P = \langle a, g_1 \cdots, g_n \rangle$ }
-$v_0 \gets \SolveLinEq(\Lambda, c_l)$ \;
-\For{$i \gets 1$ \KwTo $n$}{
+$v_0 \gets \SolveLinEq(\Lambda, c_l)$ \; \label{ln:find_anchor}
+\For{$i \gets 1$ \KwTo $n$}{ \label{ln:first_loop}
   $\mu_j \gets c_l$\;
   $\mu_j[i] \gets c_u[i]$ \;
   $v_i \gets \SolveLinEq(\Lambda,\mu_i)$ \;

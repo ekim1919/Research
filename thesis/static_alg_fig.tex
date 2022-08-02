@@ -37,8 +37,8 @@ $Q_0 \gets Q$ \;
      $\langle a, g_1, \cdots, g_n \rangle \gets $ \ComputeGenRep($(P)$)\;
      $G_P \gets \Lambda_i^Q \cdot f(a + \sum_{i=1}^n \alpha_ig_i$) \;
      \For{each $\Lambda_i^Q$ in $\Lambda^Q$ }{
-       $c_{u}'[i] \gets \mathsf{min}\{ \mathsf{optBox(G_P)}, c_{u}'[i] \}$ (Equation~\ref{eq:maxalpha})\;
-       $c_{l}'[i] \gets \mathsf{max}\{ -1 \times \mathsf{optBox(-1 \times G_P)}, c_{l}'[i] \}$\;
+       $c_{u}'[i] \gets \mathsf{min}\{ \mathsf{optBox(G_P)}, c_{u}'[i] \}$ (Equation~\ref{eq:maxalpha})\; \label{ln:bern_opt_max}
+       $c_{l}'[i] \gets \mathsf{max}\{ -1 \times \mathsf{optBox(-1 \times G_P)}, c_{l}'[i] \}$\; \label{ln:bern_opt_min}
      }
    }
    Construct parallelotopes $P_{1}', \ldots, P_{k}'$ from $\Lambda^Q, c_{l}', c_{u}'$ and indexes from $\T^Q$ \;
