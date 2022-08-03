@@ -32,7 +32,7 @@ Towards this end, we propose the following algorithm outlined in Algorithm \ref{
 \newcommand\litem[1]{\item{\bfseries #1 \\}}
 
 \begin{enumerate}
-\litem{Parition Domain into Grid Cells:} We first partition the domain into grid cells of equal dimension. Naturally the entire domain is infinite, so we must restrict the domain into a bounded box of sufficiently large dimension. This box must bound the reachable set computed for a finite number of steps forward. These grid cells will act as constraints to feed into our generator representation.
+\litem{Partition Domain into Grid Cells:} We first partition the domain into grid cells of equal dimension. Naturally the entire domain is infinite, so we must restrict the domain into a bounded box of sufficiently large dimension. This box must bound the reachable set computed for a finite number of steps forward. These grid cells will act as constraints to feed into our generator representation.
 
 \litem{Initialize Generator Representation:} For each of the cells computed in the previous step, we set the anchor vertex and generator vector components to their corresponding grid cell dimension. In other words, we constrain the parallelotope to be contained within the cell through the generator representation. Formally speaking, suppose we have a grid cell $G$ in $n$-dimensional Euclidean space $\reals^n$ of the form $G = [l_1,u_1] \times [l_2, u_2] \times \cdots [l_n \times u_n]$. To constrain our parallelotope $P = \langle a, g_1, \cdots, g_n\rangle$ to be contained within $g$, it suffices to set the component variables such that $a, g_1, \cdots, g_n \in G$. For example, to set $a \in G$, the constraints should be initialized as below:
 \begin{align}
