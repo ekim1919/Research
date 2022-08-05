@@ -32,7 +32,7 @@ Towards this end, we propose the following algorithm outlined in Algorithm \ref{
 \newcommand\litem[1]{\item{\bfseries #1 \\}}
 
 \begin{enumerate}
-\litem{Partition Domain into Grid Cells:} We first partition the domain into grid cells of equal dimension. Naturally the entire domain is infinite, so we must restrict the domain into a bounded box of sufficiently large dimension. This box must bound the reachable set computed for a finite number of steps forward. These grid cells will act as constraints to feed into our generator representation.
+\litem{Parition Domain into Grid Cells:} We first partition the domain into grid cells of equal dimension. Naturally the entire domain is infinite, so we must restrict the domain into a bounded box of sufficiently large dimension. This box must bound the reachable set computed for a finite number of steps forward. These grid cells will act as constraints to feed into our generator representation.
 
 \litem{Initialize Generator Representation:} For each of the cells computed in the previous step, we set the anchor vertex and generator vector components to their corresponding grid cell dimension. In other words, we constrain the parallelotope to be contained within the cell through the generator representation. Formally speaking, suppose we have a grid cell $G$ in $n$-dimensional Euclidean space $\reals^n$ of the form $G = [l_1,u_1] \times [l_2, u_2] \times \cdots [l_n \times u_n]$. To constrain our parallelotope $P = \langle a, g_1, \cdots, g_n\rangle$ to be contained within $g$, it suffices to set the component variables such that $a, g_1, \cdots, g_n \in G$. For example, to set $a \in G$, the constraints should be initialized as below:
 \begin{align}
@@ -176,6 +176,6 @@ From Step 4 onwards, the lookup table returns the full list of monomials of degr
 %
 We tested this even for reachability computations lasting more than five steps. The full set of Bernstein coefficients are always returned after a certain step. For the Vanderpol model initialized with our parameters, this point would be around step $4$ or $5$.
 
-As the wrapping error becomes worse, so does the utility of our lookup table. A guess is that as the conservativeness of our reachable becomes greater, it overlaps with more cells of the domain. This results in an cascading effect where the reachability algorithm is required to take into account more monomials as it progresses.
+As the wrapping error becomes worse, so does the utility of our lookup table. A guess is that as the conservativeness of our reachable becomes greater, it overlaps with more cells of the domain. This results in a cascading effect where the reachability algorithm is required to take into account more monomials as it progresses.
 
 We speculate that the utility of our pruning method hinges on the careful control of the reachable set error. If the error becomes too great, we end of computing all of the coefficients, negating any benefits of a speed-up.

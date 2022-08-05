@@ -268,7 +268,7 @@ For a visual plot of above axis-aligned parallelotope, see Figure \ref{fig:axis_
       \draw[fill] (0,0) circle [radius=1pt];
       \node[above] {$\mathcal{O}$};
     \end{tikzpicture}
-    \caption{Plot of the rotated parallelotope of Example \ref{ex:simple_diag_ptope}. Once again, note the manner in which the template directions and their negative counterparts define parallel planes and the parallelotope's definition as the intersection of the postive and negative half-spaces of all pairs of parallel planes. Once again, $\mathcal{O}$ represents the origin $(0,0)$ and each side of a grid cell represents one unit of distance.}
+    \caption{Plot of the rotated parallelotope of Example \ref{ex:simple_diag_ptope}. Note the manner in which the template directions and their negative counterparts define parallel planes and the parallelotope's definition as the intersection of the postive and negative half-spaces of all pairs of parallel planes. $\mathcal{O}$ represents the origin $(0,0)$ and each side of a grid cell represents one unit of distance.}
     \label{fig:diagonal_ptope}
   \end{figure}
 \end{example}
@@ -357,11 +357,11 @@ This is exactly the unit box $[0,1]^2$ with its corner at the origin shifted to 
 %
 \begin{example}
 \label{ex:diag_ptope}
-Once again, consider the space $\reals^2$ and the parallelotope $P$ given in half-plane representation as $0 \leq x-y \leq 1$, $0 \leq y \leq 1$.
+Parallelotope $P$ is given in half-plane representation as $0 \leq x-y \leq 1$, $0 \leq y \leq 1$.
 %
 This is a parallelotope with vertices at $(0,0)$, $(1,0)$, $(2,1)$, and $(1,1)$.
 %
-In the half-space representation, the template directions of the parallelotope $P$ are given by the directions $[1, -1]$ and $[0, 1]$.
+The template directions of the parallelotope $P$ are given by the directions $[1, -1]$ and $[0, 1]$.
 %
 The half-space representation in matrix form is given as follows:
 %
@@ -390,7 +390,29 @@ The generator $g_1$ is the vector $v_1 - a$, that is $(1,0)- (0,0) = (1,0)$
 The generator $g_2$ is the vector $v_2 - a$, that is $(1,1) - (0,0) = (1,1)$.
 %
 Therefore, all the points in the paralellotope can be written as $(x,y) = (0,0) + \alpha_1 \cdot (1,0) + \alpha_2\cdot (1,1)$, $\alpha_1, \alpha_2 \in [0,1]$.
+%
+Figure \ref{fig:diag_ptope} portrays a visual plot of the derived generator representation.
 \end{example}
+
+
+\begin{figure}[h!]
+  \centering
+  \begin{tikzpicture}
+    \draw[step=1cm,gray,very thin, style=help lines] (-3,-3) grid (3,3);
+    \draw[fill=blue!40!white, opacity=0.4] (0,0) -- (1,0) -- (2,1) -- (1,1) -- cycle;
+    \draw[fill] (0,0) circle [radius=1pt];
+    \node[above] {$\mathcal{O}$};
+
+    \draw[fill] (0,0) circle [radius=1.5pt];
+    \node[below] at (0,0) {$v$};
+
+    \draw[->, very thick, draw=red] (0,0) -- (1,0) node[midway, below] {$g_1$};
+    \draw[->, very thick, draw=red] (0,0) -- (1,1) node[midway, right] {$g_2$};
+  \end{tikzpicture}
+  \caption{Plot of the generator representation for Example \ref{ex:diag_ptope}. The vertex $v$ represents the anchor while the two vectors $g_1,g_2$ are the generator vectors.}
+  \label{fig:diag_ptope}
+\end{figure}
+
 %
 The reachable set will be expressed an intersection of parallelotopes. These parallelotopes will be encoded into a parallelotope bundle.
 %
@@ -410,6 +432,7 @@ $$
 \noindent This parallelotope bundle will be the geometric data structure enclosing the region we compute to be the over-approximation of the exact reachable set. Observe that $Q$ can be expressed as the conjunction of all the linear constraints defining each parallelotope $P_i \in \ptopeset{Q}$.
 
 %--------------------------------------------------------------------------------------------------------------------------------------------------------- --------
+\newpage
 \subsection{Bernstein Polynomials}
 \label{sec:bernstein}
 In this section, we define Bernstein polynomials and state some of their enclosure properties. A \emph{multi-index} ${\bf i}$ of length $n$ is defined as tuple of $n$ elements ${\bf i} = (i_1,\cdots, i_n)$ such that each $i_k \in \mathbb{N}$. Furthermore, we order the multi-indices as follows: if ${\bf i}$ and ${\bf j}$ are two multi-indices of length $n$, then
@@ -438,7 +461,9 @@ Let $p: \reals^n \rightarrow \reals$ be a real polynomial of degree at most $\bo
 p(\boldx) = \sum_{\boldi \leq \boldd} a_\boldi \cdot \boldx^\boldi
 \]
 where $\boldx^\boldi$ represents the monomial $x_1^{i_1}x_2^{i_2}\cdots x_n^{i_n}$. One of the most important properties of Berstein polynomials is that the Bernstein basis polynomials of degree $\boldd$ span the vector space of real multivariate polynomials of degree at most $\boldd$:
-
+%
+In other words, given a polynomial $p(x_1,\ldots,x_n) = \sum_{j \in J} a_j {\bf x}_{j}$ where $J$ is a set of multi-indices iterating through the degrees found in $p$ with $a_j \in \mathbb{R}$, then $p(x_1,\ldots,x_n)$ can be converted into its counterpart under the Bernstein basis, $p(x_1,\ldots,x_n) = \sum_{j \in J} b_j \mathcal{B}_j $ where $b_j$ are the corresponding Bernstein coefficients.
+\newpage
 \begin{property}
 \label{prop:bern_basis}
 Every real polynomial $p$ of degree at most $\boldd$ can be represented as linear combination of Bernstein basis polynomials of degree $\boldd$:
@@ -453,8 +478,6 @@ where $b_\boldi$ denotes the \emph{$\boldi^{th}$ Bernstein Coefficient}:
 b_{\boldi} = \sum_{\boldj \leq \boldi} \frac{\binom{\boldi}{\boldj}}{\binom{\boldd}{\boldj}}\cdot a_{\boldj}
 \end{equation}
 \end{property}
-
-\noindent In other words, given a polynomial $p(x_1,\ldots,x_n) = \sum_{j \in J} a_j {\bf x}_{j}$ where $J$ is a set of multi-indices iterating through the degrees found in $p$ with $a_j \in \mathbb{R}$, then $p(x_1,\ldots,x_n)$ can be converted into its counterpart under the Bernstein basis, $p(x_1,\ldots,x_n) = \sum_{j \in J} b_j \mathcal{B}_j $ where $b_j$ are the corresponding Bernstein coefficients.
 
 The primary advantage of the Bernstein representation of a polynomial $p(x_1,...,x_n)$ is that an upper bound on the supremum and lower bound on the infimum of $p(x_1,...,x_n)$ in $[0,1]^{n}$ can be computed purely by observing the coefficients of the polynomial in the Bernstein basis. Specifically, the upper and lower bounds of $p(x_1,\ldots,x_n)$ over $[0,1]^n$ are bounded by the Bernstein coefficients. We state this as a property without proof.
 

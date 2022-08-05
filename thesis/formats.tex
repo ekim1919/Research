@@ -17,6 +17,42 @@ Finally, we cover the high-level pseudo-code of the dynamic algorithm and explai
 
 %-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+\section{Drawbacks to the Static Algorithm}
+Before we embark on introducing the dynamic algorithm, let us first consider a few motivating factors.
+%
+As discussed in Section \ref{sec:static}, the static algorithm requires template directions to be specified by the user in order for the reachable set computation to proceed.
+%
+The parallelotopes tended to be defined by a combination of axis-aligned directions or diagonal directions.
+%
+However, it is unclear whether these template directions work reasonably well over general non-linear dynamics.
+%
+This is a problem which has profound consequences for computing useful over-approximations.
+%
+Choosing the incorrect directions could very well lead to an over-approximation too conservative for any practical use.
+%
+Figure \ref{fig:bloat_cvdp} portrays a simple example of a reachable set whose wrapping error becomes explosive after a few steps.
+%
+In light of these ramifications, it is esstentially incumbent on the user to choose fruitful template directions that control the growth of the over-approximation.
+%
+Due to the inherent difficult nature of choosing these template directions, it may be unreasonable to delegate this responsibility to a practitioner who knows little about parallelotope-based reachability.
+%
+These drawbacks to the static algorithm motivate the rationale behind the \emph{automatic} aspect of our modified algorithm.
+
+Additionally, as the template directions are set at the beginning before the reachable set computation proceeds, these directions cannot adapt to the dynamics as the computation executes.
+%
+There may be template directions which may yield much leaner over-approximations at an intermediate step during the computation.
+%
+Hence, the ability to change the composition of the parallelotope bundle by adding and removing parallelotopes based on a data-driven approach could yield leaner over-approximations.
+%
+These considerations motivate the rationale behind the \emph{dynamic} aspect of our modified algorithm.
+
+\begin{figure}[t!]
+\centering
+\includegraphics[width= 0.9\textwidth]{figures/cvdp20.png}
+\caption{Consequences of choosing inappropriate template directions as demonstrated by the Coupled Vanderpol model. See Section \ref{sec:cvdp} for the model definition.}
+\label{fig:bloat_cvdp}
+\end{figure}
+
 \section{Local Linear Approximations}
 \label{sec:lin_app}
 %
@@ -33,7 +69,7 @@ That is the support points are the set of points $P_{supp}$ defined as:
  P_{supp} = \bigcup_{i=1}^n \{ \max_{x \in Q} \Lambda^Q_i\cdot x, \; \min_{x \in Q} \Lambda^Q_i\cdot x \}
 \end{equation}
 %
-for all template directions of the bundle $\Lambda^Q_i$. We use the support points as a data-driven approach to find the best-fit linear function to use. All points are found by a straightforward linear program.
+for all template directions of the bundle $\Lambda^Q_i$. We use the support points as a data-driven approach to determine the best-fit linear function to use. All points are found by a straightforward linear program.
 %
 %In this case, for small time steps a nonlinear function can be approximated fairly accurately by a linear transformation.
 %
@@ -47,7 +83,10 @@ where $||\cdot||_2$ is the standard Euclidean norm on $\reals^n$.
 %
 If the dynamics of a system are linear, i.e., $x^{+} = Ax$, the image of the parallelotope $c_{l} \leq \Lambda x \leq c_{u}$, is the set $c_{l} \leq \Lambda \cdot A^{-1} x \leq c_{u}$.
 %
-Therefore, given the template directions of the initial set as $\T_0$, we compute the local linear approximation of the non-linear dynamics and change the template directions by multiplying them with the inverse of the approximate linear dynamics.
+To see this, recall the constraint associated to the half-space representation (Definition \ref{def:halfspace_def} and Equation \ref{eq:halfspaceconst}). If we set our new template directions to be $\Lambda \cdot A^{-1}$, the image points of $A$ which satisfy the half-space constraint according to fixed offset vectors $c_l, c_u$ should be:
+ \[ c_l \leq (\Lambda \cdot A^{-1})Ax \leq c_u \implies c_{l} \leq \Lambda x \leq c_{u} \]
+%
+This is satisfied by all the points defining parallelotope $P$ as desired. Therefore, the new template directions will exactly define the image of $P$ under linear dynamics. To exploit this property, given the template directions of the initial set as $\T_0$, we compute the local linear approximation of the non-linear dynamics and change the template directions by multiplying them with the inverse of the approximate linear dynamics.
 %
 %This will reflect the approximate template directions for one step forward. To continue to
 %

@@ -133,7 +133,7 @@ One can compute an upper-bound to this non-linear optimization by computing the 
 Similarly, we compute the lower-bound of $\Lambda_{i}\cdot f(x)$ for all $x \in P$ by computing the upper-bound of $-1 \times \Lambda_{i}\cdot f(x)$.
 %
 \begin{remark}
-The original algorithm using Bernstein expansion proposed by \cite{dreossi2016parallelotope} assumed polynomial dynamics i.e $f$ is polynomial in the system variables.
+The original algorithm exploiting Bernstein expansion was proposed by \cite{dreossi2016parallelotope} and assumed polynomial dynamics i.e $f$ is polynomial in the system variables.
 %
 This is to ensure that a $\Lambda_{i}\cdot f(x)$ is a polynomial after the composition shown in Equation \ref{eq:maxalpha}. Proper Bernstein expansion of this polynomial allows us to exploit the enclosure property of Bernstein coefficients. However, the use of other non-linear optimization solvers, such as Kodiak \cite{kodiak}, allows us to use more general dynamics involving trigonometric and root functions. A Taylor expansion of any analytic function can also be truncated to some suffciently large degree to admit a power series expansion.
 \end{remark}
