@@ -22,11 +22,11 @@ Before we embark on introducing the dynamic algorithm, let us first consider a f
 %
 As discussed in Section \ref{sec:static}, the static algorithm requires template directions to be specified by the user in order for the reachable set computation to proceed.
 %
-The parallelotopes tended to be defined by a combination of axis-aligned directions or diagonal directions.
+In practice, the parallelotopes tend to be defined by a combination of axis-aligned directions or diagonal directions.
 %
 However, it is unclear whether these template directions work reasonably well over general non-linear dynamics.
 %
-This is a problem which has profound consequences for computing useful over-approximations.
+This is a problem which has profound consequences for the computation of useful over-approximations.
 %
 Choosing the incorrect directions could very well lead to an over-approximation too conservative for any practical use.
 %
@@ -38,11 +38,11 @@ Due to the inherent difficult nature of choosing these template directions, it m
 %
 These drawbacks to the static algorithm motivate the rationale behind the \emph{automatic} aspect of our modified algorithm.
 
-Additionally, as the template directions are set at the beginning before the reachable set computation proceeds, these directions cannot adapt to the dynamics as the computation executes.
+Additionally, as the template directions are set at the beginning, these directions cannot adapt to the dynamics as the computation executes.
 %
 There may be template directions which may yield much leaner over-approximations at an intermediate step during the computation.
 %
-Hence, the ability to change the composition of the parallelotope bundle by adding and removing parallelotopes based on a data-driven approach could yield leaner over-approximations.
+Hence, the ability to change the composition of the parallelotope bundle by adding and removing parallelotopes based on a data-driven approach could yield better over-approximations.
 %
 These considerations motivate the rationale behind the \emph{dynamic} aspect of our modified algorithm.
 
