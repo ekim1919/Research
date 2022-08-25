@@ -71,7 +71,7 @@ The SIR Epidemic model is a 3-dimensional dynamical system governed by the follo
 \end{align}
 where $s,i,r$ represent the fractions of a population of individuals designated as \textit{susceptible}, \textit{infected}, and \textit{recovered} respectively. There are two parameters, namely $\beta$ and $\gamma$, which influence the evolution of the system. $\beta$ is labeled as the \emph{contraction rate} and $1/\gamma$ is the \emph{mean infective period}.
 %
-Discretizing Equation~\ref{eqn:sir} according the Euler method yields the dynamics:
+Discretizing Equation~\ref{eqn:sir} according to the Euler method yields the dynamics:
 
 \begin{center}
 \label{fig:discrete_sir}
@@ -87,7 +87,7 @@ Discretizing Equation~\ref{eqn:sir} according the Euler method yields the dynami
  Here, $\Delta$ is the discretization step and the index $k \in \mathbb{N}$ simply represents the current step.
 %For the benchmarks, we set $\beta = 0.34$, $\gamma=0.05$, and $\Delta=0.5$.
 %
-Note the non-linear terms $s_ki_k$, which preclude the expression of the dynamics as a linear transformation.
+Note the non-linear terms $s_ki_k$ which preclude the expression of the dynamics as a linear transformation of the input state variables.
 \end{example}
 
 We can now give a discretized version of a trajectory as presented in Definition \ref{def:diff_dyna_sys}. The trajectory of a system that evolves according to Equation~\ref{eq:sys}, denoted as $\xi_{x_0}$, is a sequence $x_0, x_1, \ldots $ where $x_{i+1} = f(x_i)$.
